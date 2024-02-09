@@ -10,7 +10,7 @@ const date_format: Intl.DateTimeFormatOptions = {
   day: 'numeric',
 }
 
-export const Video: React.FC<Props> = ({ video }) => {
+export const VideoCard: React.FC<Props> = ({ video }) => {
   return (
     <div className="flex flex-col overflow-hidden justify-between border shrink-0 grow-0 rounded-xl w-72 h-96">
       <div className="m-3">Uploaded {video.upload_date.toLocaleDateString('en-CA', date_format)}</div>

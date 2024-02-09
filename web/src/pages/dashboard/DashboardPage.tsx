@@ -1,6 +1,6 @@
 import { VideoData } from '../../types'
 
-import { Video } from './components/Video'
+import { VideoCard } from './components/VideoCard'
 
 export const DashboardPage: React.FC = () => {
   const videos: VideoData[] = [
@@ -15,7 +15,7 @@ export const DashboardPage: React.FC = () => {
 
       <div className="flex gap-8 flex-wrap">
         {videos.map((video) => {
-          return <Video key={video.id} video={video}></Video>
+          return <VideoCard key={video.id} video={video} />
         })}
       </div>
     </div>
