@@ -1,19 +1,10 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
-import { ReviewStatus, VideoData } from '../../types'
+import { ReviewStatus } from '../../types'
+
+import { getVideos } from '../../api/getVideos'
 
 import { VideoCard } from './components/VideoCard'
-
-const randomDate = () => new Date(1500000000000 + Math.random() * 250000000000)
-
-const videos: VideoData[] = [
-  { id: 'a', upload_date: randomDate(), status: 'Unreviewed' },
-  { id: 'b', upload_date: randomDate(), status: 'Unreviewed' },
-  { id: 'c', upload_date: randomDate(), status: 'Unreviewed' },
-  { id: 'd', upload_date: randomDate(), status: 'Approved' },
-  { id: 'e', upload_date: randomDate(), status: 'Approved' },
-  { id: 'f', upload_date: randomDate(), status: 'Denied' },
-]
 
 const TabButton = ({ active, onClick, children }: { active?: boolean; onClick: () => void; children: string }) => {
   return (
@@ -29,6 +20,8 @@ const TabButton = ({ active, onClick, children }: { active?: boolean; onClick: (
 
 export const DashboardPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<ReviewStatus>('Unreviewed')
+
+  const videos = getVideos()
 
   return (
     <div className="container">
