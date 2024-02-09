@@ -27,7 +27,7 @@ module.exports = {
     colors: {
       background: palette.white,
       text: palette.navy,
-      textTitle: palette.offBlack,
+      'header-background': palette.navy,
     },
     fontFamily: {
       sans: ['Lato', 'Calibri', 'Arial', 'sans-serif'],
