@@ -1,22 +1,11 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 import { ReviewStatus } from '../../types'
 
 import { getVideos } from '../../api/getVideos'
 
 import { VideoCard } from './components/VideoCard'
-
-const TabButton = ({ active, onClick, children }: { active?: boolean; onClick: () => void; children: string }) => {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`text-lg font-bold ${active ? 'border-b-2' : 'opacity-50'} hover:border-b-2`}
-    >
-      {children}
-    </button>
-  )
-}
+import { TabButton } from './components/TabButton'
 
 export const DashboardPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<ReviewStatus>('Unreviewed')
