@@ -25,6 +25,11 @@ module.exports = {
       xl: '1440px',
     },
     colors: {
+      black: palette.black,
+      white: palette.white,
+      slate: palette.slate,
+      'off-white': palette.offWhite,
+
       background: palette.white,
       text: palette.navy,
       'header-background': palette.navy,
