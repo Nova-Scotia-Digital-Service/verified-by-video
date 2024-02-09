@@ -14,11 +14,15 @@
     "type": "git"
   },
   "workspaces": [
-    "api"
+    "api",
+    "web"
   ],
   "scripts": {
-    "start": "yarn workspace api start",
-    "build": "yarn workspace api build",
+    "start": "concurrently \"yarn workspace api start\" \"yarn workspace web start\"",
+    "start:api": "yarn workspace api start",
+    "start:web": "yarn workspace web start",
+    "build:api": "yarn workspace api build",
+    "build:web": "yarn workspace web build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:format": "prettier -c '**/*.+(js|jsx|ts|tsx|json|md|yml|yaml)'"
   },
