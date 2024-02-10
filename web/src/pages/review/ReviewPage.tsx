@@ -1,3 +1,5 @@
+import { RadioOption } from './components/RadioOption'
+
 export const ReviewPage: React.FC = () => {
   return (
     <div className="container pt-12">
@@ -29,22 +31,10 @@ export const ReviewPage: React.FC = () => {
 
       <div className="mb-12">
         <h3 className="font-bold text-2xl mb-4">Did the user correctly follow the prompts in the video?</h3>
-        <label className="flex items-center text-lg mb-2">
-          <input type="radio" name="followed-prompts" className="size-6 mr-2" />
-          Yes, all prompts followed by user in the correct order
-        </label>
-        <label className="flex items-center text-lg mb-2">
-          <input type="radio" name="followed-prompts" className="size-6 mr-2" />
-          Didn't follow the prompts correctly
-        </label>
-        <label className="flex items-center text-lg mb-2">
-          <input type="radio" name="followed-prompts" className="size-6 mr-2" />
-          Too low quality video/photo for matching
-        </label>
-        <label className="flex items-center text-lg mb-2">
-          <input type="radio" name="followed-prompts" className="size-6 mr-2" />
-          Couldn't complete for other reason
-        </label>
+        <RadioOption name="followed-prompts">Yes, all prompts followed by user in the correct order</RadioOption>
+        <RadioOption name="followed-prompts">Didn't follow the prompts correctly</RadioOption>
+        <RadioOption name="followed-prompts">Too low quality video/photo for matching</RadioOption>
+        <RadioOption name="followed-prompts">Couldn't complete for other reason</RadioOption>
       </div>
     </div>
   )
