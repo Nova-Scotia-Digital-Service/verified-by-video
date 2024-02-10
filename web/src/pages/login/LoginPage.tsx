@@ -1,3 +1,4 @@
+import { PrimaryButton } from '../../components/Button'
 import { Input } from '../../components/Input'
 
 export const LoginPage: React.FC = () => {
@@ -9,12 +10,7 @@ export const LoginPage: React.FC = () => {
       <Input label="Password" placeholder="********" type="password" />
 
       <form action="/dashboard">
-        <button
-          type="submit"
-          className="flex justify-center items-center w-full h-12 mt-8 bg-primary-background rounded-md font-semibold text-lg text-primary-text"
-        >
-          Log in
-        </button>
+        <PrimaryButton type="submit">Log in</PrimaryButton>
       </form>
     </div>
   )
