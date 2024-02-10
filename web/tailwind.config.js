@@ -27,6 +27,8 @@ module.exports = {
     colors: {
       background: palette.white,
       text: palette.navy,
+      'primary-background': palette.navy,
+      'primary-text': palette.white,
       'header-background': palette.navy,
     },
     fontFamily: {
