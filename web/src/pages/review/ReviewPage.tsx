@@ -1,8 +1,9 @@
+import { PrimaryButton, SecondaryButton } from '../../components/Button'
 import { RadioOption } from './components/RadioOption'
 
 export const ReviewPage: React.FC = () => {
   return (
-    <div className="container pt-12">
+    <div className="container py-12">
       <a href="/dashboard" className="font-bold text-sm">
         Back
       </a>
@@ -36,6 +37,22 @@ export const ReviewPage: React.FC = () => {
         <RadioOption name="followed-prompts">Too low quality video/photo for matching</RadioOption>
         <RadioOption name="followed-prompts">Couldn't complete for other reason</RadioOption>
       </div>
+
+      <hr className="mb-12" />
+
+      <form className="flex justify-between" action="/dashboard">
+        <div className="flex gap-4">
+          <div className="w-80">
+            <SecondaryButton type="submit">Transfer request to specialist</SecondaryButton>
+          </div>
+          <div className="w-48">
+            <SecondaryButton type="submit">Close request</SecondaryButton>
+          </div>
+        </div>
+        <div className="w-48">
+          <PrimaryButton type="submit">Continue</PrimaryButton>
+        </div>
+      </form>
     </div>
   )
 }
