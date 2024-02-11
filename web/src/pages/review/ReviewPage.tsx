@@ -1,7 +1,7 @@
 import { PrimaryButton, SecondaryButton } from '../../components/Button'
 import { HorizontalRule } from '../../components/HorizontalRule'
 
-import { RadioOption } from './components/RadioOption'
+import { ReviewQuestion } from './components/ReviewQuestion'
 import { PhotoID } from './components/PhotoID'
 
 import { ReactComponent as WarningIcon } from '../../assets/icon-warning.svg'
@@ -35,13 +35,16 @@ export const ReviewPage: React.FC = () => {
 
       <HorizontalRule />
 
-      <div className="mb-12">
-        <h3 className="font-bold text-2xl mb-4">Did the user correctly follow the prompts in the video?</h3>
-        <RadioOption name="followed-prompts">Yes, all prompts followed by user in the correct order</RadioOption>
-        <RadioOption name="followed-prompts">Didn't follow the prompts correctly</RadioOption>
-        <RadioOption name="followed-prompts">Too low quality video/photo for matching</RadioOption>
-        <RadioOption name="followed-prompts">Couldn't complete for other reason</RadioOption>
-      </div>
+      <ReviewQuestion
+        id="followed-prompts"
+        question="Did the user correctly follow the prompts in the video?"
+        options={[
+          'Yes, all prompts followed by user in the correct order',
+          "Didn't follow the prompts correctly",
+          'Too low quality video/photo for matching',
+          "Couldn't complete for other reason",
+        ]}
+      />
 
       <div className="flex gap-x-12 mb-12 mx-[-4rem] overflow-x-scroll pb-4">
         <PhotoID description="Photo on BC Services Card" />
@@ -49,6 +52,27 @@ export const ReviewPage: React.FC = () => {
         <PhotoID photo description="Front of BC Driver's License (issued in British Columbia)" date={new Date()} />
         <PhotoID photo description="Back of BC Driver's License (issued in British Columbia)" date={new Date()} />
       </div>
+
+      <ReviewQuestion
+        id="provided-name"
+        question="What name did they provide?"
+        options={[
+          'NONPHOTO, PERCY or an acceptable variation',
+          "Didn't provide the correct name",
+          "Couldn't complete for other reason",
+        ]}
+      />
+
+      <ReviewQuestion
+        id="all-match"
+        question="Do all three match: photo on the ID document, video, photo taken in the app?"
+        options={[
+          'Yes, all match',
+          'Not all match',
+          'Too low quality video or photo for matching',
+          "Couldn't complete for other reason",
+        ]}
+      />
 
       <div className="flex items-start mb-12 p-4 rounded-lg border border-warning-border text-lg text-warning-text bg-warning-background">
         <WarningIcon className="mr-4" />
