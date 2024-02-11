@@ -40,7 +40,7 @@ export const ReviewPage: React.FC = () => {
       <HorizontalRule />
 
       {reviewQuestions.slice(0, 1).map(({ id, question, options }) => (
-        <ReviewQuestion id={id} question={question} options={options} />
+        <ReviewQuestion key={id} id={id} question={question} options={options} />
       ))}
 
       <div className="flex gap-x-12 mb-12 mx-[-4rem] overflow-x-scroll pb-4">
@@ -51,7 +51,7 @@ export const ReviewPage: React.FC = () => {
       </div>
 
       {reviewQuestions.slice(1).map(({ id, question, options }) => (
-        <ReviewQuestion id={id} question={question} options={options} />
+        <ReviewQuestion key={id} id={id} question={question} options={options} />
       ))}
 
       <div className="flex items-start mb-12 p-4 rounded-lg border border-warning-border text-lg text-warning-text bg-warning-background">
