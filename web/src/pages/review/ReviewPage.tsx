@@ -1,45 +1,16 @@
 import { PrimaryButton, SecondaryButton } from '../../components/Button'
 import { HorizontalRule } from '../../components/HorizontalRule'
 
+import { getReviewQuestions } from '../../api/getReviewQuestions'
+
 import { ReviewQuestion } from './components/ReviewQuestion'
 import { PhotoID } from './components/PhotoID'
 
 import { ReactComponent as WarningIcon } from '../../assets/icon-warning.svg'
 
-const reviewQuestions: Parameters<typeof ReviewQuestion>[0][] = [
-  {
-    id: 'followed-prompts',
-    question: 'Did the user correctly follow the prompts in the video?',
-    options: [
-      'Yes, all prompts followed by user in the correct order',
-      "Didn't follow the prompts correctly",
-      'Too low quality video/photo for matching',
-      "Couldn't complete for other reason",
-    ],
-  },
-  {
-    id: 'provided-name',
-    question: 'What name did they provide?',
-    options: [
-      'NONPHOTO, PERCY or an acceptable variation',
-      "Didn't provide the correct name",
-      "Couldn't complete for other reason",
-    ],
-  },
-
-  {
-    id: 'all-match',
-    question: 'Do all three match: photo on the ID document, video, photo taken in the app?',
-    options: [
-      'Yes, all match',
-      'Not all match',
-      'Too low quality video or photo for matching',
-      "Couldn't complete for other reason",
-    ],
-  },
-]
-
 export const ReviewPage: React.FC = () => {
+  const reviewQuestions = getReviewQuestions()
+
   return (
     <div className="container py-12 px-16 w-[68rem]">
       <a href="/dashboard" className="font-bold text-sm">
