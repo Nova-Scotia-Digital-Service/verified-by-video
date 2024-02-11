@@ -6,6 +6,7 @@ import { getReviewQuestions } from '../../api/getReviewQuestions'
 import { ReviewQuestion } from './components/ReviewQuestion'
 import { PhotoID } from './components/PhotoID'
 
+import { ReactComponent as BackArrowIcon } from '../../assets/icon-back-arrow.svg'
 import { ReactComponent as WarningIcon } from '../../assets/icon-warning.svg'
 
 export const ReviewPage: React.FC = () => {
@@ -13,7 +14,8 @@ export const ReviewPage: React.FC = () => {
 
   return (
     <div className="container py-12 px-16 w-[68rem]">
-      <a href="/dashboard" className="font-bold text-sm">
+      <a href="/dashboard" className="flex items-center font-bold text-sm hover:opacity-60">
+        <BackArrowIcon className="mr-2 mt-[2px]" />
         Back
       </a>
       <h2 className="text-4xl font-bold text-title mt-4 mb-16">Verify Identity to set up Mobile card</h2>
