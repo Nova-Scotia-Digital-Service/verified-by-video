@@ -6,6 +6,39 @@ import { PhotoID } from './components/PhotoID'
 
 import { ReactComponent as WarningIcon } from '../../assets/icon-warning.svg'
 
+const reviewQuestions: Parameters<typeof ReviewQuestion>[0][] = [
+  {
+    id: 'followed-prompts',
+    question: 'Did the user correctly follow the prompts in the video?',
+    options: [
+      'Yes, all prompts followed by user in the correct order',
+      "Didn't follow the prompts correctly",
+      'Too low quality video/photo for matching',
+      "Couldn't complete for other reason",
+    ],
+  },
+  {
+    id: 'provided-name',
+    question: 'What name did they provide?',
+    options: [
+      'NONPHOTO, PERCY or an acceptable variation',
+      "Didn't provide the correct name",
+      "Couldn't complete for other reason",
+    ],
+  },
+
+  {
+    id: 'all-match',
+    question: 'Do all three match: photo on the ID document, video, photo taken in the app?',
+    options: [
+      'Yes, all match',
+      'Not all match',
+      'Too low quality video or photo for matching',
+      "Couldn't complete for other reason",
+    ],
+  },
+]
+
 export const ReviewPage: React.FC = () => {
   return (
     <div className="container py-12 px-16 w-[68rem]">
@@ -35,16 +68,9 @@ export const ReviewPage: React.FC = () => {
 
       <HorizontalRule />
 
-      <ReviewQuestion
-        id="followed-prompts"
-        question="Did the user correctly follow the prompts in the video?"
-        options={[
-          'Yes, all prompts followed by user in the correct order',
-          "Didn't follow the prompts correctly",
-          'Too low quality video/photo for matching',
-          "Couldn't complete for other reason",
-        ]}
-      />
+      {reviewQuestions.slice(0, 1).map(({ id, question, options }) => (
+        <ReviewQuestion id={id} question={question} options={options} />
+      ))}
 
       <div className="flex gap-x-12 mb-12 mx-[-4rem] overflow-x-scroll pb-4">
         <PhotoID description="Photo on BC Services Card" />
@@ -53,26 +79,9 @@ export const ReviewPage: React.FC = () => {
         <PhotoID photo description="Back of BC Driver's License (issued in British Columbia)" date={new Date()} />
       </div>
 
-      <ReviewQuestion
-        id="provided-name"
-        question="What name did they provide?"
-        options={[
-          'NONPHOTO, PERCY or an acceptable variation',
-          "Didn't provide the correct name",
-          "Couldn't complete for other reason",
-        ]}
-      />
-
-      <ReviewQuestion
-        id="all-match"
-        question="Do all three match: photo on the ID document, video, photo taken in the app?"
-        options={[
-          'Yes, all match',
-          'Not all match',
-          'Too low quality video or photo for matching',
-          "Couldn't complete for other reason",
-        ]}
-      />
+      {reviewQuestions.slice(1).map(({ id, question, options }) => (
+        <ReviewQuestion id={id} question={question} options={options} />
+      ))}
 
       <div className="flex items-start mb-12 p-4 rounded-lg border border-warning-border text-lg text-warning-text bg-warning-background">
         <WarningIcon className="mr-4" />
