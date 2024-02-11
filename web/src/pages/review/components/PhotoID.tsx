@@ -12,6 +12,8 @@ export const PhotoID = ({ photo, description, date }: { photo?: boolean; descrip
           <div className="flex-grow bg-slate rounded"></div>
         ) : (
           <div className="flex-grow border border-slate rounded flex items-center justify-center text-lg">
+            <hr className="absolute text-slate w-[29rem] rotate-[55deg] -z-10" />
+            <hr className="absolute text-slate w-[29rem] -rotate-[55deg] -z-10" />
             Non-Photo Card
           </div>
         )}
