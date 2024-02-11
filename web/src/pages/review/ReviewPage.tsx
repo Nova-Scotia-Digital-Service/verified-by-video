@@ -2,9 +2,11 @@ import { PrimaryButton, SecondaryButton } from '../../components/Button'
 import { HorizontalRule } from '../../components/HorizontalRule'
 import { RadioOption } from './components/RadioOption'
 
+import { ReactComponent as WarningIcon } from '../../assets/icon-warning.svg'
+
 export const ReviewPage: React.FC = () => {
   return (
-    <div className="container py-12">
+    <div className="container py-12 w-[60rem]">
       <a href="/dashboard" className="font-bold text-sm">
         Back
       </a>
@@ -37,6 +39,17 @@ export const ReviewPage: React.FC = () => {
         <RadioOption name="followed-prompts">Didn't follow the prompts correctly</RadioOption>
         <RadioOption name="followed-prompts">Too low quality video/photo for matching</RadioOption>
         <RadioOption name="followed-prompts">Couldn't complete for other reason</RadioOption>
+      </div>
+
+      <div className="flex items-start mb-12 p-4 rounded-lg border border-warning-border text-lg text-warning-text bg-warning-background">
+        <WarningIcon className="mr-4" />
+        <div>
+          <h2 className="font-bold mb-4 leading-none">Important</h2>
+          <div>
+            This screen contains personal information and should not be printed or captured, except when reporting
+            suspicious activity.
+          </div>
+        </div>
       </div>
 
       <HorizontalRule />
