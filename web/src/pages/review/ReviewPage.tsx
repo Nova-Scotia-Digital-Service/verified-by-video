@@ -1,12 +1,14 @@
 import { PrimaryButton, SecondaryButton } from '../../components/Button'
 import { HorizontalRule } from '../../components/HorizontalRule'
+
 import { RadioOption } from './components/RadioOption'
+import { PhotoID } from './components/PhotoID'
 
 import { ReactComponent as WarningIcon } from '../../assets/icon-warning.svg'
 
 export const ReviewPage: React.FC = () => {
   return (
-    <div className="container py-12 w-[60rem]">
+    <div className="container py-12 px-16 w-[68rem]">
       <a href="/dashboard" className="font-bold text-sm">
         Back
       </a>
@@ -39,6 +41,13 @@ export const ReviewPage: React.FC = () => {
         <RadioOption name="followed-prompts">Didn't follow the prompts correctly</RadioOption>
         <RadioOption name="followed-prompts">Too low quality video/photo for matching</RadioOption>
         <RadioOption name="followed-prompts">Couldn't complete for other reason</RadioOption>
+      </div>
+
+      <div className="flex gap-x-12 mb-12 mx-[-4rem] overflow-x-scroll pb-4">
+        <PhotoID description="Photo on BC Services Card" />
+        <PhotoID photo description="Photo from the mobile app" date={new Date()} />
+        <PhotoID photo description="Front of BC Driver's License (issued in British Columbia)" date={new Date()} />
+        <PhotoID photo description="Back of BC Driver's License (issued in British Columbia)" date={new Date()} />
       </div>
 
       <div className="flex items-start mb-12 p-4 rounded-lg border border-warning-border text-lg text-warning-text bg-warning-background">
