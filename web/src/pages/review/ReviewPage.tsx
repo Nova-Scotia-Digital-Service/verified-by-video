@@ -1,4 +1,5 @@
 import { PrimaryButton, SecondaryButton } from '../../components/Button'
+import { HorizontalRule } from '../../components/HorizontalRule'
 import { RadioOption } from './components/RadioOption'
 
 export const ReviewPage: React.FC = () => {
@@ -28,7 +29,7 @@ export const ReviewPage: React.FC = () => {
         <div className="w-[28rem] h-[40rem] bg-slate rounded-lg"></div>
       </div>
 
-      <hr className="mb-12" />
+      <HorizontalRule />
 
       <div className="mb-12">
         <h3 className="font-bold text-2xl mb-4">Did the user correctly follow the prompts in the video?</h3>
@@ -38,7 +39,7 @@ export const ReviewPage: React.FC = () => {
         <RadioOption name="followed-prompts">Couldn't complete for other reason</RadioOption>
       </div>
 
-      <hr className="mb-12" />
+      <HorizontalRule />
 
       <form className="flex justify-between" action="/dashboard">
         <div className="flex gap-4">
