@@ -27,6 +27,8 @@ module.exports = {
     colors: {
       black: palette.black,
       white: palette.white,
+      'off-white': palette.offWhite,
+      slate: palette.slate,
       background: palette.white,
       text: palette.navy,
       title: palette.offBlack,
