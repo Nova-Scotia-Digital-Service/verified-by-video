@@ -5,6 +5,9 @@ const palette = {
   offBlack: '#273645',
   navy: '#0E2A59',
   slate: '#C8D0DD',
+  lightYellow: '#FFFAD4',
+  yellow: '#E2CF51',
+  darkYellow: '#764615',
 }
 
 /* eslint-disable no-undef */
@@ -35,6 +38,9 @@ module.exports = {
       'primary-background': palette.navy,
       'primary-text': palette.white,
       'header-background': palette.navy,
+      'warning-background': palette.lightYellow,
+      'warning-text': palette.darkYellow,
+      'warning-border': palette.yellow,
       'input-background': palette.offWhite,
       'input-text': palette.black,
     },

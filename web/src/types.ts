@@ -1,3 +1,9 @@
+export interface ReviewQuestion {
+  id: string
+  question: string
+  options: string[]
+}
+
 export type ReviewStatus = 'Unreviewed' | 'Approved' | 'Denied'
 
 export interface VideoData {
