@@ -27,15 +27,24 @@ module.exports = {
     colors: {
       black: palette.black,
       white: palette.white,
-      slate: palette.slate,
       'off-white': palette.offWhite,
-
+      slate: palette.slate,
       background: palette.white,
       text: palette.navy,
+      title: palette.offBlack,
+      'primary-background': palette.navy,
+      'primary-text': palette.white,
       'header-background': palette.navy,
+      'input-background': palette.offWhite,
+      'input-text': palette.black,
     },
     fontFamily: {
       sans: ['Lato', 'Calibri', 'Arial', 'sans-serif'],
+    },
+    extend: {
+      boxShadow: {
+        input: 'inset 0px 0px 0px 1px rgba(0, 0, 0, 0.25)',
+      },
     },
   },
 }
