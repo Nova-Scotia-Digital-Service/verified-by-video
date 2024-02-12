@@ -1,11 +1,9 @@
-import { SomeComponent } from './components/SomeComponent'
-import { OtherComponent } from '../../components/OtherComponent'
+import { DashboardComponent } from './components/DashboardComponent'
 
 export const DashboardPage: React.FC = () => {
   return (
     <div>
-      <SomeComponent />
-      <OtherComponent />
+      <DashboardComponent />
     </div>
   )
 }
