@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import { PrimaryButton, SecondaryButton } from '../../components/Button'
 import { HorizontalRule } from '../../components/HorizontalRule'
 
@@ -14,10 +16,10 @@ export const ReviewPage: React.FC = () => {
 
   return (
     <div className="container py-12 px-16 w-[68rem]">
-      <a href="/dashboard" className="flex items-center font-bold text-sm hover:opacity-60">
+      <Link to="/dashboard" className="flex items-center font-bold text-sm hover:opacity-60">
         <BackArrowIcon className="mr-2 mt-[2px]" />
         Back
-      </a>
+      </Link>
       <h2 className="text-4xl font-bold text-title mt-4 mb-16">Verify Identity to set up Mobile card</h2>
 
       <div className="flex justify-between mb-12">

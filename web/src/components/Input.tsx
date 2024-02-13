@@ -1,4 +1,12 @@
-export const Input = ({ label, placeholder, type }: { label: string; placeholder?: string; type?: 'password' }) => {
+export const Input = ({
+  label,
+  placeholder,
+  type,
+}: {
+  label: string
+  placeholder?: string
+  type?: React.HTMLInputTypeAttribute
+}) => {
   return (
     <div className="mt-2">
       <label className="block text-title font-semibold">{label}</label>

@@ -35,6 +35,7 @@ module.exports = {
       background: palette.white,
       text: palette.navy,
       title: palette.offBlack,
+      link: palette.offBlack,
       'primary-background': palette.navy,
       'primary-text': palette.white,
       'header-background': palette.navy,
