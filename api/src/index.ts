@@ -20,7 +20,7 @@ const run = async () => {
   const app: Express = createExpressServer({
     controllers: [__dirname + '/controllers/**/*.ts', __dirname + '/controllers/**/*.js'],
     cors: true,
-    routePrefix: '/api',
+    routePrefix: '/api/v1',
   })
 
   app.use(json())
