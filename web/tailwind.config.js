@@ -39,6 +39,7 @@ module.exports = {
       'primary-background': palette.navy,
       'primary-text': palette.white,
       'header-background': palette.navy,
+      'header-text': palette.white,
       'warning-background': palette.lightYellow,
       'warning-text': palette.darkYellow,
       'warning-border': palette.yellow,

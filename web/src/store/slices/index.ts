@@ -1,11 +1,9 @@
 import { combineReducers } from 'redux'
 
-import demoSlice from './demo/demoSlice'
-
-export const VERSION = 4
+import { authReducer } from './auth/authSlice'
 
 const rootReducer = combineReducers({
-  demo: demoSlice,
+  auth: authReducer,
 })
 
 export default rootReducer
