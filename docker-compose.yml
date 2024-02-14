@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  project: &project
+    build:
+      context: .
+  web:
+    <<: *project
+    ports:
+      - 3000:3000
+    command: yarn serve:web
+  api:
+    <<: *project
+    ports:
+      - 3100:3100
+    command: yarn serve:api

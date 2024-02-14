@@ -23,6 +23,8 @@
     "start:web": "yarn workspace web start",
     "build:api": "yarn workspace api build",
     "build:web": "yarn workspace web build",
+    "serve:api": "yarn workspace api serve",
+    "serve:web": "yarn workspace web serve",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:format": "prettier -c '**/*.+(js|jsx|ts|tsx|json|md|yml|yaml|html)'"
   },

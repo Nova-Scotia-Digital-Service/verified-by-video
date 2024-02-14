@@ -17,7 +17,8 @@
     "start": "GENERATE_SOURCEMAP=false react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "GENERATE_SOURCEMAP=false react-scripts test",
-    "eject": "GENERATE_SOURCEMAP=false react-scripts eject"
+    "eject": "GENERATE_SOURCEMAP=false react-scripts eject",
+    "serve": "serve -s build"
   },
   "browserslist": {
     "production": [
@@ -42,6 +43,7 @@
     "postcss-loader": "^7.3.3",
     "prettier": "^3.1.0",
     "react-scripts": "5.0.1",
+    "serve": "^14.2.1",
     "tailwindcss": "^3.3.6",
     "typescript": "^5.3.2",
     "webpack": "^5.90.1"

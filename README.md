@@ -15,3 +15,11 @@ Run development server:
 ```
 yarn start
 ```
+
+## Docker
+
+To build and serve the app with Docker:
+
+```
+docker compose up --build
+```
