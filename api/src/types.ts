@@ -1,11 +1,15 @@
 export interface Session {
+  version: '1'
   id: string
+  createdAt: Date
+  expiresAt: Date
   prompts: Prompt[]
 }
 
 interface Prompt {
   id: string
   text: string
+  type: 'text'
 }
 
 export interface Submission {
