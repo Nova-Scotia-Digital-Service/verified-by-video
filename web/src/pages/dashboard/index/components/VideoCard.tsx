@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 
-import { VideoData } from '../../../types'
+import { VideoData } from '../../../../types'
+
+import { paths } from '../../../../paths'
 
 export interface Props {
   video: VideoData
@@ -18,7 +20,7 @@ export const VideoCard: React.FC<Props> = ({ video }) => {
       <div className="m-3">Uploaded {video.upload_date.toLocaleDateString('en-CA', date_format)}</div>
       <div className="flex justify-center items-center px-4 py-6 bg-off-white">
         <Link
-          to={`/dashboard/review/${video.id}`}
+          to={paths.review({ videoId: video.id })}
           className="opacity-100 flex justify-center items-center w-full h-10 rounded-lg bg-slate font-bold"
         >
           Review

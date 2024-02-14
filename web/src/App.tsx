@@ -2,21 +2,25 @@ import { Routes, Route } from 'react-router-dom'
 
 import { GlobalHeader } from './components/GlobalHeader'
 
+import { HomePage } from './pages/HomePage'
+import { LoginPage } from './pages/auth/LoginPage'
+import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage'
+import { DashboardPage } from './pages/dashboard/index/DashboardPage'
+import { ReviewPage } from './pages/dashboard/review/ReviewPage'
 import { PageNotFound } from './pages/PageNotFound'
-import { DashboardPage } from './pages/dashboard/DashboardPage'
-import { LoginPage } from './pages/login/LoginPage'
-import { ReviewPage } from './pages/review/ReviewPage'
-import { ForgotPasswordPage } from './pages/login/ForgotPasswordPage'
+
+import { paths } from './paths'
 
 function App() {
   return (
     <>
       <GlobalHeader />
       <Routes>
-        <Route path={`/`} element={<LoginPage />} />
-        <Route path={`/forgot-password`} element={<ForgotPasswordPage />} />
-        <Route path={`/dashboard`} element={<DashboardPage />} />
-        <Route path={`/dashboard/review/:video_id`} element={<ReviewPage />} />
+        <Route path={paths.home.pattern} element={<HomePage />} />
+        <Route path={paths.login.pattern} element={<LoginPage />} />
+        <Route path={paths.forgotPassword.pattern} element={<ForgotPasswordPage />} />
+        <Route path={paths.dashboard.pattern} element={<DashboardPage />} />
+        <Route path={paths.review.pattern} element={<ReviewPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>

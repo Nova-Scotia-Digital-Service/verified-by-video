@@ -1,6 +1,8 @@
 import { PrimaryButton } from '../../components/Button'
 import { Input } from '../../components/Input'
 
+import { paths } from '../../paths'
+
 export const ForgotPasswordPage: React.FC = () => {
   return (
     <div className="w-96 mx-auto">
@@ -10,7 +12,7 @@ export const ForgotPasswordPage: React.FC = () => {
 
       <Input label="Email" type="email" placeholder="jamie.ohara@example.ca" />
 
-      <form action="/">
+      <form action={paths.login({})}>
         <PrimaryButton type="submit">Submit</PrimaryButton>
       </form>
     </div>

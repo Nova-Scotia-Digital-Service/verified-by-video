@@ -1,4 +1,4 @@
-import * as TD from '../../../types'
+import * as TD from '../../../../types'
 
 const RadioOption = ({ name, value, children }: { name: string; value: string; children: string }) => {
   return (

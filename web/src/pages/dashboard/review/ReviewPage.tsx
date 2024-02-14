@@ -1,22 +1,24 @@
 import { Link } from 'react-router-dom'
 
-import { PrimaryButton, SecondaryButton } from '../../components/Button'
-import { HorizontalRule } from '../../components/HorizontalRule'
+import { PrimaryButton, SecondaryButton } from '../../../components/Button'
+import { HorizontalRule } from '../../../components/HorizontalRule'
 
-import { getReviewQuestions } from '../../api/getReviewQuestions'
+import { getReviewQuestions } from '../../../api/getReviewQuestions'
 
 import { ReviewQuestion } from './components/ReviewQuestion'
 import { PhotoID } from './components/PhotoID'
 
-import { ReactComponent as BackArrowIcon } from '../../assets/icon-back-arrow.svg'
-import { ReactComponent as WarningIcon } from '../../assets/icon-warning.svg'
+import { paths } from '../../../paths'
+
+import { ReactComponent as BackArrowIcon } from '../../../assets/icon-back-arrow.svg'
+import { ReactComponent as WarningIcon } from '../../../assets/icon-warning.svg'
 
 export const ReviewPage: React.FC = () => {
   const reviewQuestions = getReviewQuestions()
 
   return (
     <div className="container py-12 px-16 w-[68rem]">
-      <Link to="/dashboard" className="flex items-center font-bold text-sm hover:opacity-60">
+      <Link to={paths.dashboard({})} className="flex items-center font-bold text-sm hover:opacity-60">
         <BackArrowIcon className="mr-2 mt-[2px]" />
         Back
       </Link>
@@ -71,7 +73,7 @@ export const ReviewPage: React.FC = () => {
 
       <HorizontalRule />
 
-      <form className="flex justify-between" action="/dashboard">
+      <form action={paths.dashboard({})} className="flex justify-between">
         <div className="flex gap-4">
           <div className="w-80">
             <SecondaryButton type="submit">Transfer request to specialist</SecondaryButton>

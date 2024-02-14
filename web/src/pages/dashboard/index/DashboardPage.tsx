@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
-import { ReviewStatus } from '../../types'
+import { ReviewStatus } from '../../../types'
 
-import { getVideos } from '../../api/getVideos'
+import { getVideos } from '../../../api/getVideos'
 
 import { VideoCard } from './components/VideoCard'
 import { TabButton } from './components/TabButton'
