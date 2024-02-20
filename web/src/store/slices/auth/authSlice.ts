@@ -1,26 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-interface AuthState {
-  isAuthenticated: boolean
-}
+import { loadAuthData } from '../../../utils/localStorage'
 
-const initialState: AuthState = {
-  isAuthenticated: false,
-}
+import { login, logout } from './authThunks'
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState,
-  reducers: {
-    login: () => {
-      return { isAuthenticated: true }
-    },
-    logout: () => {
-      return { isAuthenticated: false }
-    },
+  initialState: loadAuthData,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(login.fulfilled, (state, action) => {
+        return action.payload
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        return action.payload
+      })
   },
 })
-
-export const { login, logout } = authSlice.actions
 
 export const authReducer = authSlice.reducer

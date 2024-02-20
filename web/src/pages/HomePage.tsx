@@ -1,14 +1,10 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router'
+import { Navigate } from 'react-router'
+
+import { paths } from '../paths'
+import { useIsAuthenticated } from '../store/slices/auth/authSelectors'
 
 export const HomePage = () => {
-  const navigate = useNavigate()
+  const isAuthenticated = useIsAuthenticated()
 
-  useEffect(() => {
-    navigate('/auth/login', {
-      replace: true,
-    })
-  })
-
-  return null
+  return isAuthenticated ? <Navigate replace to={paths.dashboard({})} /> : <Navigate replace to={paths.login({})} />
 }

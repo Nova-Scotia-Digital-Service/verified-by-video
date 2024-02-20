@@ -14,3 +14,7 @@ export interface VideoData {
   upload_date: Date
   status: ReviewStatus
 }
+
+export interface AuthState {
+  isAuthenticated: boolean
+}

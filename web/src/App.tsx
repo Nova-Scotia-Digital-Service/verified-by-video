@@ -1,7 +1,7 @@
-import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
+import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom'
 
 import { paths } from './paths'
-import { useIsAuthenticated } from './store/slices/auth/authSelector'
+import { useIsAuthenticated } from './store/slices/auth/authSelectors'
 
 import { GlobalHeader } from './components/GlobalHeader'
 
@@ -12,12 +12,12 @@ import { DashboardPage } from './pages/dashboard/index/DashboardPage'
 import { ReviewPage } from './pages/dashboard/review/ReviewPage'
 import { PageNotFound } from './pages/PageNotFound'
 
-const TokenCheck = () => {
+const AuthenticationRequired = () => {
   const isAuthenticated = useIsAuthenticated()
+  const location = useLocation()
+  const next = `next=${location.pathname}`
 
-  if (!isAuthenticated) return <Navigate to={paths.login({})} />
-
-  return <Outlet />
+  return isAuthenticated ? <Outlet /> : <Navigate to={{ pathname: paths.login({}), ...(next && { search: next }) }} />
 }
 
 function App() {
@@ -30,7 +30,7 @@ function App() {
         <Route path={paths.login.pattern} element={<LoginPage />} />
         <Route path={paths.forgotPassword.pattern} element={<ForgotPasswordPage />} />
 
-        <Route path="/" element={<TokenCheck />}>
+        <Route element={<AuthenticationRequired />}>
           <Route path={paths.dashboard.pattern} element={<DashboardPage />} />
           <Route path={paths.review.pattern} element={<ReviewPage />} />
         </Route>
