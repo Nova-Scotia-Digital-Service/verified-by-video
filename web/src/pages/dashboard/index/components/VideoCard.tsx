@@ -1,11 +1,11 @@
-import { Link } from 'react-router-dom'
+import * as TD from '../../../../types'
 
-import { VideoData } from '../../../../types'
+import { Link } from 'react-router-dom'
 
 import { paths } from '../../../../paths'
 
 export interface Props {
-  video: VideoData
+  video: TD.VideoData
 }
 
 const date_format: Intl.DateTimeFormatOptions = {

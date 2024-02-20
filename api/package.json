@@ -23,9 +23,11 @@
     "nconf": "^0.12.1",
     "nodemon": "^3.0.2",
     "routing-controllers": "^0.10.4",
-    "typedi": "^0.10.0"
+    "typedi": "^0.10.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/uuid": "^9",
     "dotenv": "^16.3.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.3.2"

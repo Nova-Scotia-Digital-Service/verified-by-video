@@ -1,3 +1,5 @@
+export type * from '../../shared/types'
+
 export interface Session {
   version: '1'
   id: string

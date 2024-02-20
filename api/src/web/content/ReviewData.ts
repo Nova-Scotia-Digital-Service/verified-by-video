@@ -1,8 +1,8 @@
-import * as TD from '../types'
+import * as TD from '../../types'
 
 import { v4 as uuid } from 'uuid'
 
-const reviewQuestions: TD.ReviewQuestion[] = [
+export const reviewQuestions: TD.ReviewQuestion[] = [
   {
     id: 'followed-prompts',
     question: 'Did the user correctly follow the prompts in the video?',
@@ -88,7 +88,3 @@ const reviewQuestions: TD.ReviewQuestion[] = [
     ],
   },
 ]
-
-export const getReviewQuestions = () => {
-  return reviewQuestions
-}

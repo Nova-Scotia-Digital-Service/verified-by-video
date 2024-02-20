@@ -18,7 +18,12 @@ process.on('unhandledRejection', (error) => {
 
 const run = async () => {
   const app: Express = createExpressServer({
-    controllers: [__dirname + '/controllers/**/*.ts', __dirname + '/controllers/**/*.js'],
+    controllers: [
+      __dirname + '/mobile/controllers/**/*.ts',
+      __dirname + '/mobile/controllers/**/*.js',
+      __dirname + '/web/controllers/**/*.ts',
+      __dirname + '/web/controllers/**/*.js',
+    ],
     cors: true,
     routePrefix: '/api/v1',
   })

@@ -1,4 +1,4 @@
-import * as TD from '../types'
+import * as TD from '../../types'
 
 const now = new Date()
 const later = new Date(Number(now) + 30 * 60 * 1000)

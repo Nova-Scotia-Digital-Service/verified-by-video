@@ -1,19 +1,19 @@
-export interface ReviewQuestion {
-  id: string
-  question: string
-  options: {
-    id: string
-    text: string
-  }[]
-}
+export type * from '../../shared/types'
 
-export type ReviewStatus = 'Unreviewed' | 'Approved' | 'Denied'
+export type STATUS = APIResponse<any>['status']
 
-export interface VideoData {
-  id: string
-  upload_date: Date
-  status: ReviewStatus
-}
+export type APIResponse<T> =
+  | {
+      status: 'LOADING'
+    }
+  | {
+      status: 'ERROR'
+      error?: Error | Response
+    }
+  | {
+      status: 'READY'
+      data: T
+    }
 
 export interface AuthState {
   isAuthenticated: boolean
