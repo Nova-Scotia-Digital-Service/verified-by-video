@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { PrimaryButton, SecondaryButton } from '../../../components/Button'
 import { HorizontalRule } from '../../../components/HorizontalRule'
@@ -14,7 +14,14 @@ import { ReactComponent as BackArrowIcon } from '../../../assets/icon-back-arrow
 import { ReactComponent as WarningIcon } from '../../../assets/icon-warning.svg'
 
 export const ReviewPage: React.FC = () => {
+  const navigate = useNavigate()
+
   const reviewQuestions = getReviewQuestions()
+
+  const handleSubmit: React.FormEventHandler = (event) => {
+    event.preventDefault()
+    navigate(paths.dashboard({}))
+  }
 
   return (
     <div className="container py-12 px-16 w-[68rem]">
@@ -73,7 +80,7 @@ export const ReviewPage: React.FC = () => {
 
       <HorizontalRule />
 
-      <form action={paths.dashboard({})} className="flex justify-between">
+      <form onSubmit={handleSubmit} className="flex justify-between">
         <div className="flex gap-4">
           <div className="w-80">
             <SecondaryButton type="submit">Transfer request to specialist</SecondaryButton>
