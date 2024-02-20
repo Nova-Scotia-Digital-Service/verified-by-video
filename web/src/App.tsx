@@ -4,6 +4,7 @@ import { paths } from './paths'
 import { useIsAuthenticated } from './store/slices/auth/authSelectors'
 
 import { GlobalHeader } from './components/GlobalHeader'
+import { ErrorBoundary } from './components/ErrorBoundary'
 
 import { HomePage } from './pages/HomePage'
 import { LoginPage } from './pages/auth/LoginPage'
@@ -24,19 +25,21 @@ function App() {
   return (
     <>
       <GlobalHeader />
-      <Routes>
-        <Route path={paths.home.pattern} element={<HomePage />} />
+      <ErrorBoundary>
+        <Routes>
+          <Route path={paths.home.pattern} element={<HomePage />} />
 
-        <Route path={paths.login.pattern} element={<LoginPage />} />
-        <Route path={paths.forgotPassword.pattern} element={<ForgotPasswordPage />} />
+          <Route path={paths.login.pattern} element={<LoginPage />} />
+          <Route path={paths.forgotPassword.pattern} element={<ForgotPasswordPage />} />
 
-        <Route element={<AuthenticationRequired />}>
-          <Route path={paths.dashboard.pattern} element={<DashboardPage />} />
-          <Route path={paths.review.pattern} element={<ReviewPage />} />
-        </Route>
+          <Route element={<AuthenticationRequired />}>
+            <Route path={paths.dashboard.pattern} element={<DashboardPage />} />
+            <Route path={paths.review.pattern} element={<ReviewPage />} />
+          </Route>
 
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </ErrorBoundary>
     </>
   )
 }
