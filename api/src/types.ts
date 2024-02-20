@@ -1,3 +1,5 @@
+import { Prompt } from '../../shared/types'
+
 export type * from '../../shared/types'
 
 export interface Session {
@@ -6,12 +8,6 @@ export interface Session {
   createdAt: Date
   expiresAt: Date
   prompts: Prompt[]
-}
-
-interface Prompt {
-  id: string
-  text: string
-  type: 'text'
 }
 
 export interface Submission {

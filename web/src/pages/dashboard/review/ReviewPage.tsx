@@ -18,9 +18,15 @@ import { paths } from '../../../paths'
 import { ReactComponent as BackArrowIcon } from '../../../assets/icon-back-arrow.svg'
 import { ReactComponent as WarningIcon } from '../../../assets/icon-warning.svg'
 
+const DATE_FORMAT: Intl.DateTimeFormatOptions = {
+  month: 'short',
+  year: 'numeric',
+  day: 'numeric',
+}
+
 export const ReviewPage: React.FC = () => {
-  const [reviewResponse, setReviewResponse] = useResponse<TD.ReviewQuestion[]>()
   const navigate = useNavigate()
+  const [reviewResponse, setReviewResponse] = useResponse<TD.VideoReview>()
 
   useEffect(() => {
     getReviewQuestions()
@@ -31,8 +37,6 @@ export const ReviewPage: React.FC = () => {
         setReviewResponse({ status: 'ERROR', error: error })
       })
   }, [])
-
-  const reviewQuestions = getReviewQuestions()
 
   const handleSubmit: React.FormEventHandler = (event) => {
     event.preventDefault()
@@ -48,20 +52,22 @@ export const ReviewPage: React.FC = () => {
       <h2 className="text-4xl font-bold text-title mt-4 mb-16">Verify Identity to set up Mobile card</h2>
 
       <AwaitResponse response={reviewResponse}>
-        {(reviewQuestions) => (
+        {(videoReview) => (
           <>
             <div className="flex justify-between mb-12">
               <div>
                 <div className="mb-12">
                   <div className="font-bold text-md">Video Date</div>
-                  <div className="font-bold text-2xl">12 Jan 2024</div>
+                  <div className="font-bold text-2xl">
+                    {videoReview.video.upload_date.toLocaleDateString('en-CA', DATE_FORMAT)}{' '}
+                  </div>
                 </div>
                 <div className="max-w-96">
                   <h3 className="font-bold text-2xl mb-4">Prompts the user was provided in the mobile app:</h3>
                   <ol className="ml-6 text-lg">
-                    <li className="mb-4 pl-2 list-decimal">Hold up two fingers.</li>
-                    <li className="mb-4 pl-2 list-decimal">Touch your ear.</li>
-                    <li className="mb-4 pl-2 list-decimal">Turn your head to the left.</li>
+                    {videoReview.video.prompts.map((prompt) => (
+                      <li className="mb-4 pl-2 list-decimal">{prompt.text}</li>
+                    ))}
                   </ol>
                 </div>
               </div>
@@ -71,22 +77,17 @@ export const ReviewPage: React.FC = () => {
 
             <HorizontalRule />
 
-            {reviewQuestions.slice(0, 1).map(({ id, question, options }) => (
+            {videoReview.questions.slice(0, 1).map(({ id, question, options }) => (
               <ReviewQuestion key={id} id={id} question={question} options={options} />
             ))}
 
             <div className="flex gap-x-12 mb-12 mx-[-4rem] overflow-x-scroll pb-4">
-              <PhotoID description="Photo on BC Services Card" />
-              <PhotoID photo description="Photo from the mobile app" date={new Date()} />
-              <PhotoID
-                photo
-                description="Front of BC Driver's License (issued in British Columbia)"
-                date={new Date()}
-              />
-              <PhotoID photo description="Back of BC Driver's License (issued in British Columbia)" date={new Date()} />
+              {videoReview.identification_cards.map((card) => (
+                <PhotoID card={card} />
+              ))}
             </div>
 
-            {reviewQuestions.slice(1).map(({ id, question, options }) => (
+            {videoReview.questions.slice(1).map(({ id, question, options }) => (
               <ReviewQuestion key={id} id={id} question={question} options={options} />
             ))}
 

@@ -1,13 +1,13 @@
 import { Get, JsonController } from 'routing-controllers'
 import { Service } from 'typedi'
 
-import { reviewQuestions } from '../content/ReviewData'
+import { videoReview } from '../content/VideoData'
 
 @JsonController('/reviews')
 @Service()
 export class SubmissionController {
   @Get('/')
   public async postSubmissions() {
-    return reviewQuestions
+    return videoReview
   }
 }
