@@ -1,6 +1,6 @@
-import * as TD from '../../types'
+import * as TD from '../types'
 
-import { initialSessionData } from './SessionData'
+import { initialSessionData } from '../sessions/SessionData'
 
 export const confirmSubmission: TD.SubmissionConfirm = {
   id: '214f747f-778a-4d4b-ab3b-5ed0c9410c69',

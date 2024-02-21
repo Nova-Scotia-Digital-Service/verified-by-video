@@ -1,7 +1,7 @@
 import { Get, JsonController, Param, Post } from 'routing-controllers'
 import { Service } from 'typedi'
 
-import { confirmSubmission, previousSubmission } from '../content/SubmissionData'
+import { confirmSubmission, previousSubmission } from './SubmissionData'
 
 @JsonController('/submissions')
 @Service()

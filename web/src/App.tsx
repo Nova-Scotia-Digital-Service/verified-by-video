@@ -9,8 +9,8 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { HomePage } from './pages/HomePage'
 import { LoginPage } from './pages/auth/LoginPage'
 import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage'
-import { DashboardPage } from './pages/dashboard/index/DashboardPage'
-import { ReviewPage } from './pages/dashboard/review/ReviewPage'
+import { ReviewListPage } from './pages/reviews/ReviewListPage'
+import { ReviewPage } from './pages/reviews/ReviewDetailPage'
 import { PageNotFound } from './pages/PageNotFound'
 
 const AuthenticationRequired = () => {
@@ -33,8 +33,8 @@ function App() {
           <Route path={paths.forgotPassword.pattern} element={<ForgotPasswordPage />} />
 
           <Route element={<AuthenticationRequired />}>
-            <Route path={paths.dashboard.pattern} element={<DashboardPage />} />
-            <Route path={paths.review.pattern} element={<ReviewPage />} />
+            <Route path={paths.reviewList.pattern} element={<ReviewListPage />} />
+            <Route path={paths.reviewDetail.pattern} element={<ReviewPage />} />
           </Route>
 
           <Route path="*" element={<PageNotFound />} />

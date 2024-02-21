@@ -1,22 +1,22 @@
-import * as TD from '../../../types'
+import * as TD from '../../types'
 
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 
-import { AwaitResponse } from '../../../components/AwaitResponse'
-import { PrimaryButton, SecondaryButton } from '../../../components/Button'
-import { HorizontalRule } from '../../../components/HorizontalRule'
+import { AwaitResponse } from '../../components/AwaitResponse'
+import { PrimaryButton, SecondaryButton } from '../../components/Button'
+import { HorizontalRule } from '../../components/HorizontalRule'
 
-import { getReviewQuestions } from '../../../api/ReviewApi'
-import { useResponse } from '../../../hooks/useResponse'
+import { getReviewQuestions } from '../../api/ReviewApi'
+import { useResponse } from '../../hooks/useResponse'
 
 import { ReviewQuestion } from './components/ReviewQuestion'
 import { PhotoID } from './components/PhotoID'
 
-import { paths } from '../../../paths'
+import { paths } from '../../paths'
 
-import { ReactComponent as BackArrowIcon } from '../../../assets/icon-back-arrow.svg'
-import { ReactComponent as WarningIcon } from '../../../assets/icon-warning.svg'
+import { ReactComponent as BackArrowIcon } from '../../assets/icon-back-arrow.svg'
+import { ReactComponent as WarningIcon } from '../../assets/icon-warning.svg'
 
 const DATE_FORMAT: Intl.DateTimeFormatOptions = {
   month: 'short',
@@ -28,8 +28,11 @@ export const ReviewPage: React.FC = () => {
   const navigate = useNavigate()
   const [reviewResponse, setReviewResponse] = useResponse<TD.VideoReview>()
 
+  const { reviewId } = useParams()
+  if (!reviewId) throw new Error(`Path parameter not found`)
+
   useEffect(() => {
-    getReviewQuestions()
+    getReviewQuestions(reviewId)
       .then((response) => {
         setReviewResponse({ status: 'READY', data: response.data })
       })
@@ -40,12 +43,12 @@ export const ReviewPage: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler = (event) => {
     event.preventDefault()
-    navigate(paths.dashboard({}))
+    navigate(paths.reviewList({}))
   }
 
   return (
     <div className="container py-12 px-16 w-[68rem]">
-      <Link to={paths.dashboard({})} className="flex items-center font-bold text-sm hover:opacity-60">
+      <Link to={paths.reviewList({})} className="flex items-center font-bold text-sm hover:opacity-60">
         <BackArrowIcon className="mr-2 mt-[2px]" />
         Back
       </Link>

@@ -1,20 +1,20 @@
-import * as TD from '../../../types'
+import * as TD from '../../types'
 
 import { useEffect, useState } from 'react'
 
-import { getVideos } from '../../../api/VideoApi'
-import { useResponse } from '../../../hooks/useResponse'
+import { getReviews } from '../../api/ReviewApi'
+import { useResponse } from '../../hooks/useResponse'
 
-import { VideoCard } from './components/VideoCard'
+import { ReviewCard } from './components/ReviewCard'
 import { TabButton } from './components/TabButton'
-import { AwaitResponse } from '../../../components/AwaitResponse'
+import { AwaitResponse } from '../../components/AwaitResponse'
 
-export const DashboardPage: React.FC = () => {
+export const ReviewListPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<TD.ReviewStatus>('Unreviewed')
   const [videoResponse, setVideoResponse] = useResponse<TD.VideoData[]>()
 
   useEffect(() => {
-    getVideos()
+    getReviews()
       .then((response) => {
         setVideoResponse({ status: 'READY', data: response.data })
       })
@@ -40,12 +40,12 @@ export const DashboardPage: React.FC = () => {
       </div>
 
       <AwaitResponse response={videoResponse}>
-        {(videos) => (
+        {(reviews) => (
           <div className="flex gap-8 flex-wrap">
-            {videos
-              .filter((video) => video.status === statusFilter)
-              .map((video) => {
-                return <VideoCard key={video.id} video={video} />
+            {reviews
+              .filter((review) => review.status === statusFilter)
+              .map((review) => {
+                return <ReviewCard key={review.id} review={review} />
               })}
           </div>
         )}

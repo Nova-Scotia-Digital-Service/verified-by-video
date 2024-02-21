@@ -1,7 +1,7 @@
 import { Get, JsonController, Post } from 'routing-controllers'
 import { Service } from 'typedi'
 
-import { initialSessionData } from '../content/SessionData'
+import { initialSessionData } from './SessionData'
 
 @JsonController('/session')
 @Service()

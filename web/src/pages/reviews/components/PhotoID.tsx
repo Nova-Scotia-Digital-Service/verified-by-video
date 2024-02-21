@@ -1,4 +1,4 @@
-import * as TD from '../../../../types'
+import * as TD from '../../../types'
 
 const date_format: Intl.DateTimeFormatOptions = {
   month: 'long',

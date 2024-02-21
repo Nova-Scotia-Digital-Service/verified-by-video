@@ -6,5 +6,5 @@ import { useIsAuthenticated } from '../store/slices/auth/authSelectors'
 export const HomePage = () => {
   const isAuthenticated = useIsAuthenticated()
 
-  return isAuthenticated ? <Navigate replace to={paths.dashboard({})} /> : <Navigate replace to={paths.login({})} />
+  return isAuthenticated ? <Navigate replace to={paths.reviewList({})} /> : <Navigate replace to={paths.login({})} />
 }

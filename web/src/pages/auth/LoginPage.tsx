@@ -26,7 +26,7 @@ export const LoginPage: React.FC = () => {
   const handleSubmit: React.FormEventHandler = (event) => {
     event.preventDefault()
     dispatch(login()).then(() => {
-      const nextPath = nextParam || paths.dashboard({})
+      const nextPath = nextParam || paths.reviewList({})
       navigate(nextPath)
     })
   }
