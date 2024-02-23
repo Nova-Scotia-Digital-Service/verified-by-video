@@ -8,7 +8,7 @@ export type APIResponse<T> =
     }
   | {
       status: 'ERROR'
-      error?: Error | Response
+      error?: unknown
     }
   | {
       status: 'READY'

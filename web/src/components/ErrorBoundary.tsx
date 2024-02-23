@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Error } from './Error'
+import { GlobalError } from './GlobalError'
 
 type ErrorBoundaryProps = {
   path?: string
@@ -18,12 +18,16 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     this.state = { hasError: false }
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError(error: unknown): ErrorBoundaryState {
     // Update state so the next render will show the fallback UI.
-    return { hasError: true, error: error }
+    if (error instanceof Error) {
+      return { hasError: true, error: error }
+    } else {
+      return { hasError: true, error: new Error(JSON.stringify(error)) }
+    }
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: unknown, errorInfo: React.ErrorInfo) {
     // Error logging would go here
   }
 
@@ -37,7 +41,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   render() {
     if (this.state.hasError) {
       // Render fallback UI
-      return <Error error={this.state.error} />
+      return <GlobalError error={this.state.error} />
     }
 
     return this.props.children

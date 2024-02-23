@@ -1,4 +1,4 @@
-export const Error = ({ error }: { error?: Error }) => {
+export const GlobalError = ({ error }: { error?: Error }) => {
   return (
     <div className="container py-12 px-16 w-[68rem]">
       <h1 className="text-4xl font-bold text-title mt-4 mb-6">An error has occurred</h1>

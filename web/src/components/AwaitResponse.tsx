@@ -2,6 +2,9 @@ import * as TD from '../types'
 
 import { ReactNode } from 'react'
 
+import { ErrorIndicator } from './ErrorIndicator'
+import { LoadingIndicator } from './LoadingIndicator'
+
 export const AwaitResponse = <T,>({
   response,
   children,
@@ -12,9 +15,9 @@ export const AwaitResponse = <T,>({
   switch (response.status) {
     case 'ERROR':
       console.error(response.error)
-      return <div>Error</div>
+      return <ErrorIndicator error={response.error} />
     case 'LOADING':
-      return <div>Loading</div>
+      return <LoadingIndicator />
     case 'READY':
       return children(response.data)
   }
