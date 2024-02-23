@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import type { Express } from 'express'
 
 import { json } from 'express'
-import { RoutingControllersOptions, createExpressServer } from 'routing-controllers'
+import { Action, RoutingControllersOptions, createExpressServer } from 'routing-controllers'
 
 import config from './config'
 import { setupSwaggerRoutes } from './swagger-ui'
@@ -22,7 +22,12 @@ const run = async () => {
     controllers: [__dirname + '/**/*Controller.ts', __dirname + '/**/*Controller.js'],
     cors: true,
     routePrefix: '/api/v1',
+    authorizationChecker: async (action: Action, roles: string[]) => {
+      const token = action.request.headers['authorization']
+      return !!token
+    },
   }
+
   const app: Express = createExpressServer(routingConfig)
 
   if (config.get('environment') === 'development') {
