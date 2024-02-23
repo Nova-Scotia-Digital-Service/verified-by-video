@@ -69,7 +69,9 @@ export const ReviewPage: React.FC = () => {
                   <h3 className="font-bold text-2xl mb-4">Prompts the user was provided in the mobile app:</h3>
                   <ol className="ml-6 text-lg">
                     {videoReview.video.prompts.map((prompt) => (
-                      <li className="mb-4 pl-2 list-decimal">{prompt.text}</li>
+                      <li key={prompt.id} className="mb-4 pl-2 list-decimal">
+                        {prompt.text}
+                      </li>
                     ))}
                   </ol>
                 </div>
@@ -86,7 +88,7 @@ export const ReviewPage: React.FC = () => {
 
             <div className="flex gap-x-12 mb-12 mx-[-4rem] overflow-x-scroll pb-4">
               {videoReview.identification_cards.map((card) => (
-                <PhotoID card={card} />
+                <PhotoID key={card.id} card={card} />
               ))}
             </div>
 
