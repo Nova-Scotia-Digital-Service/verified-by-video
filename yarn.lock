@@ -3107,6 +3107,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/swagger-ui-express@npm:^4.1.6":
+  version: 4.1.6
+  resolution: "@types/swagger-ui-express@npm:4.1.6"
+  dependencies:
+    "@types/express": "npm:*"
+    "@types/serve-static": "npm:*"
+  checksum: 10/c1c4b58b12f9261af70b6a7e6420649b4f0a0343071ae8b98483c5885cd596f4c25015991f91f3f7c7a0baa461e2d76029d64de79108a89d03f3f83abbe6bc58
+  languageName: node
+  linkType: hard
+
 "@types/trusted-types@npm:^2.0.2":
   version: 2.0.7
   resolution: "@types/trusted-types@npm:2.0.7"
@@ -3905,6 +3915,7 @@ __metadata:
   dependencies:
     "@types/express": "npm:^4.17.21"
     "@types/node": "npm:^20.11.16"
+    "@types/swagger-ui-express": "npm:^4.1.6"
     "@types/uuid": "npm:^9"
     class-transformer: "npm:^0.5.1"
     class-validator: "npm:^0.14.0"
@@ -3914,6 +3925,8 @@ __metadata:
     nconf: "npm:^0.12.1"
     nodemon: "npm:^3.0.2"
     routing-controllers: "npm:^0.10.4"
+    routing-controllers-openapi: "npm:^4.0.0"
+    swagger-ui-express: "npm:^5.0.0"
     ts-node: "npm:^10.9.1"
     typedi: "npm:^0.10.0"
     typescript: "npm:^5.3.2"
@@ -9460,6 +9473,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.capitalize@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "lodash.capitalize@npm:4.2.1"
+  checksum: 10/54d61121bd040212954faee94703a999282987a104fab4ea6a85027d5fb2ce482a737478b76d292d07753da1c15911541adf0f6db840abf121c4cab85b92e962
+  languageName: node
+  linkType: hard
+
 "lodash.debounce@npm:^4.0.8":
   version: 4.0.8
   resolution: "lodash.debounce@npm:4.0.8"
@@ -9485,6 +9505,13 @@ __metadata:
   version: 4.7.0
   resolution: "lodash.sortby@npm:4.7.0"
   checksum: 10/38df19ae28608af2c50ac342fc1f414508309d53e1d58ed9adfb2c3cd17c3af290058c0a0478028d932c5404df3d53349d19fa364ef6bed6145a6bc21320399e
+  languageName: node
+  linkType: hard
+
+"lodash.startcase@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "lodash.startcase@npm:4.4.0"
+  checksum: 10/3091048a54a2f92bcf2c6441d2bd9a706fb133d5f461ae7c310d6dca1530338a06c91e9e42a5b14b12e875ddae1814d448050dc02afe2cec09b3995d8e836837
   languageName: node
   linkType: hard
 
@@ -10303,6 +10330,15 @@ __metadata:
     is-docker: "npm:^2.1.1"
     is-wsl: "npm:^2.2.0"
   checksum: 10/acd81a1d19879c818acb3af2d2e8e9d81d17b5367561e623248133deb7dd3aefaed527531df2677d3e6aaf0199f84df57b6b2262babff8bf46ea0029aac536c9
+  languageName: node
+  linkType: hard
+
+"openapi3-ts@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "openapi3-ts@npm:2.0.2"
+  dependencies:
+    yaml: "npm:^1.10.2"
+  checksum: 10/2dfac16d31099893a5af5b25d0ac37d124b84c7ffd84d72f886e631a5914ad6c59c614960dc46ef894d7af2c9c71dea66f08430f5b192b201809793eb09f1677
   languageName: node
   linkType: hard
 
@@ -12367,6 +12403,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"routing-controllers-openapi@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "routing-controllers-openapi@npm:4.0.0"
+  dependencies:
+    lodash.capitalize: "npm:^4.2.1"
+    lodash.merge: "npm:^4.6.2"
+    lodash.startcase: "npm:^4.4.0"
+    openapi3-ts: "npm:^2.0.2"
+    path-to-regexp: "npm:^6.2.1"
+    reflect-metadata: "npm:^0.1.13"
+    tslib: "npm:^2.4.1"
+  peerDependencies:
+    routing-controllers: ^0.10.0
+  checksum: 10/3b13e6d82b3ddc1fc4d518d00e813e41326040ad30bde9c9b184e384a3614a137ebca78b45885ad23c37de2e5732c8b8e0d101b52f9409c82301771e3bc03f51
+  languageName: node
+  linkType: hard
+
 "routing-controllers@npm:^0.10.4":
   version: 0.10.4
   resolution: "routing-controllers@npm:0.10.4"
@@ -13370,6 +13423,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"swagger-ui-dist@npm:>=5.0.0":
+  version: 5.11.7
+  resolution: "swagger-ui-dist@npm:5.11.7"
+  checksum: 10/dfae478621cda88c0aeb4a46de829232ebd2b3bc6cf225824d97d968875be48b4615c9c77e0399295372530441c5680b5be0190cd4b9a7ed1593b66414c001dc
+  languageName: node
+  linkType: hard
+
+"swagger-ui-express@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "swagger-ui-express@npm:5.0.0"
+  dependencies:
+    swagger-ui-dist: "npm:>=5.0.0"
+  peerDependencies:
+    express: ">=4.0.0 || >=5.0.0-beta"
+  checksum: 10/e970d99cb33b8db235feb23d24b79d680cfbb8f9e920863990df5549ae56a35b12dfa761bbdde22cd8cbec2823b7d1078710b4a1970c9441b541917b56d197cc
+  languageName: node
+  linkType: hard
+
 "symbol-tree@npm:^3.2.4":
   version: 3.2.4
   resolution: "symbol-tree@npm:3.2.4"
@@ -13730,7 +13801,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.6.2":
+"tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.1, tslib@npm:^2.6.2":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: 10/bd26c22d36736513980091a1e356378e8b662ded04204453d353a7f34a4c21ed0afc59b5f90719d4ba756e581a162ecbf93118dc9c6be5acf70aa309188166ca

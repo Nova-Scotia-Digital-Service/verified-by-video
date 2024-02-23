@@ -2,9 +2,10 @@ import 'reflect-metadata'
 import type { Express } from 'express'
 
 import { json } from 'express'
-import { createExpressServer } from 'routing-controllers'
+import { RoutingControllersOptions, createExpressServer } from 'routing-controllers'
 
 import config from './config'
+import { setupSwaggerRoutes } from './swagger-ui'
 
 process.on('unhandledRejection', (error) => {
   if (error instanceof Error) {
@@ -17,11 +18,16 @@ process.on('unhandledRejection', (error) => {
 })
 
 const run = async () => {
-  const app: Express = createExpressServer({
+  const routingConfig: RoutingControllersOptions = {
     controllers: [__dirname + '/**/*Controller.ts', __dirname + '/**/*Controller.js'],
     cors: true,
     routePrefix: '/api/v1',
-  })
+  }
+  const app: Express = createExpressServer(routingConfig)
+
+  if (config.get('environment') === 'development') {
+    setupSwaggerRoutes(app, routingConfig)
+  }
 
   app.use(json())
 

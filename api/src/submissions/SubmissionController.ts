@@ -6,7 +6,6 @@ import { mockSubmission } from './SubmissionData'
 @JsonController('/submissions')
 @Service()
 export class SubmissionController {
-  @Get('/') // TEMPORARY - for development
   @Post('/')
   public async postSubmissions() {
     return mockSubmission
