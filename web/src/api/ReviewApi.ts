@@ -2,10 +2,10 @@ import * as TD from '../types'
 
 import { api } from './api'
 
-export const getReviews = () => {
-  return api.get<TD.VideoData[]>('/reviews')
+export const getReviewList = () => {
+  return api.get<TD.ReviewList>('/reviews')
 }
 
-export const getReviewQuestions = (reviewId: string) => {
-  return api.get<TD.VideoReview>(`/reviews/${reviewId}`)
+export const getReviewDetail = (reviewId: string) => {
+  return api.get<TD.Review>(`/reviews/${reviewId}`)
 }

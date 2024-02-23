@@ -1,3 +1,26 @@
+export type ReviewStatus = 'Unreviewed' | 'Approved' | 'Denied'
+
+export interface Prompt {
+  id: string
+  text: string
+  type: 'text'
+}
+
+export interface Session {
+  version: '1'
+  id: string
+  createdAt: Date
+  expiresAt: Date
+  prompts: Prompt[]
+}
+
+export interface Submission {
+  id: string
+  video_url: string
+  upload_date: Date
+  session_id: string
+}
+
 export interface IdentificationCard {
   id: string
   description: string
@@ -5,18 +28,17 @@ export interface IdentificationCard {
   photo?: boolean
 }
 
-export interface VideoReview {
+export interface Review {
   id: string
-  video: { id: string; prompts: Prompt[]; upload_date: Date }
+  status: ReviewStatus
+  submission: Submission
+  prompts: Prompt[]
   identification_cards: IdentificationCard[]
   questions: ReviewQuestion[]
 }
 
-export interface Prompt {
-  id: string
-  text: string
-  type: 'text'
-}
+export type ReviewSummary = Omit<Review, 'prompts' | 'identification_cards' | 'questions'>
+export type ReviewList = ReviewSummary[]
 
 export interface ReviewQuestion {
   id: string
@@ -25,14 +47,6 @@ export interface ReviewQuestion {
     id: string
     text: string
   }[]
-}
-
-export type ReviewStatus = 'Unreviewed' | 'Approved' | 'Denied'
-
-export interface VideoData {
-  id: string
-  upload_date: Date
-  status: ReviewStatus
 }
 
 export interface LoginResponse {

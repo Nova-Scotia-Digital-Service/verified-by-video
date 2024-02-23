@@ -1,7 +1,7 @@
 import { Get, JsonController, Param, Post } from 'routing-controllers'
 import { Service } from 'typedi'
 
-import { confirmSubmission, previousSubmission } from './SubmissionData'
+import { mockSubmission } from './SubmissionData'
 
 @JsonController('/submissions')
 @Service()
@@ -9,13 +9,13 @@ export class SubmissionController {
   @Get('/') // TEMPORARY - for development
   @Post('/')
   public async postSubmissions() {
-    return confirmSubmission
+    return mockSubmission
   }
 
   @Get('/:submissionId')
   public async getSubmission(@Param('submissionId') submission_id: string) {
     return {
-      ...previousSubmission,
+      ...mockSubmission,
       id: submission_id,
     }
   }

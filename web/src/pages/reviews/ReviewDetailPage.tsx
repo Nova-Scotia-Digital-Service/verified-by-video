@@ -7,7 +7,7 @@ import { AwaitResponse } from '../../components/AwaitResponse'
 import { PrimaryButton, SecondaryButton } from '../../components/Button'
 import { HorizontalRule } from '../../components/HorizontalRule'
 
-import { getReviewQuestions } from '../../api/ReviewApi'
+import { getReviewDetail } from '../../api/ReviewApi'
 import { useResponse } from '../../hooks/useResponse'
 
 import { ReviewQuestion } from './components/ReviewQuestion'
@@ -26,18 +26,18 @@ const DATE_FORMAT: Intl.DateTimeFormatOptions = {
 
 export const ReviewPage: React.FC = () => {
   const navigate = useNavigate()
-  const [reviewResponse, setReviewResponse] = useResponse<TD.VideoReview>()
+  const [reviewDetailResponse, setReviewDetailResponse] = useResponse<TD.Review>()
 
   const { reviewId } = useParams()
   if (!reviewId) throw new Error(`Path parameter not found`)
 
   useEffect(() => {
-    getReviewQuestions(reviewId)
+    getReviewDetail(reviewId)
       .then((response) => {
-        setReviewResponse({ status: 'READY', data: response.data })
+        setReviewDetailResponse({ status: 'READY', data: response.data })
       })
       .catch((error) => {
-        setReviewResponse({ status: 'ERROR', error: error })
+        setReviewDetailResponse({ status: 'ERROR', error: error })
       })
   }, [])
 
@@ -54,21 +54,21 @@ export const ReviewPage: React.FC = () => {
       </Link>
       <h2 className="text-4xl font-bold text-title mt-4 mb-16">Verify Identity to set up Mobile card</h2>
 
-      <AwaitResponse response={reviewResponse}>
-        {(videoReview) => (
+      <AwaitResponse response={reviewDetailResponse}>
+        {(review) => (
           <>
             <div className="flex justify-between mb-12">
               <div>
                 <div className="mb-12">
                   <div className="font-bold text-md">Video Date</div>
                   <div className="font-bold text-2xl">
-                    {videoReview.video.upload_date.toLocaleDateString('en-CA', DATE_FORMAT)}{' '}
+                    {review.submission.upload_date.toLocaleDateString('en-CA', DATE_FORMAT)}{' '}
                   </div>
                 </div>
                 <div className="max-w-96">
                   <h3 className="font-bold text-2xl mb-4">Prompts the user was provided in the mobile app:</h3>
                   <ol className="ml-6 text-lg">
-                    {videoReview.video.prompts.map((prompt) => (
+                    {review.prompts.map((prompt) => (
                       <li key={prompt.id} className="mb-4 pl-2 list-decimal">
                         {prompt.text}
                       </li>
@@ -82,17 +82,17 @@ export const ReviewPage: React.FC = () => {
 
             <HorizontalRule />
 
-            {videoReview.questions.slice(0, 1).map(({ id, question, options }) => (
+            {review.questions.slice(0, 1).map(({ id, question, options }) => (
               <ReviewQuestion key={id} id={id} question={question} options={options} />
             ))}
 
             <div className="flex gap-x-12 mb-12 mx-[-4rem] overflow-x-scroll pb-4">
-              {videoReview.identification_cards.map((card) => (
+              {review.identification_cards.map((card) => (
                 <PhotoID key={card.id} card={card} />
               ))}
             </div>
 
-            {videoReview.questions.slice(1).map(({ id, question, options }) => (
+            {review.questions.slice(1).map(({ id, question, options }) => (
               <ReviewQuestion key={id} id={id} question={question} options={options} />
             ))}
 

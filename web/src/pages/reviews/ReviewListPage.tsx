@@ -2,7 +2,7 @@ import * as TD from '../../types'
 
 import { useEffect, useState } from 'react'
 
-import { getReviews } from '../../api/ReviewApi'
+import { getReviewList } from '../../api/ReviewApi'
 import { useResponse } from '../../hooks/useResponse'
 
 import { ReviewCard } from './components/ReviewCard'
@@ -11,15 +11,15 @@ import { AwaitResponse } from '../../components/AwaitResponse'
 
 export const ReviewListPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<TD.ReviewStatus>('Unreviewed')
-  const [videoResponse, setVideoResponse] = useResponse<TD.VideoData[]>()
+  const [reviewListResponse, setReviewListResponse] = useResponse<TD.ReviewList>()
 
   useEffect(() => {
-    getReviews()
+    getReviewList()
       .then((response) => {
-        setVideoResponse({ status: 'READY', data: response.data })
+        setReviewListResponse({ status: 'READY', data: response.data })
       })
       .catch((error) => {
-        setVideoResponse({ status: 'ERROR', error: error })
+        setReviewListResponse({ status: 'ERROR', error: error })
       })
   }, [])
 
@@ -39,7 +39,7 @@ export const ReviewListPage: React.FC = () => {
         </TabButton>
       </div>
 
-      <AwaitResponse response={videoResponse}>
+      <AwaitResponse response={reviewListResponse}>
         {(reviews) => (
           <div className="flex gap-8 flex-wrap">
             {reviews

@@ -2,13 +2,9 @@ import * as TD from '../types'
 
 import { initialSessionData } from '../sessions/SessionData'
 
-export const confirmSubmission: TD.SubmissionConfirm = {
+export const mockSubmission: TD.Submission = {
   id: '214f747f-778a-4d4b-ab3b-5ed0c9410c69',
   video_url: 'http://example.com/214f747f-778a-4d4b-ab3b-5ed0c9410c69/',
-}
-
-export const previousSubmission: TD.Submission = {
-  id: '214f747f-778a-4d4b-ab3b-5ed0c9410c69',
-  video_url: 'http://example.com/214f747f-778a-4d4b-ab3b-5ed0c9410c69/',
-  session: initialSessionData,
+  session_id: initialSessionData.id,
+  upload_date: new Date(),
 }
