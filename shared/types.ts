@@ -34,3 +34,7 @@ export interface VideoData {
   upload_date: Date
   status: ReviewStatus
 }
+
+export interface LoginResponse {
+  token: string
+}

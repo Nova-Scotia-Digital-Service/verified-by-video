@@ -3,9 +3,9 @@ import { AuthState } from '../types'
 export const loadAuthData = () => {
   try {
     const data = localStorage.getItem('authData')
-    return !data ? { isAuthenticated: false } : (JSON.parse(data) as AuthState)
+    return !data ? { token: null } : (JSON.parse(data) as AuthState)
   } catch (err) {
-    return { isAuthenticated: false }
+    return { token: null }
   }
 }
 
