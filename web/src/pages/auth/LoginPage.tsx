@@ -9,10 +9,11 @@ import { useIsAuthenticated } from '../../store/slices/auth/authSelectors'
 import { postLogin } from '../../api/AuthApi'
 import { PrimaryButton } from '../../components/Button'
 import { Input } from '../../components/Input'
+import { ErrorIndicator } from '../../components/ErrorIndicator'
 
 export const LoginPage: React.FC = () => {
   const isAuthenticated = useIsAuthenticated()
-  const [loginError, setLoginError] = useState<string | null>(null)
+  const [loginError, setLoginError] = useState<unknown>(null)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -36,7 +37,7 @@ export const LoginPage: React.FC = () => {
         })
       })
       .catch((error: unknown) => {
-        setLoginError(JSON.stringify(error, undefined, 2))
+        setLoginError(error)
       })
   }
 
@@ -55,8 +56,7 @@ export const LoginPage: React.FC = () => {
 
       {loginError !== null && (
         <div className="mt-8">
-          <div className="font-bold">Error:</div>
-          <pre className="overflow-scroll text-sm">{loginError}</pre>
+          <ErrorIndicator error={loginError} />
         </div>
       )}
     </form>
