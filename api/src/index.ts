@@ -1,11 +1,10 @@
-import 'reflect-metadata'
-import type { Express } from 'express'
-
 import * as express from 'express'
-import { Action, RoutingControllersOptions, createExpressServer } from 'routing-controllers'
+import { NestFactory } from '@nestjs/core'
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 
 import config from './config'
-import { setupSwaggerRoutes } from './swagger-ui'
+
+import { AppModule } from './app.module'
 
 process.on('unhandledRejection', (error) => {
   if (error instanceof Error) {
@@ -18,31 +17,18 @@ process.on('unhandledRejection', (error) => {
 })
 
 const run = async () => {
-  const routingConfig: RoutingControllersOptions = {
-    controllers: [__dirname + '/**/*Controller.ts', __dirname + '/**/*Controller.js'],
-    cors: true,
-    routePrefix: '/api/v1',
-    authorizationChecker: async (action: Action, roles: string[]) => {
-      const token = action.request.headers['authorization']
-      return !!token
-    },
-  }
-
-  const app: Express = createExpressServer(routingConfig)
+  const app = await NestFactory.create(AppModule, { cors: true })
+  app.setGlobalPrefix('/api/v1')
 
   if (config.get('environment') === 'development') {
-    setupSwaggerRoutes(app, routingConfig)
+    const swaggerConfig = new DocumentBuilder().addBearerAuth().setTitle('Verified by Video').setVersion('0.1').build()
+    const document = SwaggerModule.createDocument(app, swaggerConfig)
+    SwaggerModule.setup('api/v1', app, document)
   }
 
   app.use('/media', express.static('media'))
-  app.use(express.json())
 
-  app.get('/', async (req, res) => {
-    res.send('ok')
-    return res
-  })
-
-  app.listen(config.get('port'), config.get('host'), () => {
+  await app.listen(config.get('port'), config.get('host'), () => {
     console.log(`Server running on: ${config.get('host')}:${config.get('port')}`)
   })
 }

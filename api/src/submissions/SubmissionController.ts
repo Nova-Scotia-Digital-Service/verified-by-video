@@ -1,10 +1,8 @@
-import { Get, JsonController, Param, Post } from 'routing-controllers'
-import { Service } from 'typedi'
+import { Get, Controller, Param, Post } from '@nestjs/common'
 
 import { mockSubmission } from './SubmissionData'
 
-@JsonController('/submissions')
-@Service()
+@Controller('/submissions')
 export class SubmissionController {
   @Post('/')
   public async postSubmissions() {

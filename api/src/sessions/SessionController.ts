@@ -1,10 +1,8 @@
-import { JsonController, Post } from 'routing-controllers'
-import { Service } from 'typedi'
+import { Controller, Post } from '@nestjs/common'
 
 import { initialSessionData } from './SessionData'
 
-@JsonController('/session')
-@Service()
+@Controller('/session')
 export class SessionController {
   @Post('/')
   public async createSession() {

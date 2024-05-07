@@ -1,8 +1,6 @@
-import { JsonController, Post } from 'routing-controllers'
-import { Service } from 'typedi'
+import { Controller, Post } from '@nestjs/common'
 
-@JsonController('/staff/auth')
-@Service()
+@Controller('/staff/auth')
 export class AuthController {
   @Post('/login')
   public async login() {

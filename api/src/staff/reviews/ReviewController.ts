@@ -1,18 +1,21 @@
-import { Authorized, Get, JsonController, Param } from 'routing-controllers'
-import { Service } from 'typedi'
+import { Get, Controller, Param, UseGuards } from '@nestjs/common'
+import { ApiBearerAuth as SwaggerRequireAuth } from '@nestjs/swagger'
+
+import { AuthGuard } from '../auth/AuthGuard'
 
 import { mockReviewList, mockReview } from './ReviewData'
 
-@JsonController('/staff/reviews')
-@Service()
+@Controller('/staff/reviews')
 export class ReviewController {
-  @Authorized()
+  @UseGuards(AuthGuard)
+  @SwaggerRequireAuth()
   @Get('/')
   public async getReviewList() {
     return mockReviewList
   }
 
-  @Authorized()
+  @UseGuards(AuthGuard)
+  @SwaggerRequireAuth()
   @Get('/:reviewId')
   public async getReview(@Param('reviewId') reviewId: string) {
     return mockReview
