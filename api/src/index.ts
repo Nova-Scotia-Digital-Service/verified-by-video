@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import type { Express } from 'express'
 
-import { json } from 'express'
+import * as express from 'express'
 import { Action, RoutingControllersOptions, createExpressServer } from 'routing-controllers'
 
 import config from './config'
@@ -34,7 +34,8 @@ const run = async () => {
     setupSwaggerRoutes(app, routingConfig)
   }
 
-  app.use(json())
+  app.use('/media', express.static('media'))
+  app.use(express.json())
 
   app.get('/', async (req, res) => {
     res.send('ok')

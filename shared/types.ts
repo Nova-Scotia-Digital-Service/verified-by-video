@@ -25,7 +25,7 @@ export interface IdentificationCard {
   id: string
   description: string
   date?: Date
-  photo?: boolean
+  photo_url?: string
 }
 
 export interface Review {

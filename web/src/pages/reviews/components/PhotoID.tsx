@@ -1,3 +1,4 @@
+import { backendUrl } from '../../../api/api'
 import * as TD from '../../../types'
 
 const date_format: Intl.DateTimeFormatOptions = {
@@ -6,14 +7,14 @@ const date_format: Intl.DateTimeFormatOptions = {
   year: 'numeric',
 }
 
-export const PhotoID = ({ card: { photo, description, date } }: { card: TD.IdentificationCard }) => {
+export const PhotoID = ({ card: { photo_url, description, date } }: { card: TD.IdentificationCard }) => {
   return (
-    <div className="w-[18rem] flex-shrink-0">
-      <div className="h-[26rem] w-[18rem] flex justify-stretch items-stretch mb-4">
-        {photo ? (
-          <div className="flex-grow bg-slate rounded"></div>
+    <div className="flex-shrink-0">
+      <div className="h-[26rem] flex justify-stretch items-stretch mb-4">
+        {photo_url ? (
+          <img src={backendUrl + photo_url} className="bg-slate rounded" />
         ) : (
-          <div className="relative flex-grow border border-slate rounded flex items-center justify-center text-lg">
+          <div className="relative w-[18rem] border border-slate rounded flex items-center justify-center text-lg">
             <hr className="absolute text-slate w-[29rem] rotate-[55deg] -z-10" />
             <hr className="absolute text-slate w-[29rem] -rotate-[55deg] -z-10" />
             Non-Photo Card
