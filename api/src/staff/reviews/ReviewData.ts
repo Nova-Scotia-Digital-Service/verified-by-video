@@ -50,14 +50,14 @@ export const mockReviewQuestions: TD.ReviewQuestion[] = [
     id: 'id-type',
     question: 'What type of ID is provided?',
     options: [
-      { id: uuid(), text: "BC Driver's License (issued by British Columbia)" },
+      { id: uuid(), text: "Nova Scotia Driver's License" },
       { id: uuid(), text: 'Other type' },
       { id: uuid(), text: "I can't confirm" },
     ],
   },
   {
     id: 'id-number',
-    question: "What number is on BC Driver's License (issued in British Columbia)?",
+    question: "What number is on Nova Scotia Driver's License?",
     options: [
       { id: uuid(), text: '12121212' },
       { id: uuid(), text: 'Other type' },
@@ -111,7 +111,7 @@ export const mockReview: TD.Review = {
   identification_cards: [
     {
       id: uuid(),
-      description: 'Photo on BC Services Card',
+      description: 'Photo on Nova Scotia Health Card',
     },
     {
       id: uuid(),
@@ -121,15 +121,15 @@ export const mockReview: TD.Review = {
     },
     {
       id: uuid(),
-      description: "Front of BC Driver's License (issued in British Columbia)",
+      description: "Front of Nova Scotia Driver's License",
       date: randomDate(),
-      photo_url: '/media/example-photo-bcdl-front.png',
+      photo_url: '/media/example-photo-license-front.png',
     },
     {
       id: uuid(),
-      description: "Back of BC Driver's License (issued in British Columbia)",
+      description: "Back of Nova Scotia Driver's License",
       date: randomDate(),
-      photo_url: '/media/example-photo-bcdl-back.png',
+      photo_url: '/media/example-photo-license-back.png',
     },
   ],
   questions: mockReviewQuestions,
