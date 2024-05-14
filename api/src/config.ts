@@ -1,32 +1,16 @@
-import dotenv from 'dotenv'
-import nconf from 'nconf'
+import dotenv, { DotenvPopulateInput } from 'dotenv'
 
-const env = process.env.NODE_ENV ?? 'development'
-
-if (env === 'development') {
-  dotenv.config()
+// default configuration settings
+const config = {
+  NODE_ENV: 'production', // assume production environment unless explicitly stated otherwise
+  HOST: '0.0.0.0',
+  PORT: '3100',
 }
 
-/**
- * These settings may contain sensitive information and should not be
- * stored in the repo. They are extracted from environment variables
- * and added to the config.
- */
+// override with settings from project root `.env` file
+dotenv.config({ processEnv: config, path: '../.env', override: true })
 
-// overrides are always as defined
-nconf.overrides({
-  environment: env,
-  host: process.env.HOST ?? '0.0.0.0',
-  port: process.env.PORT ?? 3100,
-})
+// override with environment variables from process.env
+dotenv.populate(config, process.env as DotenvPopulateInput, { override: true })
 
-// load other properties from file.
-nconf.argv().env()
-
-// if nothing else is set, use defaults. This will be set if
-// they do not exist in overrides or the config file.
-nconf.defaults({
-  appUrl: process.env.APP_URL ?? 'http://localhost:3100',
-})
-
-export default nconf
+export default config

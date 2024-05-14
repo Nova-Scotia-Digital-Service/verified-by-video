@@ -20,7 +20,7 @@ const run = async () => {
   const app = await NestFactory.create(AppModule, { cors: true })
   app.setGlobalPrefix('/api/v1')
 
-  if (config.get('environment') === 'development') {
+  if (config.NODE_ENV === 'development') {
     const swaggerConfig = new DocumentBuilder().addBearerAuth().setTitle('Verified by Video').setVersion('0.1').build()
     const document = SwaggerModule.createDocument(app, swaggerConfig)
     SwaggerModule.setup('api/v1', app, document)
@@ -28,8 +28,8 @@ const run = async () => {
 
   app.use('/media', express.static('media'))
 
-  await app.listen(config.get('port'), config.get('host'), () => {
-    console.log(`Server running on: ${config.get('host')}:${config.get('port')}`)
+  await app.listen(config.PORT, config.HOST, () => {
+    console.log(`Server running on: ${config.HOST}:${config.PORT}`)
   })
 }
 

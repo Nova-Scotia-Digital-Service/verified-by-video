@@ -4006,7 +4006,6 @@ __metadata:
     "@types/uuid": "npm:^9"
     dotenv: "npm:^16.3.1"
     express: "npm:^4.18.2"
-    nconf: "npm:^0.12.1"
     nodemon: "npm:^3.0.2"
     reflect-metadata: "npm:^0.2.2"
     rxjs: "npm:^7.8.1"
@@ -4212,7 +4211,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:^3.0.0, async@npm:^3.2.3":
+"async@npm:^3.2.3":
   version: 3.2.5
   resolution: "async@npm:3.2.5"
   checksum: 10/323c3615c3f0ab1ac25a6f953296bc0ac3213d5e0f1c0debdb12964e55963af288d570293c11e44f7967af58c06d2a88d0ea588c86ec0fbf62fa98037f604a0f
@@ -7967,13 +7966,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ini@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "ini@npm:2.0.0"
-  checksum: 10/04e24ba05c4f6947e15560824e153b4610bceea2f5a3ab68651d221a4aab3c77d4e3e90a917ebc8bf5ad71a30a8575de56c39d6b4c4b1375a28016b9f3625f9d
-  languageName: node
-  linkType: hard
-
 "internal-slot@npm:^1.0.5":
   version: 1.0.7
   resolution: "internal-slot@npm:1.0.7"
@@ -9906,18 +9898,6 @@ __metadata:
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
   checksum: 10/23ad088b08f898fc9b53011d7bb78ec48e79de7627e01ab5518e806033861bef68d5b0cd0e2205c2f36690ac9571ff6bcb05eb777ced2eeda8d4ac5b44592c3d
-  languageName: node
-  linkType: hard
-
-"nconf@npm:^0.12.1":
-  version: 0.12.1
-  resolution: "nconf@npm:0.12.1"
-  dependencies:
-    async: "npm:^3.0.0"
-    ini: "npm:^2.0.0"
-    secure-keys: "npm:^1.0.0"
-    yargs: "npm:^16.1.1"
-  checksum: 10/4170c83004ec4c7f2809c2125dcc01aaf0b9decdc28f63a42f66e5c87ecaa24c8509d80a1fbe7f28ff16244731640d53ca0488f038ad1bfeb9c707d139c11a4f
   languageName: node
   linkType: hard
 
@@ -12467,13 +12447,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"secure-keys@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "secure-keys@npm:1.0.0"
-  checksum: 10/3dd4e64e6717fe6e2dc4c70e172982fcbad87b853e96566ab1cfaec540587f737bac106853ae469cb32d4a6413cfe80a28176cfe7dfcf7ddd35c9f92e58dffed
-  languageName: node
-  linkType: hard
-
 "select-hose@npm:^2.0.0":
   version: 2.0.0
   resolution: "select-hose@npm:2.0.0"
@@ -14848,7 +14821,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs@npm:^16.1.1, yargs@npm:^16.2.0":
+"yargs@npm:^16.2.0":
   version: 16.2.0
   resolution: "yargs@npm:16.2.0"
   dependencies:
