@@ -37,7 +37,7 @@ services:
       - 5432:5432
     environment:
       - POSTGRES_DB=verified_by_video
-      - POSTGRES_PASSWORD=postgres123
+      - POSTGRES_PASSWORD=${PG_PASSWORD}
 
 volumes:
   minio-data:

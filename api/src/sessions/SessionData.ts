@@ -1,5 +1,7 @@
 import * as TD from '../types'
 
+import { pgClient } from '../db'
+
 const now = new Date()
 const later = new Date(Number(now) + 30 * 60 * 1000)
 
@@ -12,7 +14,17 @@ export const prompts: TD.Prompt[] = [
 export const initialSessionData: TD.Session = {
   version: '1',
   id: '88acfa3d-bf2f-4cae-8746-60a9106f6d56',
-  createdAt: now,
-  expiresAt: later,
+  created_at: now,
+  expires_at: later,
   prompts: prompts,
+}
+
+export const insertSession = async () => {
+  const client = pgClient()
+  await client.connect()
+  const createdSession = await client.query<TD.DBSession>(`INSERT INTO sessions DEFAULT VALUES RETURNING *`)
+  await client.end()
+
+  if (createdSession.rows.length > 1) throw new Error('Unexpected number of rows returned when creating session.')
+  return createdSession.rows[0]
 }

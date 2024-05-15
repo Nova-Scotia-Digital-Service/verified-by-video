@@ -1,0 +1,4 @@
+BEGIN;
+    INSERT INTO public.sessions VALUES
+        ('88acfa3d-bf2f-4cae-8746-60a9106f6d56', '2024-05-08 19:01:48.776913+00', '2024-05-08 19:11:48.776913+00');
+COMMIT;

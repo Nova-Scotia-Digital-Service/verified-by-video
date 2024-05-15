@@ -9,8 +9,8 @@ export interface Prompt {
 export interface Session {
   version: '1'
   id: string
-  createdAt: Date
-  expiresAt: Date
+  created_at: Date
+  expires_at: Date
   prompts: Prompt[]
 }
 
