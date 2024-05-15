@@ -8,12 +8,12 @@ import { mockSubmission } from '../../submissions/SubmissionData'
 const randomDate = () => new Date(1500000000000 + Math.random() * 250000000000)
 
 export const mockReviewList: TD.ReviewList = [
-  { id: 'a', submission: mockSubmission, status: 'Unreviewed' },
-  { id: 'b', submission: mockSubmission, status: 'Unreviewed' },
-  { id: 'c', submission: mockSubmission, status: 'Unreviewed' },
-  { id: 'd', submission: mockSubmission, status: 'Approved' },
-  { id: 'e', submission: mockSubmission, status: 'Approved' },
-  { id: 'f', submission: mockSubmission, status: 'Denied' },
+  { id: 'a', submission: mockSubmission, status: 'PENDING' },
+  { id: 'b', submission: mockSubmission, status: 'PENDING' },
+  { id: 'c', submission: mockSubmission, status: 'PENDING' },
+  { id: 'd', submission: mockSubmission, status: 'APPROVED' },
+  { id: 'e', submission: mockSubmission, status: 'APPROVED' },
+  { id: 'f', submission: mockSubmission, status: 'DENIED' },
 ]
 
 export const mockReviewQuestions: TD.ReviewQuestion[] = [
@@ -105,7 +105,7 @@ export const mockReviewQuestions: TD.ReviewQuestion[] = [
 
 export const mockReview: TD.Review = {
   id: uuid(),
-  status: 'Unreviewed',
+  status: 'PENDING',
   submission: mockSubmission,
   prompts: prompts,
   identification_cards: [

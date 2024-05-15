@@ -10,7 +10,7 @@ import { TabButton } from './components/TabButton'
 import { AwaitResponse } from '../../components/AwaitResponse'
 
 export const ReviewListPage: React.FC = () => {
-  const [statusFilter, setStatusFilter] = useState<TD.ReviewStatus>('Unreviewed')
+  const [statusFilter, setStatusFilter] = useState<TD.ReviewStatus>('PENDING')
   const [reviewListResponse, setReviewListResponse] = useResponse<TD.ReviewList>()
 
   useEffect(() => {
@@ -28,13 +28,13 @@ export const ReviewListPage: React.FC = () => {
       <h1 className="text-3xl font-bold mt-12 mb-6">Videos</h1>
 
       <div className="flex gap-3 mb-6">
-        <TabButton onClick={() => setStatusFilter('Unreviewed')} active={statusFilter === 'Unreviewed'}>
+        <TabButton onClick={() => setStatusFilter('PENDING')} active={statusFilter === 'PENDING'}>
           Uploaded
         </TabButton>
-        <TabButton onClick={() => setStatusFilter('Approved')} active={statusFilter === 'Approved'}>
+        <TabButton onClick={() => setStatusFilter('APPROVED')} active={statusFilter === 'APPROVED'}>
           Approved
         </TabButton>
-        <TabButton onClick={() => setStatusFilter('Denied')} active={statusFilter === 'Denied'}>
+        <TabButton onClick={() => setStatusFilter('DENIED')} active={statusFilter === 'DENIED'}>
           Denied
         </TabButton>
       </div>

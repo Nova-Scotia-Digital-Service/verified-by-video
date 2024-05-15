@@ -1,4 +1,4 @@
-export type ReviewStatus = 'Unreviewed' | 'Approved' | 'Denied'
+export type ReviewStatus = 'PENDING' | 'APPROVED' | 'DENIED'
 
 export interface Prompt {
   id: string
