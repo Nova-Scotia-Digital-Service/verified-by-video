@@ -1,6 +1,6 @@
 import dotenv, { DotenvPopulateInput } from 'dotenv'
 
-interface Config {
+type Config = {
   NODE_ENV: string
   HOST: string
   PORT: string
