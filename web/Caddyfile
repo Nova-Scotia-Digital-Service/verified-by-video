@@ -1,0 +1,24 @@
+:3000 {
+    header {
+		X-Frame-Options "SAMEORIGIN"
+		X-XSS-Protection "1;mode=block"
+		Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate"
+		X-Content-Type-Options "nosniff"
+		Strict-Transport-Security "max-age=31536000"
+        Content-Security-Policy "default-src * data: blob: filesystem: 'unsafe-inline' 'unsafe-eval'"		Referrer-Policy "same-origin"
+		Feature-Policy "fullscreen 'self'; camera 'none'; microphone 'none'"
+	}
+	log {
+		output stdout
+	}
+	root * /app/build
+	encode zstd gzip
+	file_server
+	@spa_router {
+		not path /api/*
+		file {
+			try_files {path} /index.html
+		}
+	}
+	rewrite @spa_router {http.matchers.file.relative}
+}

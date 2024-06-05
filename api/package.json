@@ -4,6 +4,11 @@
   "private": true,
   "license": "Apache-2.0",
   "description": "Verified by video API",
+  "packageManager": "yarn@4.1.0",
+  "engines": {
+    "node": ">=v20.11.0 <21.0.0",
+    "yarn": "^4.1.0"
+  },
   "main": "index.js",
   "scripts": {
     "start": "nodemon --watch src -e ts,tsx --exec ts-node ./src/index.ts",

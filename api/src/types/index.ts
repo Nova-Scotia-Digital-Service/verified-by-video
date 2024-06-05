@@ -1,5 +1,5 @@
-import type * as TD from '../../shared/types'
-export type * from '../../shared/types'
+import type * as TD from './shared'
+export type * from './shared'
 
 export type DBSession = {
   id: string

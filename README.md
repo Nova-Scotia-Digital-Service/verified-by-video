@@ -12,31 +12,17 @@ cp env.template .env
 
 ## Development
 
-Install:
-
-```
-yarn
-```
-
-Run development server:
-
-```
-yarn start
-```
-
-Run the postgres service:
-
-```
-docker compose up postgres --build
-```
-
-## Docker
-
-To build and serve the app with Docker:
+To build and run the development servers with Docker:
 
 ```
 docker compose up --build
 ```
+
+The frontend and backend will live-reload on changes.
+
+Web interface: `http://localhost:3000`.
+
+API Swagger UI: `http://localhost:3100/api/v1/`.
 
 ## Database
 

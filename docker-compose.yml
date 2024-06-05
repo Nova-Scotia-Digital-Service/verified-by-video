@@ -1,22 +1,30 @@
-version: '3.8'
-
 services:
-  project: &project
-    build:
-      context: .
   web:
-    <<: *project
+    build:
+      dockerfile: Dockerfile.web
+      target: install
+    command: yarn start
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
     ports:
       - 3000:3000
-    command: yarn serve:web
+    volumes:
+      - ./web/src:/app/src
+
   api:
-    <<: *project
+    build:
+      dockerfile: Dockerfile.api
+      target: install
+    command: yarn start
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PG_PASSWORD: ${PG_PASSWORD}
+      PG_HOST: postgres
     ports:
       - 3100:3100
-    command: yarn serve:api
-    environment:
-      - PG_PASSWORD=${PG_PASSWORD}
-      - PG_HOST=postgres
+    volumes:
+      - ./api/src:/app/src
+
   minio:
     image: minio/minio:latest
     volumes:
@@ -32,12 +40,13 @@ services:
       --address ":9000"
       --console-address ":9001"
       /data
+
   postgres:
     image: postgres:14
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - ${POSTGRES_PORT_EXPOSED:-5432}:5432
     environment:
       - POSTGRES_DB=verified_by_video
       - POSTGRES_PASSWORD=${PG_PASSWORD}

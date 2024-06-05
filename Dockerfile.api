@@ -1,0 +1,29 @@
+FROM node:20 AS install
+
+ENV NODE_ENV production
+WORKDIR /app
+COPY .yarn/releases .yarn/releases
+COPY .yarnrc.yml .yarnrc.yml
+COPY api/package.json package.json
+RUN corepack enable
+RUN yarn install
+
+COPY api .
+
+FROM install AS build
+
+RUN yarn build
+
+FROM node:20 AS production
+
+ENV NODE_ENV production
+WORKDIR /app
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/build ./build
+
+# TEMPORARY: example files
+COPY api/media ./media
+
+EXPOSE 3100
+
+CMD ["node", "/app/build/index.js"]

@@ -1,12 +1,12 @@
 export type ReviewStatus = 'PENDING' | 'APPROVED' | 'DENIED'
 
-export interface Prompt {
+export type Prompt = {
   id: string
   text: string
   type: 'text'
 }
 
-export interface Session {
+export type Session = {
   version: '1'
   id: string
   created_at: Date
@@ -14,21 +14,21 @@ export interface Session {
   prompts: Prompt[]
 }
 
-export interface Submission {
+export type Submission = {
   id: string
   video_url: string
   upload_date: Date
   session_id: string
 }
 
-export interface IdentificationCard {
+export type IdentificationCard = {
   id: string
   description: string
   date?: Date
   photo_url?: string
 }
 
-export interface Review {
+export type Review = {
   id: string
   status: ReviewStatus
   submission: Submission
@@ -40,7 +40,7 @@ export interface Review {
 export type ReviewSummary = Omit<Review, 'prompts' | 'identification_cards' | 'questions'>
 export type ReviewList = ReviewSummary[]
 
-export interface ReviewQuestion {
+export type ReviewQuestion = {
   id: string
   question: string
   options: {
@@ -49,6 +49,6 @@ export interface ReviewQuestion {
   }[]
 }
 
-export interface LoginResponse {
+export type LoginResponse = {
   token: string
 }
