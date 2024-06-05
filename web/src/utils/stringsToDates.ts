@@ -1,6 +1,6 @@
-const isoDateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d*)Z$/
+const isoDateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/
 
-const isIsoDateString = (value: unknown): boolean => {
+export const isIsoDateString = (value: unknown): boolean => {
   return value ? typeof value === 'string' && isoDateFormat.test(value) : false
 }
 
