@@ -17,7 +17,6 @@ import { paths } from '../../paths'
 
 import { ReactComponent as BackArrowIcon } from '../../assets/icon-back-arrow.svg'
 import { ReactComponent as WarningIcon } from '../../assets/icon-warning.svg'
-import { backendUrl } from '../../api/api'
 
 const DATE_FORMAT: Intl.DateTimeFormatOptions = {
   month: 'short',
@@ -79,7 +78,7 @@ export const ReviewPage: React.FC = () => {
               </div>
 
               <video controls className="w-[28rem] h-[40rem] rounded-lg">
-                <source src={backendUrl + review.submission.video_url} type="video/mp4" />
+                <source src={review.submission.video_url} type="video/mp4" />
               </video>
             </div>
 

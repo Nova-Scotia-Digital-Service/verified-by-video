@@ -6,6 +6,8 @@ import { ApiBearerAuth as SwaggerRequireAuth } from '@nestjs/swagger'
 import { AuthGuard } from '../auth/AuthGuard'
 
 import { getReview, getReviewList } from './ReviewData'
+import { minioClient } from '../../minio'
+import config from '../../config'
 
 @Controller('/staff/reviews')
 export class ReviewController {
@@ -55,15 +57,35 @@ export class ReviewController {
       }
     }
 
+    let signedVideoUrl = await minioClient.presignedGetObject(config.S3_BUCKET_NAME, review.video_url, 60 * 60)
+    if (config.NODE_ENV === 'development') {
+      signedVideoUrl = signedVideoUrl.replace('http://minio', 'http://localhost')
+    }
+
+    const signedIdentificationCards = await Promise.all(
+      identification_cards.map(async (card) => {
+        if (card.photo_url === undefined) return card
+
+        let signedPhotoUrl = await minioClient.presignedGetObject(config.S3_BUCKET_NAME, card.photo_url, 60 * 60)
+        if (config.NODE_ENV === 'development') {
+          signedPhotoUrl = signedPhotoUrl.replace('http://minio', 'http://localhost')
+        }
+        return {
+          ...card,
+          photo_url: signedPhotoUrl,
+        }
+      }),
+    )
+
     return {
       ...review,
       submission: {
         id: review.submission_id,
         session_id: review.session_id,
-        video_url: review.video_url,
+        video_url: signedVideoUrl,
         upload_date: review.upload_date,
       },
-      identification_cards: identification_cards,
+      identification_cards: signedIdentificationCards,
       prompts: prompts.map((prompt) => ({ ...prompt, type: 'text' })),
       questions: reviewQuestions,
     }

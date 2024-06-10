@@ -1,15 +1,51 @@
 import * as TD from '../types'
 
-import { Get, Controller, Param, Post, HttpException, HttpStatus } from '@nestjs/common'
+import {
+  Get,
+  Controller,
+  Param,
+  Post,
+  HttpException,
+  HttpStatus,
+  UseInterceptors,
+  UploadedFile,
+  Body,
+} from '@nestjs/common'
+
+import { FileInterceptor } from '@nestjs/platform-express'
+import { ApiConsumes, ApiProperty } from '@nestjs/swagger'
+import { v4 as uuid } from 'uuid'
 
 import { createSubmission, getSubmission } from './SubmissionData'
+
+import config from '../config'
+import { minioClient } from '../minio'
+
+class SubmissionDto {
+  @ApiProperty({ type: 'string' })
+  sessionId!: string
+
+  @ApiProperty({ type: 'string', format: 'binary' })
+  file!: Express.Multer.File
+}
 
 @Controller('/submissions')
 export class SubmissionController {
   @Post('/')
-  public async createSubmission(): Promise<TD.Submission> {
-    // session_id from example-data.sql
-    return await createSubmission('88acfa3d-bf2f-4cae-8746-60a9106f6d56', '/media/example-video.mp4')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  public async createSubmission(
+    @Body() { sessionId: session_id }: SubmissionDto,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<TD.Submission> {
+    const fileNameComponents = file.originalname.split('.')
+    const fileExtension = fileNameComponents[fileNameComponents.length - 1]
+    const randomizedFileName = `${uuid()}.${fileExtension}`
+    const filePath = `media/${randomizedFileName}`
+
+    await minioClient.putObject(config.S3_BUCKET_NAME, filePath, file.buffer, file.size)
+
+    return await createSubmission(session_id, filePath)
   }
 
   @Get('/:submissionId')

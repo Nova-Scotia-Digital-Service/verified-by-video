@@ -5,7 +5,7 @@ import { pgClient } from '../db'
 export const getSubmission = async (submission_id: string) => {
   const client = pgClient()
   await client.connect()
-  const submission = await client.query<TD.Submission>(
+  const submission = await client.query<TD.DBSubmission>(
     `
     SELECT * FROM submissions
     WHERE id = $1
@@ -28,6 +28,12 @@ export const createSubmission = async (session_id: string, video_url: string) =>
     RETURNING *
   `,
     [session_id, video_url],
+  )
+  await client.query(
+    `
+    INSERT INTO reviews (submission_id) VALUES ($1)
+  `,
+    [createdSubmission.rows[0].id],
   )
   await client.end()
 
