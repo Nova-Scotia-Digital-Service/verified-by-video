@@ -28,10 +28,15 @@ API Swagger UI: `http://localhost:3100/api/v1/`.
 
 The Postgres service is exposed on the default port `5432`.
 
-To load the database schema and example data:
+To load the database schema:
 
 ```
-psql -h localhost -U postgres verified_by_video -f ./db/schema.sql
+yarn migrate up
+```
+
+To populate the database with example data (optional):
+
+```
 psql -h localhost -U postgres verified_by_video -f ./db/fixtures/example-data.sql
 ```
 
