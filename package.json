@@ -29,7 +29,7 @@
     "test": "CI=true yarn test:web",
     "test:watch": "yarn test:web",
     "test:web": "yarn workspace web test",
-    "test:format": "prettier -c '**/*.+(js|jsx|ts|tsx|json|md|yml|yaml|html)'"
+    "check-format": "prettier -c '**/*.+(js|jsx|ts|tsx|json|md|yml|yaml|html)'"
   },
   "devDependencies": {
     "@types/config": "^3",
