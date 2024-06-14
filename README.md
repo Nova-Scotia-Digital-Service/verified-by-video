@@ -51,3 +51,23 @@ MinIO admin interface: [`http://localhost:9001`](http://localhost:9001).
 Create an access key for the user in the "Service Accounts" section of the user details. Save this access key & secret in `.env` as `MINIO_ACCESS_KEY` & `MINIO_SECRET_ACCESS_KEY`.
 
 You will need to restart docker compose so the api service has the new MinIO keys.
+
+## Testing
+
+To check formatting:
+
+```
+yarn test:format
+```
+
+To run frontend test watcher:
+
+```
+docker compose run --build web yarn test
+```
+
+To run backend test watcher:
+
+```
+docker compose run --build api yarn test
+```

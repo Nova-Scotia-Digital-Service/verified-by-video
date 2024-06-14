@@ -9,6 +9,7 @@ RUN corepack enable
 RUN yarn install
 
 COPY api .
+COPY db ./db
 
 FROM install AS build
 

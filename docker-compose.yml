@@ -26,6 +26,9 @@ services:
       - 3100:3100
     volumes:
       - ./api/src:/app/src
+    depends_on:
+      - postgres
+      - minio
 
   minio:
     image: minio/minio:latest

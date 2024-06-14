@@ -28,6 +28,7 @@
     "migrate": "NODE_CONFIG_DIR=db/migrations/config node-pg-migrate",
     "test": "CI=true yarn test:web",
     "test:watch": "yarn test:web",
+    "test:api": "yarn workspace api test",
     "test:web": "yarn workspace web test",
     "check-format": "prettier -c '**/*.+(js|jsx|ts|tsx|json|md|yml|yaml|html)'"
   },
