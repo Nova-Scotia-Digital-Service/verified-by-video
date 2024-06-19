@@ -1,4 +1,3 @@
-import * as express from 'express'
 import { NestFactory } from '@nestjs/core'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 
@@ -25,8 +24,6 @@ const run = async () => {
     const document = SwaggerModule.createDocument(app, swaggerConfig)
     SwaggerModule.setup('api/v1', app, document)
   }
-
-  app.use('/media', express.static('media'))
 
   await app.listen(config.PORT, config.HOST, () => {
     console.log(`Server running on: ${config.HOST}:${config.PORT}`)

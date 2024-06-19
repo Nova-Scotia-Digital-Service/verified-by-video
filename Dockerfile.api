@@ -22,9 +22,6 @@ WORKDIR /app
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/build ./build
 
-# TEMPORARY: example files
-COPY api/media ./media
-
 EXPOSE 3100
 
 CMD ["node", "/app/build/index.js"]

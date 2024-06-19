@@ -4,10 +4,42 @@ Verify users liveliness and presence by choreographed video
 
 ## Setup
 
-Make a copy of `env.template` named `.env` in the project root.
+1. Make a copy of `env.template` named `.env` in the project root.
 
 ```
 cp env.template .env
+```
+
+2. Create MinIO access keys
+
+```
+docker compose up minio
+```
+
+Log in to the MinIO console at `http://localhost:9001`. Use the root username and password from the `.env` file.
+
+Create a new access key pair. Save the values to `.env` as `MINIO_ACCESS_KEY` and `MINIO_SECRET_ACCESS_KEY`.
+
+3. Define the database
+
+```
+docker compose up postgres
+yarn migrate up
+```
+
+Use the Postgres password from the `.env` file.
+
+4. Populate the database (optional)
+
+```
+psql -h localhost -U postgres verified_by_video -f ./fixtures/example-data.sql
+```
+
+5. Restart and build all docker services
+
+```
+docker compose down
+docker compose up --build
 ```
 
 ## Development
@@ -24,20 +56,14 @@ Web interface: `http://localhost:3000`.
 
 API Swagger UI: `http://localhost:3100/api/v1/`.
 
-## Database
+MinIO admin interface: [`http://localhost:9001`](http://localhost:9001).
 
 The Postgres service is exposed on the default port `5432`.
 
-To load the database schema:
+To interact with the database:
 
 ```
-yarn migrate up
-```
-
-To populate the database with example data (optional):
-
-```
-psql -h localhost -U postgres verified_by_video -f ./db/fixtures/example-data.sql
+psql -h localhost -U postgres verified_by_video
 ```
 
 ## Object Store
