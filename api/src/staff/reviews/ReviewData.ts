@@ -1,6 +1,7 @@
 import * as TD from '../../types'
 
 import { pgClient } from '../../db'
+import { buildPgParams } from '../../utils/buildPgParams'
 
 export const getReviewList = async () => {
   const client = pgClient()
@@ -74,4 +75,25 @@ export const getReview = async (review_id: string) => {
   await client.end()
 
   return [review.rows[0], questions.rows, prompts.rows, identification_cards.rows] as const
+}
+
+export const postReviewAnswers = async (review_id: string, answers: string[]) => {
+  const client = pgClient()
+  await client.connect()
+  await client.query(
+    `
+    INSERT INTO review_answers
+      (option_id)
+    VALUES
+      ${buildPgParams(answers)}`,
+    answers,
+  )
+  await client.query(
+    `
+    UPDATE reviews
+    SET status = 'APPROVED'
+    WHERE id = $1`,
+    [review_id],
+  )
+  await client.end()
 }

@@ -1,13 +1,14 @@
 import * as TD from '../../types'
 
-import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { AwaitResponse } from '../../components/AwaitResponse'
 import { PrimaryButton, SecondaryButton } from '../../components/Button'
 import { HorizontalRule } from '../../components/HorizontalRule'
 
-import { getReviewDetail } from '../../api/ReviewApi'
+import { getReviewDetail, postReviewAnswers } from '../../api/ReviewApi'
 import { useResponse } from '../../hooks/useResponse'
 
 import { ReviewQuestion } from './components/ReviewQuestion'
@@ -22,6 +23,10 @@ const DATE_FORMAT: Intl.DateTimeFormatOptions = {
   month: 'short',
   year: 'numeric',
   day: 'numeric',
+}
+
+type FormInputs = {
+  [key: string]: string
 }
 
 export const ReviewPage: React.FC = () => {
@@ -41,8 +46,14 @@ export const ReviewPage: React.FC = () => {
       })
   }, [])
 
-  const handleSubmit: React.FormEventHandler = (event) => {
-    event.preventDefault()
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<FormInputs>()
+
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    await postReviewAnswers(reviewId, data)
     navigate(paths.reviewList({}))
   }
 
@@ -56,7 +67,7 @@ export const ReviewPage: React.FC = () => {
 
       <AwaitResponse response={reviewDetailResponse}>
         {(review) => (
-          <>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex justify-between mb-12">
               <div>
                 <div className="mb-12">
@@ -85,7 +96,14 @@ export const ReviewPage: React.FC = () => {
             <HorizontalRule />
 
             {review.questions.slice(0, 1).map(({ id, question, options }) => (
-              <ReviewQuestion key={id} id={id} question={question} options={options} />
+              <ReviewQuestion
+                key={id}
+                id={id}
+                question={question}
+                options={options}
+                register={register}
+                error={errors[id]}
+              />
             ))}
 
             <div className="flex gap-x-12 mb-12 mx-[-4rem] overflow-x-scroll pb-4">
@@ -95,7 +113,14 @@ export const ReviewPage: React.FC = () => {
             </div>
 
             {review.questions.slice(1).map(({ id, question, options }) => (
-              <ReviewQuestion key={id} id={id} question={question} options={options} />
+              <ReviewQuestion
+                key={id}
+                id={id}
+                question={question}
+                options={options}
+                register={register}
+                error={errors[id]}
+              />
             ))}
 
             <div className="flex items-start mb-12 p-4 rounded-lg border border-warning-border text-lg text-warning-text bg-warning-background">
@@ -111,20 +136,24 @@ export const ReviewPage: React.FC = () => {
 
             <HorizontalRule />
 
-            <form onSubmit={handleSubmit} className="flex justify-between">
+            <div className="flex justify-between">
               <div className="flex gap-4">
                 <div className="w-80">
-                  <SecondaryButton type="submit">Transfer request to specialist</SecondaryButton>
+                  <SecondaryButton disabled type="submit">
+                    Transfer request to specialist
+                  </SecondaryButton>
                 </div>
                 <div className="w-48">
-                  <SecondaryButton type="submit">Close request</SecondaryButton>
+                  <SecondaryButton disabled type="submit">
+                    Close request
+                  </SecondaryButton>
                 </div>
               </div>
               <div className="w-48">
                 <PrimaryButton type="submit">Continue</PrimaryButton>
               </div>
-            </form>
-          </>
+            </div>
+          </form>
         )}
       </AwaitResponse>
     </div>

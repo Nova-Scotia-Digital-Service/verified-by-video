@@ -1,11 +1,11 @@
 import * as TD from '../../types'
 
-import { Get, Controller, Param, UseGuards } from '@nestjs/common'
+import { Get, Controller, Param, UseGuards, Post, Body } from '@nestjs/common'
 import { ApiBearerAuth as SwaggerRequireAuth } from '@nestjs/swagger'
 
 import { AuthGuard } from '../auth/AuthGuard'
 
-import { getReview, getReviewList } from './ReviewData'
+import { getReview, getReviewList, postReviewAnswers } from './ReviewData'
 import { minioClient } from '../../minio'
 import config from '../../config'
 
@@ -89,5 +89,12 @@ export class ReviewController {
       prompts: prompts.map((prompt) => ({ ...prompt, type: 'text' })),
       questions: reviewQuestions,
     }
+  }
+
+  @UseGuards(AuthGuard)
+  @SwaggerRequireAuth()
+  @Post('/:review_id')
+  public async postReview(@Param('review_id') review_id: string, @Body() review_answers): Promise<void> {
+    await postReviewAnswers(review_id, Object.values(review_answers))
   }
 }

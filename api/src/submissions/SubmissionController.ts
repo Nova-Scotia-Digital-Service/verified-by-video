@@ -21,7 +21,7 @@ import { createSubmission, getSubmission } from './SubmissionData'
 import config from '../config'
 import { minioClient } from '../minio'
 
-class SubmissionDto {
+class SubmissionBodySchema {
   @ApiProperty({ type: 'string' })
   sessionId!: string
 
@@ -35,7 +35,7 @@ export class SubmissionController {
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
   public async createSubmission(
-    @Body() { sessionId: session_id }: SubmissionDto,
+    @Body() { sessionId: session_id }: SubmissionBodySchema,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<TD.Submission> {
     const fileNameComponents = file.originalname.split('.')
