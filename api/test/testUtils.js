@@ -12,7 +12,6 @@ const TEST_BUCKET_NAME = 'test-verified-by-video'
 const prompt = async (msg) => {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
   const response = await rl.question(msg)
-  rl.close()
   return response
 }
 

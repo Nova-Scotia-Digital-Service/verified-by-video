@@ -61,13 +61,13 @@ export const getReview = async (review_id: string) => {
     `
     SELECT
       id,
-      submission_id,
+      session_id,
       description,
       photo_url,
       upload_date
     FROM identification_cards
-    WHERE submission_id = $1`,
-    [review.rows[0].submission_id],
+    WHERE session_id = $1`,
+    [review.rows[0].session_id],
   )
   await client.query('COMMIT')
   await client.release()

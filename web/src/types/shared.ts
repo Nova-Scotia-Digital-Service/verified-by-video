@@ -23,9 +23,10 @@ export type Submission = {
 
 export type IdentificationCard = {
   id: string
+  session_id: string
   description: string
-  date?: Date
   photo_url?: string
+  upload_date?: Date
 }
 
 export type Review = {

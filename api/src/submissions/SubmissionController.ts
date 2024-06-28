@@ -16,7 +16,7 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiConsumes, ApiProperty } from '@nestjs/swagger'
 import { v4 as uuid } from 'uuid'
 
-import { createSubmission, getSubmission } from './SubmissionData'
+import { createPhotoID, createSubmission, getSubmission } from './SubmissionData'
 
 import config from '../config'
 import { minioClient } from '../minio'
@@ -26,26 +26,54 @@ class SubmissionBodySchema {
   sessionId!: string
 
   @ApiProperty({ type: 'string', format: 'binary' })
-  file!: Express.Multer.File
+  video_file!: Express.Multer.File
+}
+
+class PhotoDto {
+  @ApiProperty({ type: 'string' })
+  sessionId!: string
+
+  @ApiProperty({ type: 'string' })
+  description!: string
+
+  @ApiProperty({ type: 'string', format: 'binary' })
+  photo_file!: Express.Multer.File
 }
 
 @Controller('/submissions')
 export class SubmissionController {
   @Post('/')
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('video_file'))
   public async createSubmission(
     @Body() { sessionId: session_id }: SubmissionBodySchema,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() video_file: Express.Multer.File,
   ): Promise<TD.Submission> {
-    const fileNameComponents = file.originalname.split('.')
+    const fileNameComponents = video_file.originalname.split('.')
     const fileExtension = fileNameComponents[fileNameComponents.length - 1]
     const randomizedFileName = `${uuid()}.${fileExtension}`
     const filePath = `media/${randomizedFileName}`
 
-    await minioClient.putObject(config.S3_BUCKET_NAME, filePath, file.buffer, file.size)
+    await minioClient.putObject(config.S3_BUCKET_NAME, filePath, video_file.buffer, video_file.size)
 
     return await createSubmission(session_id, filePath)
+  }
+
+  @Post('/photo')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('photo_file'))
+  public async createPhotoID(
+    @Body() { sessionId: session_id, description }: PhotoDto,
+    @UploadedFile() photo_file: Express.Multer.File,
+  ): Promise<TD.IdentificationCard> {
+    const fileNameComponents = photo_file.originalname.split('.')
+    const fileExtension = fileNameComponents[fileNameComponents.length - 1]
+    const randomizedFileName = `${uuid()}.${fileExtension}`
+    const filePath = `media/${randomizedFileName}`
+
+    await minioClient.putObject(config.S3_BUCKET_NAME, filePath, photo_file.buffer, photo_file.size)
+
+    return await createPhotoID(session_id, description, filePath)
   }
 
   @Get('/:submissionId')

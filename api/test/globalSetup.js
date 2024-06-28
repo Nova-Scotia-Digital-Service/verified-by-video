@@ -53,7 +53,6 @@ module.exports = async function (globalConfig, projectConfig) {
   console.log('...test database populated.')
 
   console.log(`Creating MinIO test bucket ("${TEST_BUCKET_NAME}")...`)
-
   await minioClient.makeBucket(TEST_BUCKET_NAME)
   console.log('...test bucket created.')
 

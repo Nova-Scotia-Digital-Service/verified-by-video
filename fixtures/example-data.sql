@@ -15,12 +15,12 @@ BEGIN;
         ('214f747f-778a-4d4b-ab3b-5ed0c9410c69', '88acfa3d-bf2f-4cae-8746-60a9106f6d56', '/media/example-video.mp4', '2024-05-08 19:01:48.776913+00'),
         ('be5a2859-8c30-4970-978f-ea30b295ad86', '33aeaab8-0a6f-477f-815a-eb0559b1ba3a', '/media/example-video.mp4', '2024-05-10 13:05:18.691377+00');
 
-    INSERT INTO public.identification_cards VALUES
-        ('b70fc479-f960-4e43-92b0-669adf225a95', '214f747f-778a-4d4b-ab3b-5ed0c9410c69', 'Photo from the mobile app', '/media/example-photo-from-app.png', '2024-05-08 19:03:51.000000+00'),
-        ('0cf13516-3636-437e-8863-13e7160a7ae9', '214f747f-778a-4d4b-ab3b-5ed0c9410c69', 'Front of Nova Scotia Driver''s License', '/media/example-photo-license-front.png', '2024-05-08 19:04:12.000000+00'),
-        ('41cf1ceb-8801-4c88-9e87-cc93bd0f17a5', '214f747f-778a-4d4b-ab3b-5ed0c9410c69', 'Back of Nova Scotia Driver''s License', '/media/example-photo-license-back.png', '2024-05-08 19:05:53.000000+00'),
-        ('caa2e19c-0024-4011-bafd-aa6dcdc51b8c', 'be5a2859-8c30-4970-978f-ea30b295ad86', 'Photo on Nova Scotia Health Card', NULL, NULL),
-        ('ec302835-cdcc-459a-bd5f-368b865a6a8a', 'be5a2859-8c30-4970-978f-ea30b295ad86', 'Photo from the mobile app', '/media/example-photo-from-app.png', '2024-05-08 19:03:51.000000+00');
+    INSERT INTO public.identification_cards (id, session_id, description, photo_url, upload_date) VALUES
+        ('b70fc479-f960-4e43-92b0-669adf225a95', '88acfa3d-bf2f-4cae-8746-60a9106f6d56', 'Photo from the mobile app', '/media/example-photo-from-app.png', '2024-05-08 19:03:51.000000+00'),
+        ('0cf13516-3636-437e-8863-13e7160a7ae9', '88acfa3d-bf2f-4cae-8746-60a9106f6d56', 'Front of Nova Scotia Driver''s License', '/media/example-photo-license-front.png', '2024-05-08 19:04:12.000000+00'),
+        ('41cf1ceb-8801-4c88-9e87-cc93bd0f17a5', '88acfa3d-bf2f-4cae-8746-60a9106f6d56', 'Back of Nova Scotia Driver''s License', '/media/example-photo-license-back.png', '2024-05-08 19:05:53.000000+00'),
+        ('caa2e19c-0024-4011-bafd-aa6dcdc51b8c', '33aeaab8-0a6f-477f-815a-eb0559b1ba3a', 'Photo on Nova Scotia Health Card', NULL, NULL),
+        ('ec302835-cdcc-459a-bd5f-368b865a6a8a', '33aeaab8-0a6f-477f-815a-eb0559b1ba3a', 'Photo from the mobile app', '/media/example-photo-from-app.png', '2024-05-08 19:03:51.000000+00');
 
     INSERT INTO public.reviews VALUES
         ('532bd3f4-a0c5-4a97-87a9-19d46981747d', '214f747f-778a-4d4b-ab3b-5ed0c9410c69', 'PENDING'),

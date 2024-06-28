@@ -6,7 +6,7 @@ const date_format: Intl.DateTimeFormatOptions = {
   year: 'numeric',
 }
 
-export const PhotoID = ({ card: { photo_url, description, date } }: { card: TD.IdentificationCard }) => {
+export const PhotoID = ({ card: { photo_url, description, upload_date } }: { card: TD.IdentificationCard }) => {
   return (
     <div className="flex-shrink-0">
       <div className="h-[26rem] flex justify-stretch items-stretch mb-4">
@@ -21,7 +21,9 @@ export const PhotoID = ({ card: { photo_url, description, date } }: { card: TD.I
         )}
       </div>
       <div className="text-lg">{description}</div>
-      {date && <div className="font-bold">Photo date {date.toLocaleDateString('en-CA', date_format)}</div>}
+      {upload_date && (
+        <div className="font-bold">Upload date {upload_date.toLocaleDateString('en-CA', date_format)}</div>
+      )}
     </div>
   )
 }

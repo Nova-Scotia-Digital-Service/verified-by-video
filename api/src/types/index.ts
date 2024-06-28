@@ -22,7 +22,7 @@ export type DBSubmission = {
 
 export type DBIdentificationCard = {
   id: string
-  submission_id: string
+  session_id: string
   description: string
   photo_url?: string
   upload_date?: Date
