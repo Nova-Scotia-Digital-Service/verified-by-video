@@ -14,9 +14,6 @@ const palette = {
 module.exports = {
   content: ['./public/*.html', './src/*.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
-    minWidth: {
-      min: '420px',
-    },
     container: {
       center: true,
     },
@@ -52,6 +49,9 @@ module.exports = {
     extend: {
       boxShadow: {
         input: 'inset 0px 0px 0px 1px rgba(0, 0, 0, 0.25)',
+      },
+      minWidth: {
+        min: '420px',
       },
     },
   },

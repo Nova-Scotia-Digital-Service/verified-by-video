@@ -13,7 +13,9 @@ expect.addSnapshotSerializer({
 describe('ReviewController', () => {
   describe('getReviewList', () => {
     it('returns data', async () => {
-      expect(await new ReviewController().getReviewList()).toMatchSnapshot()
+      const reviewList = await new ReviewController().getReviewList()
+      expect(reviewList.length).toBe(2)
+      expect(reviewList).toMatchSnapshot()
     })
   })
 
@@ -41,6 +43,40 @@ describe('ReviewController', () => {
       }
 
       await new ReviewController().postReview(reviewId, reviewAnswers)
+    })
+  })
+
+  describe('applyTagToReview', () => {
+    it('applies a tag to a review', async () => {
+      const reviewId = 'cbb5b46a-ad3b-4a5f-954f-bff18024d1d6'
+      const tagId = 'fc1bdf3c-6457-4604-aeb6-48ba42a73eb9'
+
+      const reviewBefore = await new ReviewController().getReview(reviewId)
+      expect(reviewBefore.tags).toEqual([])
+
+      await new ReviewController().applyTagToReview(reviewId, { tag_id: tagId })
+
+      const reviewAfter = await new ReviewController().getReview(reviewId)
+      expect(reviewAfter.tags).toEqual(['Tag 3'])
+    })
+  })
+
+  describe('removeTagFromReview', () => {
+    it('removes a tag from a review', async () => {
+      const reviewId = 'cbb5b46a-ad3b-4a5f-954f-bff18024d1d6'
+      const otherReviewId = '532bd3f4-a0c5-4a97-87a9-19d46981747d'
+
+      const reviewBefore = await new ReviewController().getReview(reviewId)
+      const otherReviewBefore = await new ReviewController().getReview(otherReviewId)
+      expect(reviewBefore.tags).toEqual(['Tag 3'])
+      expect(otherReviewBefore.tags.length).toBe(2)
+
+      await new ReviewController().removeTagFromReview(reviewId, 'Tag 3')
+
+      const reviewAfter = await new ReviewController().getReview(reviewId)
+      const otherReviewAfter = await new ReviewController().getReview(otherReviewId)
+      expect(reviewAfter.tags).toEqual([])
+      expect(otherReviewAfter.tags.length).toBe(2)
     })
   })
 })

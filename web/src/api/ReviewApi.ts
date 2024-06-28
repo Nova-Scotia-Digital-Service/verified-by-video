@@ -13,3 +13,15 @@ export const getReviewDetail = (reviewId: string) => {
 export const postReviewAnswers = (reviewId: string, data: { [question: string]: string }) => {
   return api.post(`/reviews/${reviewId}`, data)
 }
+
+export const getTagList = () => {
+  return api.get<TD.Tag[]>('/tags')
+}
+
+export const applyReviewTag = (reviewId: string, tagId: string) => {
+  return api.post(`/reviews/${reviewId}/tag`, { tag_id: tagId })
+}
+
+export const removeReviewTag = (reviewId: string, tagText: string) => {
+  return api.delete(`/reviews/${reviewId}/tag/${tagText}`)
+}

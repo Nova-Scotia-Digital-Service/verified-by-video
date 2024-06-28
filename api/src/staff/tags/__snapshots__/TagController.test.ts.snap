@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TagController createTag adds a new tag to list of tags 1`] = `
+[
+  {
+    "id": Any<UUID>,
+    "text": "Tag 1",
+  },
+  {
+    "id": Any<UUID>,
+    "text": "Tag 2",
+  },
+  {
+    "id": Any<UUID>,
+    "text": "Tag 3",
+  },
+  {
+    "id": Any<UUID>,
+    "text": "Some new tag",
+  },
+]
+`;
+
+exports[`TagController getTagList returns a list of tags 1`] = `
+[
+  {
+    "id": Any<UUID>,
+    "text": "Tag 1",
+  },
+  {
+    "id": Any<UUID>,
+    "text": "Tag 2",
+  },
+  {
+    "id": Any<UUID>,
+    "text": "Tag 3",
+  },
+]
+`;

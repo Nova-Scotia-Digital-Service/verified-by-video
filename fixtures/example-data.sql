@@ -91,4 +91,12 @@ BEGIN;
         ('357a3e84-8376-4594-ab3f-a6b8c436c2da', '676fac34-b6e5-4cff-b523-0a4bbc7bca88', 'Yes I am confident'),
         ('6fea484e-c28e-45b2-ab38-a84a4790eefa', '676fac34-b6e5-4cff-b523-0a4bbc7bca88', 'Possible suspicious activity'),
         ('d2d4ec17-dff5-4ece-8923-44f6130d195f', '676fac34-b6e5-4cff-b523-0a4bbc7bca88', 'Not confident enough to verify for other reason');
+
+    INSERT INTO public.tags VALUES
+        ('1529c4ad-c5f7-404c-b880-6ffc9ad4ca1c', 'Tag 1'),
+        ('67302e01-4197-47e1-b78e-466064ac5691', 'Tag 2'),
+        ('fc1bdf3c-6457-4604-aeb6-48ba42a73eb9', 'Tag 3');
+    INSERT INTO public.review_tags VALUES
+        ('0f1e96ec-2008-4f3d-9f48-79e3783e237f', '532bd3f4-a0c5-4a97-87a9-19d46981747d', '1529c4ad-c5f7-404c-b880-6ffc9ad4ca1c'),
+        ('ccf3bece-7df3-453d-9d3b-373461e13839', '532bd3f4-a0c5-4a97-87a9-19d46981747d', '67302e01-4197-47e1-b78e-466064ac5691');
 COMMIT;

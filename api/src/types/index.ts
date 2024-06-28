@@ -39,4 +39,10 @@ export type DBReviewSummary = Pick<
   'id' | 'status' | 'video_url' | 'upload_date' | 'session_id'
 > & {
   submission_id: DBSubmission['id']
+  tags: DBTag['text'][]
+}
+
+export type DBTag = {
+  id: string
+  text: string
 }

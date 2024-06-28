@@ -1,13 +1,20 @@
 import * as TD from '../../types'
 
-import { Get, Controller, Param, UseGuards, Post, Body } from '@nestjs/common'
-import { ApiBearerAuth as SwaggerRequireAuth } from '@nestjs/swagger'
+import { Get, Controller, Param, UseGuards, Post, Body, Delete } from '@nestjs/common'
+import { ApiProperty, ApiBearerAuth as SwaggerRequireAuth } from '@nestjs/swagger'
 
 import { AuthGuard } from '../auth/AuthGuard'
 
-import { getReview, getReviewList, postReviewAnswers } from './ReviewData'
 import { minioClient } from '../../minio'
 import config from '../../config'
+
+import { getReview, getReviewList, postReviewAnswers } from './ReviewData'
+import { applyTagToReview, removeTagFromReview } from '../tags/TagData'
+
+class ReviewTagBodySchema {
+  @ApiProperty({ type: 'string' })
+  tag_id!: string
+}
 
 @Controller('/staff/reviews')
 export class ReviewController {
@@ -15,9 +22,10 @@ export class ReviewController {
   @SwaggerRequireAuth()
   @Get('/')
   public async getReviewList(): Promise<TD.ReviewList> {
-    return (await getReviewList()).map(({ id, status, submission_id, session_id, video_url, upload_date }) => ({
+    return (await getReviewList()).map(({ id, status, tags, submission_id, session_id, video_url, upload_date }) => ({
       id,
       status,
+      tags,
       submission: {
         id: submission_id,
         session_id,
@@ -64,7 +72,7 @@ export class ReviewController {
 
     const signedIdentificationCards = await Promise.all(
       identification_cards.map(async (card) => {
-        if (card.photo_url === undefined) return card
+        if (!card.photo_url) return card
 
         let signedPhotoUrl = await minioClient.presignedGetObject(config.S3_BUCKET_NAME, card.photo_url, 60 * 60)
         if (config.NODE_ENV === 'development') {
@@ -96,5 +104,25 @@ export class ReviewController {
   @Post('/:review_id')
   public async postReview(@Param('review_id') review_id: string, @Body() review_answers): Promise<void> {
     await postReviewAnswers(review_id, Object.values(review_answers))
+  }
+
+  @UseGuards(AuthGuard)
+  @SwaggerRequireAuth()
+  @Post('/:review_id/tag')
+  public async applyTagToReview(
+    @Param('review_id') review_id: string,
+    @Body() { tag_id }: ReviewTagBodySchema,
+  ): Promise<void> {
+    await applyTagToReview(review_id, tag_id)
+  }
+
+  @UseGuards(AuthGuard)
+  @SwaggerRequireAuth()
+  @Delete('/:review_id/tag/:tag_text')
+  public async removeTagFromReview(
+    @Param('review_id') review_id: string,
+    @Param('tag_text') tag_text: string,
+  ): Promise<void> {
+    await removeTagFromReview(review_id, tag_text)
   }
 }

@@ -11,9 +11,16 @@ export const getReviewList = async () => {
       submissions.id as submission_id,
       submissions.session_id,
       submissions.video_url,
-      submissions.upload_date
+      submissions.upload_date,
+      array_remove(
+        array_agg(tags.text),
+        NULL
+      ) AS tags
     FROM reviews
-    JOIN submissions ON submissions.id = reviews.submission_id`)
+    JOIN submissions ON submissions.id = reviews.submission_id
+    LEFT JOIN review_tags ON review_tags.review_id = reviews.id
+    LEFT JOIN tags ON tags.id = review_tags.tag_id
+    GROUP BY submissions.id, reviews.id`)
 
   return reviews.rows
 }
@@ -29,10 +36,17 @@ export const getReview = async (review_id: string) => {
       submissions.id as submission_id,
       submissions.session_id,
       submissions.video_url,
-      submissions.upload_date
+      submissions.upload_date,
+      array_remove(
+        array_agg(tags.text),
+        NULL
+      ) AS tags
     FROM reviews
     JOIN submissions ON submissions.id = reviews.submission_id
-    WHERE reviews.id = $1`,
+    LEFT JOIN review_tags ON review_tags.review_id = reviews.id
+    LEFT JOIN tags ON tags.id = review_tags.tag_id
+    WHERE reviews.id = $1
+    GROUP BY submissions.id, reviews.id`,
     [review_id],
   )
   const questions = await client.query<{ id: string; question: string; option_id: string; option_text: string }>(

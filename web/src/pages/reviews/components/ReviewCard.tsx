@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom'
 
 import { paths } from '../../../paths'
 
-export interface Props {
+import { TagCloud } from './TagCloud'
+
+type ReviewCardProps = {
   review: TD.ReviewSummary
 }
 
@@ -14,10 +16,13 @@ const DATE_FORMAT: Intl.DateTimeFormatOptions = {
   day: 'numeric',
 }
 
-export const ReviewCard: React.FC<Props> = ({ review }) => {
+export const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
   return (
     <div className="flex flex-col overflow-hidden justify-between border shrink-0 grow-0 rounded-xl w-72 h-96">
-      <div className="m-3">Uploaded {review.submission.upload_date.toLocaleDateString('en-CA', DATE_FORMAT)}</div>
+      <div className="m-3">
+        <div className="mb-2">Uploaded {review.submission.upload_date.toLocaleDateString('en-CA', DATE_FORMAT)}</div>
+        <TagCloud reviewId={review.id} tags={review.tags} />
+      </div>
       <div className="flex justify-center items-center px-4 py-6 bg-off-white">
         <Link
           to={paths.reviewDetail({ reviewId: review.id })}

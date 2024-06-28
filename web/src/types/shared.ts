@@ -33,6 +33,7 @@ export type Review = {
   id: string
   status: ReviewStatus
   submission: Submission
+  tags: Tag['text'][]
   prompts: Prompt[]
   identification_cards: IdentificationCard[]
   questions: ReviewQuestion[]
@@ -48,6 +49,11 @@ export type ReviewQuestion = {
     id: string
     text: string
   }[]
+}
+
+export type Tag = {
+  id: string
+  text: string
 }
 
 export type LoginResponse = {

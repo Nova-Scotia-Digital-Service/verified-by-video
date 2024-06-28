@@ -11,6 +11,7 @@ import { HorizontalRule } from '../../components/HorizontalRule'
 import { getReviewDetail, postReviewAnswers } from '../../api/ReviewApi'
 import { useResponse } from '../../hooks/useResponse'
 
+import { TagCloud } from './components/TagCloud'
 import { ReviewQuestion } from './components/ReviewQuestion'
 import { PhotoID } from './components/PhotoID'
 
@@ -72,9 +73,11 @@ export const ReviewPage: React.FC = () => {
               <div>
                 <div className="mb-12">
                   <div className="font-bold text-md">Video Date</div>
-                  <div className="font-bold text-2xl">
+                  <div className="font-bold text-2xl mb-2">
                     {review.submission.upload_date.toLocaleDateString('en-CA', DATE_FORMAT)}{' '}
                   </div>
+
+                  <TagCloud reviewId={review.id} tags={review.tags} />
                 </div>
                 <div className="max-w-96">
                   <h3 className="font-bold text-2xl mb-4">Prompts the user was provided in the mobile app:</h3>

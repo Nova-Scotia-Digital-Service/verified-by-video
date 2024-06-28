@@ -231,6 +231,10 @@ exports[`ReviewController getReview returns data 1`] = `
     "video_url": Any<SignedURL>,
   },
   "submission_id": "214f747f-778a-4d4b-ab3b-5ed0c9410c69",
+  "tags": [
+    "Tag 1",
+    "Tag 2",
+  ],
   "upload_date": 2024-05-08T19:01:48.776Z,
   "video_url": "/media/example-video.mp4",
 }
@@ -247,6 +251,10 @@ exports[`ReviewController getReviewList returns data 1`] = `
       "upload_date": 2024-05-08T19:01:48.776Z,
       "video_url": "/media/example-video.mp4",
     },
+    "tags": [
+      "Tag 1",
+      "Tag 2",
+    ],
   },
   {
     "id": "cbb5b46a-ad3b-4a5f-954f-bff18024d1d6",
@@ -257,6 +265,7 @@ exports[`ReviewController getReviewList returns data 1`] = `
       "upload_date": 2024-05-10T13:05:18.691Z,
       "video_url": "/media/example-video.mp4",
     },
+    "tags": [],
   },
 ]
 `;
