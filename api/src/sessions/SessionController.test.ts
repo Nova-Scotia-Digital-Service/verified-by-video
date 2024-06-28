@@ -1,5 +1,7 @@
 import * as TD from '../types'
 
+import { pool } from '../db'
+
 import { SessionController } from './SessionController'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
@@ -22,4 +24,8 @@ describe('SessionController', () => {
       expect(newSession.prompts).toStrictEqual(expectedPrompts)
     })
   })
+})
+
+afterAll(() => {
+  pool.end()
 })

@@ -1,3 +1,5 @@
+import { pool } from '../../db'
+
 import { ReviewController } from './ReviewController'
 
 const SIGNED_URL_REGEX = /^https?\:\/\/.*Amz-Signature=[0-9a-z]{64}$/
@@ -41,4 +43,8 @@ describe('ReviewController', () => {
       await new ReviewController().postReview(reviewId, reviewAnswers)
     })
   })
+})
+
+afterAll(() => {
+  pool.end()
 })

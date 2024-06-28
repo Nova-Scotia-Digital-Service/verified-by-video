@@ -1,5 +1,7 @@
 import { Readable } from 'stream'
 
+import { pool } from '../db'
+
 import { SubmissionController } from './SubmissionController'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
@@ -43,4 +45,8 @@ describe('SubmissionController', () => {
       })
     })
   })
+})
+
+afterAll(() => {
+  pool.end()
 })

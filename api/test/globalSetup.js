@@ -47,7 +47,7 @@ module.exports = async function (globalConfig, projectConfig) {
   console.log('...migrations complete.')
 
   console.log(`Populating test database...`)
-  const data = await fs.readFile('db/fixtures/example-data.sql', { encoding: 'utf-8' })
+  const data = await fs.readFile('fixtures/example-data.sql', { encoding: 'utf-8' })
   await testDbClient.query(data)
   await testDbClient.end()
   console.log('...test database populated.')

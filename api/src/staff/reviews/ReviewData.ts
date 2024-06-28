@@ -1,12 +1,10 @@
 import * as TD from '../../types'
 
-import { pgClient } from '../../db'
+import { pool } from '../../db'
 import { buildPgParams } from '../../utils/buildPgParams'
 
 export const getReviewList = async () => {
-  const client = pgClient()
-  await client.connect()
-  const reviews = await client.query<TD.DBReviewSummary>(`
+  const reviews = await pool.query<TD.DBReviewSummary>(`
     SELECT
       reviews.id,
       reviews.status,
@@ -16,14 +14,13 @@ export const getReviewList = async () => {
       submissions.upload_date
     FROM reviews
     JOIN submissions ON submissions.id = reviews.submission_id`)
-  await client.end()
 
   return reviews.rows
 }
 
 export const getReview = async (review_id: string) => {
-  const client = pgClient()
-  await client.connect()
+  const client = await pool.connect()
+  await client.query('BEGIN')
   const review = await client.query<TD.DBReviewSummary>(
     `
     SELECT
@@ -72,14 +69,15 @@ export const getReview = async (review_id: string) => {
     WHERE submission_id = $1`,
     [review.rows[0].submission_id],
   )
-  await client.end()
+  await client.query('COMMIT')
+  await client.release()
 
   return [review.rows[0], questions.rows, prompts.rows, identification_cards.rows] as const
 }
 
 export const postReviewAnswers = async (review_id: string, answers: string[]) => {
-  const client = pgClient()
-  await client.connect()
+  const client = await pool.connect()
+  await client.query('BEGIN')
   await client.query(
     `
     INSERT INTO review_answers
@@ -95,5 +93,6 @@ export const postReviewAnswers = async (review_id: string, answers: string[]) =>
     WHERE id = $1`,
     [review_id],
   )
-  await client.end()
+  await client.query('COMMIT')
+  await client.release()
 }

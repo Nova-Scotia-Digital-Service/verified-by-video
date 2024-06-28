@@ -10,6 +10,7 @@ RUN yarn install
 
 COPY api .
 COPY db ./db
+COPY fixtures ./fixtures
 
 FROM install AS build
 

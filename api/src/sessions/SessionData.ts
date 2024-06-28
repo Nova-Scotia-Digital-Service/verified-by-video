@@ -1,6 +1,6 @@
 import * as TD from '../types'
 
-import { pgClient } from '../db'
+import { pool } from '../db'
 
 export const prompts: TD.Prompt[] = [
   { id: '10125e01-642d-4be5-bf1c-2e0575091b23', text: 'Hold up two fingers', type: 'text' },
@@ -9,8 +9,7 @@ export const prompts: TD.Prompt[] = [
 ]
 
 export const createSession = async () => {
-  const client = pgClient()
-  await client.connect()
+  const client = await pool.connect()
   await client.query('BEGIN')
   const createdSession = await client.query<TD.DBSession>(`
     INSERT INTO sessions
@@ -29,7 +28,7 @@ export const createSession = async () => {
     [createdSession.rows[0].id, prompts[0].text, prompts[1].text, prompts[2].text],
   )
   await client.query('COMMIT')
-  await client.end()
+  await client.release()
 
   if (createdSession.rows.length !== 1) throw new Error('Unexpected number of rows returned when creating session.')
   return {
