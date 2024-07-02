@@ -8,6 +8,6 @@ export const stringsToDates = (object: any) => {
   for (const key of Object.keys(object)) {
     const value = object[key]
     if (isIsoDateString(value)) object[key] = new Date(value)
-    else if (typeof value === 'object') stringsToDates(value)
+    else if (value && typeof value === 'object') stringsToDates(value)
   }
 }

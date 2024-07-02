@@ -240,6 +240,61 @@ exports[`ReviewController getReview returns data 1`] = `
 }
 `;
 
+exports[`ReviewController getReview returns data 2`] = `
+{
+  "id": "cbb5b46a-ad3b-4a5f-954f-bff18024d1d6",
+  "identification_cards": [
+    {
+      "description": "Photo on Nova Scotia Health Card",
+      "id": "caa2e19c-0024-4011-bafd-aa6dcdc51b8c",
+      "photo_url": null,
+      "session_id": "33aeaab8-0a6f-477f-815a-eb0559b1ba3a",
+      "upload_date": null,
+    },
+    {
+      "description": "Photo from the mobile app",
+      "id": "ec302835-cdcc-459a-bd5f-368b865a6a8a",
+      "photo_url": Any<SignedURL>,
+      "session_id": "33aeaab8-0a6f-477f-815a-eb0559b1ba3a",
+      "upload_date": 2024-05-08T19:03:51.000Z,
+    },
+  ],
+  "prompts": [
+    {
+      "id": "4233b4fe-1690-4c4e-b6d7-06b3be941be0",
+      "session_id": "33aeaab8-0a6f-477f-815a-eb0559b1ba3a",
+      "text": "Close your eyes",
+      "type": "text",
+    },
+    {
+      "id": "2f5f457c-001c-464d-b224-3eb982af45f7",
+      "session_id": "33aeaab8-0a6f-477f-815a-eb0559b1ba3a",
+      "text": "Hold up right palm",
+      "type": "text",
+    },
+    {
+      "id": "50ff9898-9bba-43be-ab68-8dcb9ec3e879",
+      "session_id": "33aeaab8-0a6f-477f-815a-eb0559b1ba3a",
+      "text": "Nod your head",
+      "type": "text",
+    },
+  ],
+  "questions": [],
+  "session_id": "33aeaab8-0a6f-477f-815a-eb0559b1ba3a",
+  "status": "DENIED",
+  "submission": {
+    "id": "be5a2859-8c30-4970-978f-ea30b295ad86",
+    "session_id": "33aeaab8-0a6f-477f-815a-eb0559b1ba3a",
+    "upload_date": 2024-05-10T13:05:18.691Z,
+    "video_url": Any<SignedURL>,
+  },
+  "submission_id": "be5a2859-8c30-4970-978f-ea30b295ad86",
+  "tags": [],
+  "upload_date": 2024-05-10T13:05:18.691Z,
+  "video_url": "/media/example-video.mp4",
+}
+`;
+
 exports[`ReviewController getReviewList returns data 1`] = `
 [
   {

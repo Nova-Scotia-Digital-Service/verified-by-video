@@ -21,8 +21,8 @@ describe('ReviewController', () => {
 
   describe('getReview', () => {
     it('returns data', async () => {
-      const reviewId = '532bd3f4-a0c5-4a97-87a9-19d46981747d'
-      expect(await new ReviewController().getReview(reviewId)).toMatchSnapshot()
+      expect(await new ReviewController().getReview('532bd3f4-a0c5-4a97-87a9-19d46981747d')).toMatchSnapshot()
+      expect(await new ReviewController().getReview('cbb5b46a-ad3b-4a5f-954f-bff18024d1d6')).toMatchSnapshot()
     })
   })
 
