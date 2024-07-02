@@ -39,9 +39,7 @@ export const createSubmission = async (session_id: string, video_url: string) =>
 }
 
 export const createPhotoID = async (session_id: string, description: string, photo_url: string) => {
-  const client = pgClient()
-  await client.connect()
-  const createdPhotoID = await client.query<TD.DBIdentificationCard>(
+  const createdPhotoID = await pool.query<TD.DBIdentificationCard>(
     `
     INSERT INTO identification_cards (session_id, description, photo_url)
     VALUES
@@ -50,7 +48,6 @@ export const createPhotoID = async (session_id: string, description: string, pho
   `,
     [session_id, description, photo_url],
   )
-  await client.end()
 
   return createdPhotoID.rows[0]
 }
