@@ -12,6 +12,7 @@ import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage'
 import { ReviewListPage } from './pages/reviews/ReviewListPage'
 import { ReviewPage } from './pages/reviews/ReviewDetailPage'
 import { PageNotFound } from './pages/PageNotFound'
+import { TagAdminPage } from './pages/admin/TagAdminPage'
 
 const AuthenticationRequired = () => {
   const isAuthenticated = useIsAuthenticated()
@@ -35,6 +36,7 @@ function App() {
           <Route element={<AuthenticationRequired />}>
             <Route path={paths.reviewList.pattern} element={<ReviewListPage />} />
             <Route path={paths.reviewDetail.pattern} element={<ReviewPage />} />
+            <Route path={paths.tagAdmin.pattern} element={<TagAdminPage />} />
           </Route>
 
           <Route path="*" element={<PageNotFound />} />

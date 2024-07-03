@@ -1,23 +1,12 @@
-export const Input = ({
-  label,
-  placeholder,
-  required,
-  type,
-}: {
+type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string
-  placeholder?: string
-  required?: boolean
-  type?: React.HTMLInputTypeAttribute
-}) => {
+}
+
+export const Input: React.FC<InputProps> = ({ label, ...props }) => {
   return (
     <div className="mt-2">
       <label className="block text-title font-semibold">{label}</label>
-      <input
-        placeholder={placeholder}
-        type={type}
-        required={required}
-        className="w-full shadow-input rounded-md p-3 text-sm text-input-text bg-input-background"
-      />
+      <input className="w-full shadow-input rounded-md p-3 text-sm text-input-text bg-input-background" {...props} />
     </div>
   )
 }

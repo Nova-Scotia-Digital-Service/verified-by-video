@@ -2,10 +2,14 @@ import * as TD from '../../../types'
 
 import { useEffect, useRef } from 'react'
 
-import { applyReviewTag, getTagList, removeReviewTag } from '../../../api/ReviewApi'
+import { applyReviewTag, removeReviewTag } from '../../../api/ReviewApi'
+import { getTagList } from '../../../api/TagApi'
+
 import { useResponse } from '../../../hooks/useResponse'
-import { AwaitResponse } from '../../../components/AwaitResponse'
 import { useClickOutside } from '../../../hooks/useClickOutside'
+
+import { AwaitResponse } from '../../../components/AwaitResponse'
+import { TagPill } from '../../../components/TagPill'
 
 type TagDropdownProps = {
   reviewId: string
@@ -30,7 +34,7 @@ export const TagDropdown: React.FC<TagDropdownProps> = ({ reviewId, tags, setTag
 
   useClickOutside(dropdownRef, close)
 
-  const toggleTag = (tagToToggle: TD.Tag) => () => {
+  const toggleTag = (tagToToggle: TD.Tag) => {
     if (tags.includes(tagToToggle.text)) {
       removeReviewTag(reviewId, tagToToggle.text).then((response) => {
         if (response.status === 200) {
@@ -54,18 +58,13 @@ export const TagDropdown: React.FC<TagDropdownProps> = ({ reviewId, tags, setTag
       <div className="mb-2 font-bold">Tags</div>
       <AwaitResponse response={tagListResponse}>
         {(tagList) => (
-          <div className="flex gap-1 flex-wrap">
+          <div className="flex gap-2 flex-wrap">
             {tagList.map((tag) => {
               const isSelected = tags.includes(tag.text)
 
               return (
-                <button
-                  type="button"
-                  key={tag.id}
-                  onClick={toggleTag(tag)}
-                  className={`text-left px-2 py-0.5 bg-slate text-sm rounded ${isSelected ? 'outline outline-1' : ''}`}
-                >
-                  {tag.text}
+                <button type="button" key={tag.id} onClick={() => toggleTag(tag)}>
+                  <TagPill text={tag.text} isActive={isSelected} />
                 </button>
               )
             })}

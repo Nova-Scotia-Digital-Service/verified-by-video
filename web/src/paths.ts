@@ -6,4 +6,5 @@ export const paths = {
   forgotPassword: path('/auth/forgot-password'),
   reviewList: path('/reviews'),
   reviewDetail: path('/reviews/:reviewId'),
+  tagAdmin: path('/admin/tags'),
 }

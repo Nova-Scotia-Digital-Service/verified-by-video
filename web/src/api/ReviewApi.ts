@@ -14,10 +14,6 @@ export const postReviewAnswers = (reviewId: string, data: { [question: string]: 
   return api.post(`/reviews/${reviewId}`, data)
 }
 
-export const getTagList = () => {
-  return api.get<TD.Tag[]>('/tags')
-}
-
 export const applyReviewTag = (reviewId: string, tagId: string) => {
   return api.post(`/reviews/${reviewId}/tag`, { tag_id: tagId })
 }

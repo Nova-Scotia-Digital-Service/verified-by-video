@@ -12,14 +12,37 @@ export const getTagList = async () => {
 }
 
 export const createTag = async (text: string) => {
-  await pool.query(
+  const result = await pool.query(
     `
     INSERT INTO tags
       (text)
     VALUES
-      ($1)`,
+      ($1)
+    RETURNING id, text`,
     [text],
   )
+
+  return result.rows[0]
+}
+
+export const deleteTag = async (tagId: string) => {
+  const client = await pool.connect()
+  await client.query('BEGIN')
+  await client.query(
+    `
+    DELETE FROM review_tags
+    WHERE
+      review_tags.tag_id = $1`,
+    [tagId],
+  )
+  await client.query(
+    `
+    DELETE FROM tags
+    WHERE
+      tags.id = $1`,
+    [tagId],
+  )
+  await client.query('COMMIT')
 }
 
 export const applyTagToReview = async (reviewId: string, tagId: string) => {
