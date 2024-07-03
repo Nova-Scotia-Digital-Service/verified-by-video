@@ -5,12 +5,15 @@ import { useEffect, useState } from 'react'
 import { getReviewList } from '../../api/ReviewApi'
 import { useResponse } from '../../hooks/useResponse'
 
+import { AwaitResponse } from '../../components/AwaitResponse'
+
 import { ReviewCard } from './components/ReviewCard'
 import { TabButton } from './components/TabButton'
-import { AwaitResponse } from '../../components/AwaitResponse'
+import { TagFilter } from './components/TagFilter'
 
 export const ReviewListPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<TD.ReviewStatus>('PENDING')
+  const [filteredTags, setFilteredTags] = useState<string[]>([])
   const [reviewListResponse, setReviewListResponse] = useResponse<TD.ReviewList>()
 
   useEffect(() => {
@@ -39,11 +42,17 @@ export const ReviewListPage: React.FC = () => {
         </TabButton>
       </div>
 
+      <TagFilter filteredTags={filteredTags} setFilteredTags={setFilteredTags} />
+
       <AwaitResponse response={reviewListResponse}>
         {(reviews) => (
           <div className="flex gap-8 flex-wrap">
             {reviews
-              .filter((review) => review.status === statusFilter)
+              .filter(
+                (review) =>
+                  review.status === statusFilter &&
+                  (filteredTags.length === 0 || review.tags.some((rt) => filteredTags.includes(rt))),
+              )
               .map((review) => {
                 return <ReviewCard key={review.id} review={review} />
               })}
