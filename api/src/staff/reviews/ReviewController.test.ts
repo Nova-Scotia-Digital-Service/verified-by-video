@@ -1,8 +1,18 @@
 import { pool } from '../../db'
+import { unpopulateDb, populateDb } from '../../../test/testUtils'
 
 import { ReviewController } from './ReviewController'
 
 const SIGNED_URL_REGEX = /^https?\:\/\/.*Amz-Signature=[0-9a-z]{64}$/
+
+beforeAll(async () => {
+  await populateDb()
+})
+
+afterAll(async () => {
+  await unpopulateDb()
+  await pool.end()
+})
 
 // replace variable signed urls in snapshot with constant string
 expect.addSnapshotSerializer({
@@ -79,8 +89,4 @@ describe('ReviewController', () => {
       expect(otherReviewAfter.tags.length).toBe(2)
     })
   })
-})
-
-afterAll(() => {
-  pool.end()
 })

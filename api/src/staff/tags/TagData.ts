@@ -43,6 +43,7 @@ export const deleteTag = async (tagId: string) => {
     [tagId],
   )
   await client.query('COMMIT')
+  await client.release()
 }
 
 export const applyTagToReview = async (reviewId: string, tagId: string) => {

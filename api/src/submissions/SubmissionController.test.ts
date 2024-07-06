@@ -1,12 +1,22 @@
 import { Readable } from 'stream'
 
 import { pool } from '../db'
+import { populateDb, unpopulateDb } from '../../test/testUtils'
 
 import { SubmissionController } from './SubmissionController'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 const VIDEO_URL_REGEX = /^media\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}.mp4$/
 const PHOTO_URL_REGEX = /^media\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}.png$/
+
+beforeAll(async () => {
+  await populateDb()
+})
+
+afterAll(async () => {
+  await unpopulateDb()
+  await pool.end()
+})
 
 describe('SubmissionController', () => {
   describe('createPhotoID', () => {
@@ -72,8 +82,4 @@ describe('SubmissionController', () => {
       })
     })
   })
-})
-
-afterAll(() => {
-  pool.end()
 })

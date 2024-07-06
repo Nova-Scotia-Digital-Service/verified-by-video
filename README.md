@@ -10,36 +10,28 @@ Verify users liveliness and presence by choreographed video
 cp env.template .env
 ```
 
-2. Create MinIO access keys
+2. Install dependencies
 
 ```
-docker compose up minio
+yarn install
 ```
 
-Log in to the MinIO console at `http://localhost:9001`. Use the root username and password from the `.env` file.
-
-Create a new access key pair. Save the values to `.env` as `MINIO_ACCESS_KEY` and `MINIO_SECRET_ACCESS_KEY`.
-
-3. Define the database
+3. Start the services
 
 ```
-docker compose up postgres
+docker compose up --build
+```
+
+4. Initialize the database
+
+```
 yarn migrate up
 ```
 
-Use the Postgres password from the `.env` file.
-
-4. Populate the database (optional)
+Optionally populate the database with example data
 
 ```
 psql -h localhost -U postgres verified_by_video -f ./fixtures/example-data.sql
-```
-
-5. Restart and build all docker services
-
-```
-docker compose down
-docker compose up --build
 ```
 
 ## Development

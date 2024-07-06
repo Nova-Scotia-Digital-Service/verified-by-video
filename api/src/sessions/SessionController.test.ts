@@ -1,10 +1,20 @@
 import * as TD from '../types'
 
 import { pool } from '../db'
+import { unpopulateDb, populateDb } from '../../test/testUtils'
 
 import { SessionController } from './SessionController'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+
+beforeAll(async () => {
+  await populateDb()
+})
+
+afterAll(async () => {
+  await unpopulateDb()
+  await pool.end()
+})
 
 describe('SessionController', () => {
   describe('createSession', () => {
@@ -24,8 +34,4 @@ describe('SessionController', () => {
       expect(newSession.prompts).toStrictEqual(expectedPrompts)
     })
   })
-})
-
-afterAll(() => {
-  pool.end()
 })

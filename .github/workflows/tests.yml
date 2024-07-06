@@ -2,6 +2,11 @@ name: Test Workflow
 
 on: [push]
 
+env:
+  PG_PASSWORD: postgres123
+  MINIO_ROOT_USER: minio
+  MINIO_ROOT_PASSWORD: minio123
+
 jobs:
   tests:
     name: Automated Tests
@@ -15,4 +20,5 @@ jobs:
           cache-dependency-path: 'yarn.lock'
       - run: yarn install --immutable
       - run: yarn check-format
-      - run: yarn test
+      - run: yarn test:web
+      - run: docker compose run --build api yarn test

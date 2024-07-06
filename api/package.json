@@ -15,7 +15,8 @@
     "start:nowatch": "ts-node src/index.ts",
     "build": "rm -rf build && tsc",
     "serve": "node build/api/src/index.js",
-    "test": "jest --watchAll",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -40,7 +41,7 @@
     "@types/uuid": "^9",
     "dotenv": "^16.3.1",
     "jest": "^29.7.0",
-    "node-pg-migrate": "^7.4.0",
+    "node-pg-migrate": "^7.5.2",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.3.2"

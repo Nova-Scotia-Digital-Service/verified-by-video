@@ -1,5 +1,7 @@
+const fs = require('fs/promises')
 const readline = require('node:readline/promises')
 
+const { runner } = require('node-pg-migrate')
 const minio = require('minio')
 const pg = require('pg')
 
@@ -31,4 +33,54 @@ const minioClient = new minio.Client({
   secretKey: process.env.MINIO_SECRET_ACCESS_KEY,
 })
 
-module.exports = { TERM_YELLOW, TERM_RESET, TEST_DB_NAME, TEST_BUCKET_NAME, prompt, getPgClient, minioClient }
+const populateDb = async (pool) => {
+  const testDbClient = getPgClient(TEST_DB_NAME)
+  await testDbClient.connect()
+  await runner({
+    dbClient: testDbClient,
+    dir: 'db/migrations',
+    direction: 'up',
+    logger: {
+      debug: () => {},
+      info: () => {},
+      warn: console.warn,
+      error: console.error,
+    },
+    noLock: true,
+  })
+
+  const data = await fs.readFile('fixtures/example-data.sql', { encoding: 'utf-8' })
+  await testDbClient.query(data)
+  await testDbClient.end()
+}
+
+const unpopulateDb = async () => {
+  const testDbClient = getPgClient(TEST_DB_NAME)
+  await testDbClient.connect()
+  await runner({
+    dbClient: testDbClient,
+    dir: 'db/migrations',
+    direction: 'down',
+    count: 999,
+    logger: {
+      debug: () => {},
+      info: () => {},
+      warn: console.warn,
+      error: console.error,
+    },
+    noLock: true,
+  })
+  await testDbClient.end()
+}
+
+module.exports = {
+  TERM_YELLOW,
+  TERM_RESET,
+  TEST_DB_NAME,
+  TEST_BUCKET_NAME,
+  prompt,
+  getPgClient,
+  minioClient,
+  populateDb,
+  unpopulateDb,
+}

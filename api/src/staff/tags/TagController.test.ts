@@ -1,8 +1,18 @@
 import { pool } from '../../db'
+import { unpopulateDb, populateDb } from '../../../test/testUtils'
 
 import { TagController } from './TagController'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+
+beforeAll(async () => {
+  await populateDb()
+})
+
+afterAll(async () => {
+  await unpopulateDb()
+  await pool.end()
+})
 
 // replace variable uuids in snapshot with constant string
 expect.addSnapshotSerializer({
@@ -35,8 +45,4 @@ describe('TagController', () => {
       expect(afterList).not.toContainEqual(tagToDelete)
     })
   })
-})
-
-afterAll(() => {
-  pool.end()
 })
