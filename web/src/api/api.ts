@@ -1,14 +1,24 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 
-import { store } from '../store/configureStore'
-import { stringsToDates } from '../utils/stringsToDates'
 import { apiBaseUrl } from '../config'
+
+import { store } from '../store/configureStore'
+import { logout } from '../store/slices/auth/authThunks'
+
+import { stringsToDates } from '../utils/stringsToDates'
 
 const coerceDates = (response: AxiosResponse) => {
   if (response.data && typeof response.data === 'object') {
     stringsToDates(response.data)
   }
   return response
+}
+
+const logoutOn401Unauthorized = (error: unknown) => {
+  if (axios.isAxiosError(error) && error.response?.status === 401) {
+    store.dispatch(logout())
+  }
+  return Promise.reject(error)
 }
 
 const setAuthHeader = (config: InternalAxiosRequestConfig) => {
@@ -20,5 +30,5 @@ const setAuthHeader = (config: InternalAxiosRequestConfig) => {
 }
 
 export const api = axios.create({ baseURL: apiBaseUrl })
-api.interceptors.response.use(coerceDates)
+api.interceptors.response.use(coerceDates, logoutOn401Unauthorized)
 api.interceptors.request.use(setAuthHeader)

@@ -1,17 +1,23 @@
-import { createStore, applyMiddleware, compose } from 'redux'
-import { thunk } from 'redux-thunk'
+import { configureStore, combineReducers } from '@reduxjs/toolkit'
 
-import rootReducer from './slices/index'
+import { authReducer } from './slices/auth/authSlice'
+import { tagReducer } from './slices/tag/tagSlice'
 
-declare global {
-  interface Window {
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose
-  }
-}
+const rootReducer = combineReducers({
+  auth: authReducer,
+  tags: tagReducer,
+})
 
-const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+export const store = configureStore({
+  reducer: ((state, action) => {
+    // clear entire store on logout
+    if (action.type === 'auth/logout/fulfilled') {
+      return undefined
+    }
 
-export const store = createStore(rootReducer, undefined, composeEnhancer(applyMiddleware(thunk)))
+    return rootReducer(state, action)
+  }) as typeof rootReducer,
+})
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
