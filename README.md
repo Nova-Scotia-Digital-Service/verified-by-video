@@ -25,13 +25,13 @@ docker compose up --build
 4. Initialize the database
 
 ```
-yarn migrate up
+yarn db:migrate up
 ```
 
 Optionally populate the database with example data
 
 ```
-psql -h localhost -U postgres verified_by_video -f ./fixtures/example-data.sql
+yarn db:populate
 ```
 
 ## Development
@@ -55,7 +55,7 @@ The Postgres service is exposed on the default port `5432`.
 To interact with the database:
 
 ```
-psql -h localhost -U postgres verified_by_video
+yarn db:psql
 ```
 
 ## Object Store

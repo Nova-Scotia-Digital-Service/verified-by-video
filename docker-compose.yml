@@ -76,6 +76,8 @@ services:
     ports:
       - ${POSTGRES_PORT_EXPOSED:-5432}:5432
     environment:
+      - PGUSER=postgres
+      - PGHOST=localhost
       - POSTGRES_DB=verified_by_video
       - POSTGRES_PASSWORD=${PG_PASSWORD:?}
 
