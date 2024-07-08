@@ -10,6 +10,9 @@ Verify users liveliness and presence by choreographed video
 cp env.template .env
 ```
 
+Create a secure, random, secret key for signing & verifiying JWTs.
+Add that key to `.env` as the value for `JWT_SECRET_KEY`.
+
 2. Install dependencies
 
 ```

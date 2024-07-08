@@ -18,6 +18,7 @@ services:
     command: yarn start
     environment:
       NODE_ENV: ${NODE_ENV:-development}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?}
       CI: ${CI-}
       PG_PASSWORD: ${PG_PASSWORD:?}
       PG_HOST: postgres

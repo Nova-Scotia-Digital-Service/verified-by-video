@@ -2,6 +2,6 @@ import * as TD from '../types'
 
 import { api } from './api'
 
-export const postLogin = () => {
-  return api.post<TD.LoginResponse>('/auth/login')
+export const postLogin = (data: { email: string; password: string }) => {
+  return api.post<TD.LoginResponse>('/auth/login', data)
 }

@@ -1,6 +1,13 @@
 import type * as TD from './shared'
 export type * from './shared'
 
+export type DBUser = {
+  id: string
+  email: string
+  full_name: string
+  is_admin: boolean
+}
+
 export type DBSession = {
   id: string
   created_at: Date

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { useAppDispatch } from '../../hooks/hooks'
 import { paths } from '../../paths'
@@ -10,6 +11,8 @@ import { postLogin } from '../../api/AuthApi'
 import { PrimaryButton } from '../../components/Button'
 import { Input } from '../../components/Input'
 import { ErrorIndicator } from '../../components/ErrorIndicator'
+
+type LoginFormInputs = { email: string; password: string }
 
 export const LoginPage: React.FC = () => {
   const isAuthenticated = useIsAuthenticated()
@@ -26,10 +29,14 @@ export const LoginPage: React.FC = () => {
     }
   })
 
-  const handleSubmit: React.FormEventHandler = (event) => {
-    event.preventDefault()
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<LoginFormInputs>()
 
-    postLogin()
+  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
+    postLogin(data)
       .then((response) => {
         dispatch(login(response.data.token)).then(() => {
           const nextPath = nextParam || paths.reviewList({})
@@ -42,11 +49,11 @@ export const LoginPage: React.FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col w-96 mx-auto">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-96 mx-auto">
       <h2 className="text-4xl font-bold text-title mt-32 mb-16">Log in to your account</h2>
 
-      <Input label="Email" type="email" required placeholder="jamie.ohara@example.ca" />
-      <Input label="Password" type="password" required placeholder="********" />
+      <Input label="Email" type="email" required placeholder="jamie.ohara@example.ca" register={register('email')} />
+      <Input label="Password" type="password" placeholder="********" register={register('password')} />
 
       <Link to={paths.forgotPassword({})} className="block self-end mt-2 underline text-link hover:no-underline">
         Forgot Password

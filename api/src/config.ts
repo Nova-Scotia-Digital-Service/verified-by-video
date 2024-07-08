@@ -4,6 +4,7 @@ type Config = {
   NODE_ENV: string
   HOST: string
   PORT: string
+  JWT_SECRET_KEY: string
   PG_USER: string
   PG_PASSWORD: string
   PG_HOST: string
@@ -13,8 +14,10 @@ type Config = {
   S3_BUCKET_NAME: string
 }
 
+const REQUIRED_ENV_VARS = ['JWT_SECRET_KEY', 'PG_PASSWORD', 'MINIO_ACCESS_KEY', 'MINIO_SECRET_ACCESS_KEY'] as const
+
 // default configuration settings
-const config: Omit<Config, 'PG_PASSWORD' | 'MINIO_ACCESS_KEY' | 'MINIO_SECRET_ACCESS_KEY'> = {
+const config: Omit<Config, (typeof REQUIRED_ENV_VARS)[number]> = {
   NODE_ENV: 'production', // assume production environment unless explicitly stated otherwise
   HOST: '0.0.0.0',
   PORT: '3100',
@@ -30,14 +33,10 @@ dotenv.config({ processEnv: config, path: '../.env', override: true })
 // override with environment variables from process.env
 dotenv.populate(config, process.env as DotenvPopulateInput, { override: true })
 
-if (!config['PG_PASSWORD']) {
-  throw new Error('Required environment variable PG_PASSWORD not found.')
-}
-
-if (!config['MINIO_ACCESS_KEY'] || !config['MINIO_SECRET_ACCESS_KEY']) {
-  throw new Error(
-    'MinIO access keys not found. Please add enviroment variables MINIO_ACCESS_KEY and MINIO_SECRET_ACCESS_KEY.',
-  )
-}
+REQUIRED_ENV_VARS.forEach((key) => {
+  if (!config[key]) {
+    throw new Error(`Required environment variable ${key} not found.`)
+  }
+})
 
 export default config as Config

@@ -99,4 +99,9 @@ BEGIN;
     INSERT INTO public.review_tags VALUES
         ('0f1e96ec-2008-4f3d-9f48-79e3783e237f', '532bd3f4-a0c5-4a97-87a9-19d46981747d', '1529c4ad-c5f7-404c-b880-6ffc9ad4ca1c'),
         ('ccf3bece-7df3-453d-9d3b-373461e13839', '532bd3f4-a0c5-4a97-87a9-19d46981747d', '67302e01-4197-47e1-b78e-466064ac5691');
+
+    INSERT INTO public.users VALUES
+        ('098d6748-4803-48e9-8d87-8a3479562c00', 'test@example.ca', 'User One', false),
+        ('5420a722-de9d-4d4a-a586-5614cdb37c99', 'test@example.com', 'User Two', false),
+        ('837954a6-4ff2-449a-ac0b-35b9883fe1ec', 'test@example.co.uk', 'Admin User', true);
 COMMIT;
