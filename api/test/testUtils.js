@@ -11,10 +11,12 @@ const TERM_RESET = '\u001b[0m'
 const TEST_DB_NAME = 'TEST_verified_by_video'
 const TEST_BUCKET_NAME = 'test-verified-by-video'
 
-const prompt = async (msg) => {
+const promptYesNo = async (msg) => {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
   const response = await rl.question(msg)
-  return response
+  console.log('') // newline
+  rl.close()
+  return response.toLowerCase().startsWith('y')
 }
 
 const getPgClient = (database) =>
@@ -32,6 +34,18 @@ const minioClient = new minio.Client({
   accessKey: process.env.MINIO_ACCESS_KEY,
   secretKey: process.env.MINIO_SECRET_ACCESS_KEY,
 })
+
+const destroyMinioBucket = async (bucketName) => {
+  const bucketObjects = []
+  await new Promise((resolve, reject) => {
+    const stream = minioClient.listObjectsV2(bucketName, undefined, true)
+    stream.on('data', (obj) => bucketObjects.push(obj.name))
+    stream.on('error', (error) => reject(error))
+    stream.on('end', () => resolve())
+  })
+  await minioClient.removeObjects(bucketName, bucketObjects)
+  await minioClient.removeBucket(bucketName)
+}
 
 const populateDb = async (pool) => {
   const testDbClient = getPgClient(TEST_DB_NAME)
@@ -78,9 +92,10 @@ module.exports = {
   TERM_RESET,
   TEST_DB_NAME,
   TEST_BUCKET_NAME,
-  prompt,
+  promptYesNo,
   getPgClient,
   minioClient,
+  destroyMinioBucket,
   populateDb,
   unpopulateDb,
 }
