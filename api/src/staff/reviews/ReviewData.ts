@@ -15,12 +15,14 @@ export const getReviewList = async () => {
       array_remove(
         array_agg(tags.text),
         NULL
-      ) AS tags
+      ) AS tags,
+      to_json(users) as reviewer
     FROM reviews
     JOIN submissions ON submissions.id = reviews.submission_id
     LEFT JOIN review_tags ON review_tags.review_id = reviews.id
     LEFT JOIN tags ON tags.id = review_tags.tag_id
-    GROUP BY submissions.id, reviews.id`)
+    LEFT JOIN users ON users.id = reviews.reviewer_id
+    GROUP BY submissions.id, reviews.id, users.id`)
 
   return reviews.rows
 }
@@ -89,7 +91,7 @@ export const getReview = async (review_id: string) => {
   return [review.rows[0], questions.rows, prompts.rows, identification_cards.rows] as const
 }
 
-export const postReviewAnswers = async (review_id: string, answers: string[]) => {
+export const postReviewAnswers = async (user: TD.DBUser, review_id: string, answers: string[]) => {
   const client = await pool.connect()
   await client.query('BEGIN')
   await client.query(
@@ -103,9 +105,11 @@ export const postReviewAnswers = async (review_id: string, answers: string[]) =>
   await client.query(
     `
     UPDATE reviews
-    SET status = 'APPROVED'
+    SET
+      status = 'APPROVED',
+      reviewer_id = $2
     WHERE id = $1`,
-    [review_id],
+    [review_id, user.id],
   )
   await client.query('COMMIT')
   await client.release()

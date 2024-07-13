@@ -21,6 +21,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
     <div className="flex flex-col overflow-hidden justify-between border shrink-0 grow-0 rounded-xl w-72 h-96">
       <div className="m-3">
         <div className="mb-2">Uploaded {review.submission.upload_date.toLocaleDateString('en-CA', DATE_FORMAT)}</div>
+        {review.reviewer && <div className="mb-2">Reviewed by: {review.reviewer.full_name}</div>}
         <TagCloud reviewId={review.id} tags={review.tags} />
       </div>
       <div className="flex justify-center items-center px-4 py-6 bg-off-white">

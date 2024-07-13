@@ -299,6 +299,7 @@ exports[`ReviewController getReviewList returns data 1`] = `
 [
   {
     "id": "532bd3f4-a0c5-4a97-87a9-19d46981747d",
+    "reviewer": null,
     "status": "PENDING",
     "submission": {
       "id": "214f747f-778a-4d4b-ab3b-5ed0c9410c69",
@@ -313,6 +314,7 @@ exports[`ReviewController getReviewList returns data 1`] = `
   },
   {
     "id": "cbb5b46a-ad3b-4a5f-954f-bff18024d1d6",
+    "reviewer": null,
     "status": "DENIED",
     "submission": {
       "id": "be5a2859-8c30-4970-978f-ea30b295ad86",

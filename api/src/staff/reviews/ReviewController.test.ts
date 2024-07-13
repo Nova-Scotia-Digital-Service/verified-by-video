@@ -1,3 +1,5 @@
+import * as TD from '../../types'
+
 import { pool } from '../../db'
 import { unpopulateDb, populateDb } from '../../../test/testUtils'
 
@@ -39,6 +41,12 @@ describe('ReviewController', () => {
   describe('postReview', () => {
     it('accepts data', async () => {
       const reviewId = '532bd3f4-a0c5-4a97-87a9-19d46981747d'
+      const user: TD.DBUser = {
+        id: '837954a6-4ff2-449a-ac0b-35b9883fe1ec',
+        email: 'test@example.co.uk',
+        full_name: 'Admin User',
+        is_admin: true,
+      }
 
       const reviewAnswers = {
         '1ae8b631-a95d-4b55-a599-aec2919096c0': '80ed0dc2-1a93-4c38-ae36-25cbc8659c53',
@@ -52,7 +60,7 @@ describe('ReviewController', () => {
         '62333928-ade6-41c6-b131-d11efff04179': '153bc35d-3ae4-4746-abd4-106b12aeb187',
       }
 
-      await new ReviewController().postReview(reviewId, reviewAnswers)
+      await new ReviewController().postReview({ user }, reviewId, reviewAnswers)
     })
   })
 

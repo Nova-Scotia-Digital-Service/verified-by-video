@@ -47,6 +47,7 @@ export type DBReviewSummary = Pick<
 > & {
   submission_id: DBSubmission['id']
   tags: DBTag['text'][]
+  reviewer: DBUser
 }
 
 export type DBTag = {

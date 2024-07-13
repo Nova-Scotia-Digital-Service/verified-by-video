@@ -29,6 +29,13 @@ export type IdentificationCard = {
   upload_date?: Date
 }
 
+export type Reviewer = {
+  id: string
+  email: string
+  full_name: string
+  is_admin: boolean
+}
+
 export type Review = {
   id: string
   status: ReviewStatus
@@ -37,6 +44,7 @@ export type Review = {
   prompts: Prompt[]
   identification_cards: IdentificationCard[]
   questions: ReviewQuestion[]
+  reviewer: Reviewer | null
 }
 
 export type ReviewSummary = Omit<Review, 'prompts' | 'identification_cards' | 'questions'>

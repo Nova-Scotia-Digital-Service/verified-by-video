@@ -1,6 +1,6 @@
 import * as TD from '../../types'
 
-import { Get, Controller, Param, UseGuards, Post, Body, Delete } from '@nestjs/common'
+import { Get, Controller, Param, UseGuards, Post, Body, Delete, Req } from '@nestjs/common'
 import { ApiProperty, ApiBearerAuth as SwaggerRequireAuth } from '@nestjs/swagger'
 
 import { AuthGuard } from '../auth/AuthGuard'
@@ -22,17 +22,20 @@ export class ReviewController {
   @SwaggerRequireAuth()
   @Get('/')
   public async getReviewList(): Promise<TD.ReviewList> {
-    return (await getReviewList()).map(({ id, status, tags, submission_id, session_id, video_url, upload_date }) => ({
-      id,
-      status,
-      tags,
-      submission: {
-        id: submission_id,
-        session_id,
-        video_url,
-        upload_date,
-      },
-    }))
+    return (await getReviewList()).map(
+      ({ id, status, tags, submission_id, session_id, video_url, upload_date, reviewer }) => ({
+        id,
+        status,
+        tags,
+        submission: {
+          id: submission_id,
+          session_id,
+          video_url,
+          upload_date,
+        },
+        reviewer,
+      }),
+    )
   }
 
   @UseGuards(AuthGuard)
@@ -102,8 +105,12 @@ export class ReviewController {
   @UseGuards(AuthGuard)
   @SwaggerRequireAuth()
   @Post('/:review_id')
-  public async postReview(@Param('review_id') review_id: string, @Body() review_answers): Promise<void> {
-    await postReviewAnswers(review_id, Object.values(review_answers))
+  public async postReview(
+    @Req() request: { user: TD.DBUser },
+    @Param('review_id') review_id: string,
+    @Body() review_answers,
+  ): Promise<void> {
+    await postReviewAnswers(request.user, review_id, Object.values(review_answers))
   }
 
   @UseGuards(AuthGuard)
