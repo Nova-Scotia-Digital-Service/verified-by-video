@@ -25,7 +25,8 @@
     "test:typecheck": "tsc --noEmit",
     "start": "GENERATE_SOURCEMAP=false BROWSER=none react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
-    "test": "GENERATE_SOURCEMAP=false react-scripts test",
+    "test": "GENERATE_SOURCEMAP=false react-scripts test --watchAll=false",
+    "test:watch": "GENERATE_SOURCEMAP=false react-scripts test",
     "eject": "GENERATE_SOURCEMAP=false react-scripts eject",
     "serve": "serve -s build"
   },

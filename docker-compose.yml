@@ -5,6 +5,7 @@ services:
       target: install
     command: yarn start
     environment:
+      CI: ${CI-}
       NODE_ENV: ${NODE_ENV:-development}
     ports:
       - 3000:3000
