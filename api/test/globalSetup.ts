@@ -1,16 +1,11 @@
-const {
-  prompt,
-  getPgClient,
-  TEST_DB_NAME,
-  TEST_BUCKET_NAME,
-  TERM_YELLOW,
-  TERM_RESET,
-  minioClient,
-  destroyMinioBucket,
-  promptYesNo,
-} = require('./testUtils')
+import { JestConfigWithTsJest } from 'ts-jest'
 
-module.exports = async function (globalConfig, projectConfig) {
+import { getPgClient, TEST_DB_NAME, TEST_BUCKET_NAME, minioClient, destroyMinioBucket, promptYesNo } from './testUtils'
+
+const TERM_YELLOW = '\u001b[33m'
+const TERM_RESET = '\u001b[0m'
+
+export default async (globalConfig: JestConfigWithTsJest, projectConfig: JestConfigWithTsJest) => {
   const isCI = process.env.CI === 'true'
 
   const pgAdminClient = getPgClient('postgres')
@@ -26,6 +21,7 @@ module.exports = async function (globalConfig, projectConfig) {
       if (deleteDb) {
         await pgAdminClient.query(`DROP DATABASE "${TEST_DB_NAME}"`)
         console.log('...test database destroyed...')
+        process.exit(1)
       }
     }
 
@@ -42,6 +38,7 @@ module.exports = async function (globalConfig, projectConfig) {
       if (deleteBucket) {
         await destroyMinioBucket(TEST_BUCKET_NAME)
         console.log('...test bucket destroyed...')
+        process.exit(1)
       }
     }
 

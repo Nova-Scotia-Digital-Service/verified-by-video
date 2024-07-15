@@ -1,6 +1,8 @@
-const { TEST_DB_NAME, TEST_BUCKET_NAME, getPgClient, minioClient, destroyMinioBucket } = require('./testUtils')
+import { JestConfigWithTsJest } from 'ts-jest'
 
-module.exports = async function (globalConfig, projectConfig) {
+import { TEST_DB_NAME, TEST_BUCKET_NAME, getPgClient, destroyMinioBucket } from './testUtils'
+
+export default async (globalConfig: JestConfigWithTsJest, projectConfig: JestConfigWithTsJest) => {
   console.log(`Destroying test database ("${TEST_DB_NAME}")...`)
   const client = getPgClient('postgres')
   await client.connect()

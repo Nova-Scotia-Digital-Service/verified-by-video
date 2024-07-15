@@ -1,17 +1,16 @@
-const fs = require('fs/promises')
-const readline = require('node:readline/promises')
+import fs from 'fs/promises'
+import readline from 'node:readline/promises'
 
-const { runner } = require('node-pg-migrate')
-const minio = require('minio')
-const pg = require('pg')
+import { runner } from 'node-pg-migrate'
+import * as minio from 'minio'
+import * as pg from 'pg'
 
-const TERM_YELLOW = '\u001b[33m'
-const TERM_RESET = '\u001b[0m'
+const MIGRATIONS_TABLE = 'pgmigrations'
 
-const TEST_DB_NAME = 'TEST_verified_by_video'
-const TEST_BUCKET_NAME = 'test-verified-by-video'
+export const TEST_DB_NAME = 'TEST_verified_by_video'
+export const TEST_BUCKET_NAME = 'test-verified-by-video'
 
-const promptYesNo = async (msg) => {
+export const promptYesNo = async (msg) => {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
   const response = await rl.question(msg)
   console.log('') // newline
@@ -19,7 +18,7 @@ const promptYesNo = async (msg) => {
   return response.toLowerCase().startsWith('y')
 }
 
-const getPgClient = (database) =>
+export const getPgClient = (database) =>
   new pg.Client({
     user: 'postgres',
     password: process.env.PG_PASSWORD,
@@ -27,30 +26,32 @@ const getPgClient = (database) =>
     database,
   })
 
-const minioClient = new minio.Client({
+export const minioClient = new minio.Client({
   endPoint: 'minio',
   port: 9000,
   useSSL: false,
-  accessKey: process.env.MINIO_ACCESS_KEY,
-  secretKey: process.env.MINIO_SECRET_ACCESS_KEY,
+  accessKey: process.env.MINIO_ACCESS_KEY as string,
+  secretKey: process.env.MINIO_SECRET_ACCESS_KEY as string,
 })
 
-const destroyMinioBucket = async (bucketName) => {
-  const bucketObjects = []
-  await new Promise((resolve, reject) => {
+export const destroyMinioBucket = async (bucketName) => {
+  const bucketObjects = await new Promise<string[]>((resolve, reject) => {
+    const bucketObjects: string[] = []
     const stream = minioClient.listObjectsV2(bucketName, undefined, true)
-    stream.on('data', (obj) => bucketObjects.push(obj.name))
+    stream.on('data', (obj) => obj.name && bucketObjects.push(obj.name))
     stream.on('error', (error) => reject(error))
-    stream.on('end', () => resolve())
+    stream.on('end', () => resolve(bucketObjects))
   })
   await minioClient.removeObjects(bucketName, bucketObjects)
   await minioClient.removeBucket(bucketName)
 }
 
-const populateDb = async (pool) => {
+export const populateDb = async () => {
   const testDbClient = getPgClient(TEST_DB_NAME)
   await testDbClient.connect()
+
   await runner({
+    migrationsTable: MIGRATIONS_TABLE,
     dbClient: testDbClient,
     dir: 'db/migrations',
     direction: 'up',
@@ -68,14 +69,15 @@ const populateDb = async (pool) => {
   await testDbClient.end()
 }
 
-const unpopulateDb = async () => {
+export const unpopulateDb = async () => {
   const testDbClient = getPgClient(TEST_DB_NAME)
   await testDbClient.connect()
   await runner({
+    migrationsTable: MIGRATIONS_TABLE,
     dbClient: testDbClient,
     dir: 'db/migrations',
     direction: 'down',
-    count: 999,
+    count: Infinity,
     logger: {
       debug: () => {},
       info: () => {},
@@ -85,17 +87,4 @@ const unpopulateDb = async () => {
     noLock: true,
   })
   await testDbClient.end()
-}
-
-module.exports = {
-  TERM_YELLOW,
-  TERM_RESET,
-  TEST_DB_NAME,
-  TEST_BUCKET_NAME,
-  promptYesNo,
-  getPgClient,
-  minioClient,
-  destroyMinioBucket,
-  populateDb,
-  unpopulateDb,
 }
