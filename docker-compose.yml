@@ -23,6 +23,8 @@ services:
       CI: ${CI-}
       PG_PASSWORD: ${PG_PASSWORD:?}
       PG_HOST: postgres
+      MINIO_HOST: minio
+      MINIO_PORT: 9000
       MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:?}
       MINIO_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:?}
     ports:
@@ -39,6 +41,7 @@ services:
       - minio-data:/data
       - ./fixtures/media:/fixtures/media
     ports:
+      - 9000:9000
       - 9001:9001
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:?}
@@ -51,7 +54,7 @@ services:
   minio-proxy:
     image: caddy
     ports:
-      - 9000:9000
+      - 9002:9002
     volumes:
       - ./minio.dev.Caddyfile:/etc/caddy/Caddyfile
       - caddy-data:/data

@@ -3,14 +3,14 @@
 # This proxy rewrites the request headers so presigned URLs generated inside the `api` service can be used outside on the host machine.
 #
 # The `api` service connects to MinIO at `minio:9000` (container-to-container)
-# The web browser on the host machine connects to MinIO at `localhost:9000` (host-to-container)
+# The web browser on the host machine connects to MinIO at `localhost:9002` (host-to-container)
 #
-# Presigned urls do not work if the request headers (`localhost:9000`) do not match the signature (`minio:9000`).
+# Presigned urls do not work if the request headers (`localhost:9002`) do not match the signature (`minio:9000`).
 
-:9000 {
-    route {
-        reverse_proxy /* minio:9000 {
-            header_up Host "minio:9000"
-        }
-    }
+:9002 {
+	route {
+		reverse_proxy /* minio:9000 {
+			header_up Host "minio:9000"
+		}
+	}
 }

@@ -1,6 +1,2 @@
-export const s3Host = process.env.S3_HOST ?? 'http://localhost:9000'
-export const s3BucketName = process.env.S3_BUCKET_NAME ?? 'verified-by-video'
-export const s3BucketBaseUrl = `${s3Host}/${s3BucketName}/`
-
-export const backendHost = process.env.BACKEND_HOST ?? 'http://localhost:3100'
-export const apiBaseUrl = `${backendHost}/api/v1/staff`
+export const BACKEND_ADDRESS = process.env.REACT_APP_BACKEND_ADDRESS ?? 'http://localhost:3100'
+export const API_BASE_URL = `${BACKEND_ADDRESS}/api/v1/staff`

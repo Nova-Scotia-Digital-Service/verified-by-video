@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 
-import { apiBaseUrl } from '../config'
+import { API_BASE_URL } from '../config'
 
 import { store } from '../store/configureStore'
 import { logout } from '../store/slices/auth/authThunks'
@@ -29,6 +29,6 @@ const setAuthHeader = (config: InternalAxiosRequestConfig) => {
   return config
 }
 
-export const api = axios.create({ baseURL: apiBaseUrl })
+export const api = axios.create({ baseURL: API_BASE_URL })
 api.interceptors.response.use(coerceDates, logoutOn401Unauthorized)
 api.interceptors.request.use(setAuthHeader)

@@ -9,6 +9,8 @@ type Config = {
   PG_PASSWORD: string
   PG_HOST: string
   PG_DATABASE: string
+  MINIO_HOST: string
+  MINIO_PORT: string
   MINIO_ACCESS_KEY: string
   MINIO_SECRET_ACCESS_KEY: string
   S3_BUCKET_NAME: string
@@ -23,6 +25,8 @@ const config: Omit<Config, (typeof REQUIRED_ENV_VARS)[number]> = {
   PORT: '3100',
   PG_USER: 'postgres',
   PG_HOST: 'localhost',
+  MINIO_HOST: 'minio',
+  MINIO_PORT: '9000',
   PG_DATABASE: 'verified_by_video',
   S3_BUCKET_NAME: 'verified-by-video',
 }

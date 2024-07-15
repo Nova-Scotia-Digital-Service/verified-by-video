@@ -70,7 +70,7 @@ export class ReviewController {
 
     let signedVideoUrl = await minioClient.presignedGetObject(config.S3_BUCKET_NAME, review.video_url, 60 * 60)
     if (config.NODE_ENV === 'development') {
-      signedVideoUrl = signedVideoUrl.replace('http://minio', 'http://localhost')
+      signedVideoUrl = signedVideoUrl.replace('http://minio:9000', 'http://localhost:9002')
     }
 
     const signedIdentificationCards = await Promise.all(
@@ -79,7 +79,7 @@ export class ReviewController {
 
         let signedPhotoUrl = await minioClient.presignedGetObject(config.S3_BUCKET_NAME, card.photo_url, 60 * 60)
         if (config.NODE_ENV === 'development') {
-          signedPhotoUrl = signedPhotoUrl.replace('http://minio', 'http://localhost')
+          signedPhotoUrl = signedPhotoUrl.replace('http://minio:9000', 'http://localhost:9002')
         }
         return {
           ...card,
