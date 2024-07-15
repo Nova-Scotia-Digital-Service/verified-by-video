@@ -31,10 +31,11 @@ yarn start
 yarn db:migrate up
 ```
 
-Optionally populate the database with example data
+Optionally populate the database and object store with example data
 
 ```
 yarn db:populate
+yarn minio:populate
 ```
 
 ## Development

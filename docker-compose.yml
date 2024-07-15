@@ -37,6 +37,7 @@ services:
     image: minio/minio:latest
     volumes:
       - minio-data:/data
+      - ./fixtures/media:/fixtures/media
     ports:
       - 9001:9001
     environment:
@@ -47,19 +48,6 @@ services:
       --address ":9000"
       --console-address ":9001"
       /data
-  minio-populate:
-    image: minio/mc
-    volumes:
-      - ./fixtures/media:/media
-    entrypoint: >
-      /bin/sh -c "
-      /usr/bin/mc config host add minio http://minio:9000 ${MINIO_ROOT_USER:?} ${MINIO_ROOT_PASSWORD:?} &&
-      /usr/bin/mc mb --ignore-existing minio/verified-by-video &&
-      /usr/bin/mc cp --recursive /media minio/verified-by-video &&
-      exit 0;
-      "
-    depends_on:
-      - minio
   minio-proxy:
     image: caddy
     ports:

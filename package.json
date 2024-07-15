@@ -29,6 +29,8 @@
     "db:populate": "docker compose exec -T postgres psql verified_by_video < ./fixtures/example-data.sql",
     "db:full-reset": "yarn db:drop; yarn db:create && yarn db:migrate up && yarn db:populate",
     "db:psql": "docker compose exec postgres psql verified_by_video",
+    "minio:populate": "docker compose exec -T minio bash < ./fixtures/minio-populate.sh",
+    "minio:delete-all-buckets": "docker compose exec -T minio bash < ./fixtures/minio-delete-all-buckets.sh",
     "test": "yarn test:web && yarn test:api",
     "test:api": "docker compose run --build api yarn test",
     "test:web": "docker compose run --build web yarn test",
