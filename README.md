@@ -47,6 +47,12 @@ and
 username: `admin`
 password: `password123`
 
+You can add users to keycloak with `yarn create-user`:
+
+```
+yarn create-user developer@domain.tld somepassword true
+```
+
 ## Development
 
 To build and run the development servers with Docker:

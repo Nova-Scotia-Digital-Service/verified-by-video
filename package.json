@@ -31,12 +31,14 @@
     "db:psql": "docker compose exec postgres psql verified_by_video",
     "minio:populate": "docker compose exec -T minio bash < ./fixtures/minio-populate.sh",
     "minio:delete-all-buckets": "docker compose exec -T minio bash < ./fixtures/minio-delete-all-buckets.sh",
+    "create-user": "node ./fixtures/create-user.mjs",
     "test": "yarn test:web && yarn test:api",
     "test:api": "docker compose run --build api yarn test",
     "test:web": "docker compose run --build web yarn test",
     "check-format": "prettier -c '**/*.+(js|jsx|ts|tsx|json|md|yml|yaml|html)'"
   },
   "devDependencies": {
+    "@keycloak/keycloak-admin-client": "^25.0.1",
     "@types/config": "^3",
     "@types/node": "^20.11.16",
     "@types/pg": "^8",
