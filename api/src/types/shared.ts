@@ -63,7 +63,3 @@ export type Tag = {
   id: string
   text: string
 }
-
-export type LoginResponse = {
-  token: string
-}

@@ -7,6 +7,7 @@ services:
     environment:
       CI: ${CI-}
       NODE_ENV: ${NODE_ENV:-development}
+      REACT_APP_KEYCLOAK_ADDRESS: http://localhost:8080
     ports:
       - 3000:3000
     volumes:
@@ -19,8 +20,8 @@ services:
     command: yarn start
     environment:
       NODE_ENV: ${NODE_ENV:-development}
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?}
       CI: ${CI-}
+      KEYCLOAK_ADDRESS: http://keycloak:8080
       PG_PASSWORD: ${PG_PASSWORD:?}
       PG_HOST: postgres
       MINIO_HOST: minio
@@ -73,6 +74,17 @@ services:
       - PGHOST=localhost
       - POSTGRES_DB=verified_by_video
       - POSTGRES_PASSWORD=${PG_PASSWORD:?}
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - ./fixtures/keycloak-dev-realm.json:/opt/keycloak/data/import/keycloak-dev-realm.json
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:?}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:?}
+    command: start-dev --import-realm
 
 volumes:
   minio-data:

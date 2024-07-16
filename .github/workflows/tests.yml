@@ -3,7 +3,8 @@ name: Test Workflow
 on: [push]
 
 env:
-  JWT_SECRET_KEY: insecure_static_key_for_testing
+  KEYCLOAK_ADMIN: keycloak
+  KEYCLOAK_ADMIN_PASSWORD: keycloak123
   PG_PASSWORD: postgres123
   MINIO_ROOT_USER: minio
   MINIO_ROOT_PASSWORD: minio123

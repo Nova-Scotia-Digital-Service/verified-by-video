@@ -10,9 +10,6 @@ Verify users liveliness and presence by choreographed video
 cp env.template .env
 ```
 
-Create a secure, random, secret key for signing & verifiying JWTs.
-Add that key to `.env` as the value for `JWT_SECRET_KEY`.
-
 2. Install dependencies
 
 ```
@@ -37,6 +34,18 @@ Optionally populate the database and object store with example data
 yarn db:populate
 yarn minio:populate
 ```
+
+5. Log in
+
+The default users on dev (defined in `./fixtures/keycloak-dev-realm.json`) are:
+
+username: `user`
+password: `password123`
+
+and
+
+username: `admin`
+password: `password123`
 
 ## Development
 

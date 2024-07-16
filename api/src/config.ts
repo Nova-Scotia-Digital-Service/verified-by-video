@@ -4,7 +4,7 @@ type Config = {
   NODE_ENV: string
   HOST: string
   PORT: string
-  JWT_SECRET_KEY: string
+  KEYCLOAK_ADDRESS: string
   PG_USER: string
   PG_PASSWORD: string
   PG_HOST: string
@@ -16,12 +16,13 @@ type Config = {
   S3_BUCKET_NAME: string
 }
 
-const REQUIRED_ENV_VARS = ['JWT_SECRET_KEY', 'PG_PASSWORD', 'MINIO_ACCESS_KEY', 'MINIO_SECRET_ACCESS_KEY'] as const
+const REQUIRED_ENV_VARS = ['PG_PASSWORD', 'MINIO_ACCESS_KEY', 'MINIO_SECRET_ACCESS_KEY'] as const
 
 // default configuration settings
 const config: Omit<Config, (typeof REQUIRED_ENV_VARS)[number]> = {
   NODE_ENV: 'production', // assume production environment unless explicitly stated otherwise
   HOST: '0.0.0.0',
+  KEYCLOAK_ADDRESS: 'http://keycloak:8080',
   PORT: '3100',
   PG_USER: 'postgres',
   PG_HOST: 'localhost',

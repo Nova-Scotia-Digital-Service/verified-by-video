@@ -14,7 +14,3 @@ export type APIResponse<T> =
       status: 'READY'
       data: T
     }
-
-export interface AuthState {
-  token: string | null
-}

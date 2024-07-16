@@ -2,10 +2,8 @@ import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 
 import { API_BASE_URL } from '../config'
 
-import { store } from '../store/configureStore'
-import { logout } from '../store/slices/auth/authThunks'
-
 import { stringsToDates } from '../utils/stringsToDates'
+import { keycloak } from '../utils/keycloak'
 
 const coerceDates = (response: AxiosResponse) => {
   if (response.data && typeof response.data === 'object') {
@@ -15,16 +13,15 @@ const coerceDates = (response: AxiosResponse) => {
 }
 
 const logoutOn401Unauthorized = (error: unknown) => {
-  if (axios.isAxiosError(error) && error.response?.status === 401) {
-    store.dispatch(logout())
-  }
+  // if (axios.isAxiosError(error) && error.response?.status === 401) {
+  //   store.dispatch(logout())
+  // }
   return Promise.reject(error)
 }
 
 const setAuthHeader = (config: InternalAxiosRequestConfig) => {
-  const { auth } = store.getState()
-  if (auth.token) {
-    config.headers['Authorization'] = `Bearer ${auth.token}`
+  if (keycloak.token) {
+    config.headers['Authorization'] = `Bearer ${keycloak.token}`
   }
   return config
 }

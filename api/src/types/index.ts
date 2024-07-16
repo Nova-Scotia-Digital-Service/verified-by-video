@@ -1,6 +1,15 @@
 import type * as TD from './shared'
 export type * from './shared'
 
+export type DecodedKeycloakToken = {
+  sub: string
+  email: string
+  name: string
+  realm_access: {
+    roles: ('reviewer' | 'admin')[]
+  }
+}
+
 export type DBUser = {
   id: string
   email: string

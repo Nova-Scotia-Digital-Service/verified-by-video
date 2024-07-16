@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
-import App from './App'
-
 import { store } from './store/configureStore'
 
+import { App } from './App'
+import { checkKeycloak } from './utils/keycloak'
+
 import './index.css'
+
+await checkKeycloak()
 
 const root = createRoot(document.getElementById('root') as HTMLElement)
 
