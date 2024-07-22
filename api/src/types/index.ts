@@ -48,6 +48,7 @@ export type DBReview = {
   id: string
   submission_id: string
   status: TD.ReviewStatus
+  reviewer_id: string | null
 }
 
 export type DBReviewSummary = Pick<

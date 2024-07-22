@@ -22,15 +22,16 @@ describe('SessionController', () => {
       const newSession = await new SessionController().createSession()
 
       const expectedPrompts: TD.Prompt[] = [
-        { id: expect.stringMatching(UUID_REGEX), text: 'Hold up two fingers', type: 'text' },
-        { id: expect.stringMatching(UUID_REGEX), text: 'Touch your ear', type: 'text' },
-        { id: expect.stringMatching(UUID_REGEX), text: 'Turn your head to the left', type: 'text' },
+        { id: expect.stringMatching(UUID_REGEX), text: expect.any(String), type: 'text' },
+        { id: expect.stringMatching(UUID_REGEX), text: expect.any(String), type: 'text' },
+        { id: expect.stringMatching(UUID_REGEX), text: expect.any(String), type: 'text' },
       ]
 
       expect(newSession.id).toMatch(UUID_REGEX)
       expect(newSession.created_at).toBeInstanceOf(Date)
       expect(newSession.expires_at).toBeInstanceOf(Date)
       expect(newSession.version).toBe('1')
+      expect(newSession.prompts).toHaveLength(3)
       expect(newSession.prompts).toStrictEqual(expectedPrompts)
     })
   })

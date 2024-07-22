@@ -11,15 +11,15 @@ import {
   UploadedFile,
   Body,
 } from '@nestjs/common'
-
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiConsumes, ApiProperty } from '@nestjs/swagger'
 import { v4 as uuid } from 'uuid'
 
-import { createPhotoID, createSubmission, getSubmission } from './SubmissionData'
-
 import config from '../config'
 import { minioClient } from '../minio'
+
+import { createPhotoID, createSubmission, getSubmission } from './SubmissionData'
+import { createReview } from '../staff/reviews/ReviewData'
 
 class SubmissionBodySchema {
   @ApiProperty({ type: 'string' })
@@ -56,7 +56,9 @@ export class SubmissionController {
 
     await minioClient.putObject(config.S3_BUCKET_NAME, filePath, video_file.buffer, video_file.size)
 
-    return await createSubmission(session_id, filePath)
+    const submission = await createSubmission(session_id, filePath)
+    await createReview(submission.id)
+    return submission
   }
 
   @Post('/photo')

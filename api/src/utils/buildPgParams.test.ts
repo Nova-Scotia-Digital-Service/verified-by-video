@@ -17,9 +17,7 @@ describe('utils', () => {
       expect(buildPgParams(['string_a', 'string_b', 'string_c'])).toBe('($1), ($2), ($3)')
     })
   })
-})
 
-describe('utils', () => {
   describe('buildNestedPgParams', () => {
     it('requires an input value', async () => {
       expect(() => buildNestedPgParams([])).toThrow('Input required')

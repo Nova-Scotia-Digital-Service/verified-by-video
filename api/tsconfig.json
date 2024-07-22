@@ -25,12 +25,5 @@
     "strictNullChecks": true
   },
   "compileOnSave": false,
-  "exclude": [
-    "scripts/*",
-    "build/*",
-    "node_modules",
-    "./node_modules",
-    "./node_modules/*",
-    "./node_modules/@types/node/index.d.ts"
-  ]
+  "exclude": ["build/*", "node_modules", "./node_modules", "./node_modules/*", "./node_modules/@types/node/index.d.ts"]
 }

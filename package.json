@@ -32,6 +32,7 @@
     "minio:populate": "docker compose exec -T minio bash < ./fixtures/minio-populate.sh",
     "minio:delete-all-buckets": "docker compose exec -T minio bash < ./fixtures/minio-delete-all-buckets.sh",
     "create-user": "node ./fixtures/create-user.mjs",
+    "create-submission": "yarn workspace api create-submission",
     "test": "yarn test:web && yarn test:api",
     "test:api": "docker compose run --build api yarn test",
     "test:web": "docker compose run --build web yarn test",

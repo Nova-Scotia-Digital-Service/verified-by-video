@@ -1,11 +1,18 @@
 import * as TD from '../types'
 
 import { pool } from '../db'
+import { buildNestedPgParams } from '../utils/buildPgParams'
+import { getRandomFromArray } from '../utils/random'
 
-export const prompts: TD.Prompt[] = [
-  { id: '10125e01-642d-4be5-bf1c-2e0575091b23', text: 'Hold up two fingers', type: 'text' },
-  { id: '8e579ca4-400f-4802-952a-54ae33e81799', text: 'Touch your ear', type: 'text' },
-  { id: '870fbfb4-2bab-4a91-b5b3-0d16d7220353', text: 'Turn your head to the left', type: 'text' },
+const prompts: string[] = [
+  'Hold up one finger',
+  'Hold up two fingers',
+  'Hold up three fingers',
+  'Touch your ear',
+  'Touch your shoulder',
+  'Touch your nose',
+  'Turn your head to the left',
+  'Turn your head to the right',
 ]
 
 export const createSession = async () => {
@@ -16,16 +23,19 @@ export const createSession = async () => {
     DEFAULT VALUES
     RETURNING *
   `)
+
+  const sessionId = createdSession.rows[0].id
+
+  const promptsForSession = getRandomFromArray(prompts, 3)
+  const sessionPromptPairs = promptsForSession.map((prompt) => [sessionId, prompt])
   const createdPrompts = await client.query<TD.DBPrompt>(
     `
     INSERT INTO prompts (session_id, text)
     VALUES
-      ($1, $2),
-      ($1, $3),
-      ($1, $4)
+      ${buildNestedPgParams(sessionPromptPairs)}
     RETURNING id, text
   `,
-    [createdSession.rows[0].id, prompts[0].text, prompts[1].text, prompts[2].text],
+    sessionPromptPairs.flat(),
   )
   await client.query('COMMIT')
   await client.release()
