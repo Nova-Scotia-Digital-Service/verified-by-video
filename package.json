@@ -4,7 +4,7 @@
   "private": true,
   "license": "Apache-2.0",
   "description": "Verified by video",
-  "packageManager": "yarn@4.1.0",
+  "packageManager": "yarn@4.3.1",
   "engines": {
     "node": ">=v20.11.0 <21.0.0",
     "yarn": "^4.1.0"
