@@ -22,13 +22,14 @@ const RadioOption = ({
 }
 
 export const ReviewQuestion = <T extends FieldValues>({
+  index,
   id: questionId,
   question,
   options,
   register,
   error,
-}: TD.ReviewQuestion & { register: UseFormRegister<T>; error: FieldError | undefined }) => (
-  <div className="mb-12">
+}: TD.ReviewQuestion & { index: number; register: UseFormRegister<T>; error: FieldError | undefined }) => (
+  <div className="mb-12" style={{ order: index }}>
     <div className="flex items-baseline">
       <h3 className="font-bold text-2xl mb-4">{question}</h3>
       {error && (

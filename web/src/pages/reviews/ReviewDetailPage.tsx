@@ -98,33 +98,25 @@ export const ReviewPage: React.FC = () => {
 
             <HorizontalRule />
 
-            {review.questions.slice(0, 1).map(({ id, question, options }) => (
-              <ReviewQuestion
-                key={id}
-                id={id}
-                question={question}
-                options={options}
-                register={register}
-                error={errors[id]}
-              />
-            ))}
+            <div className="flex flex-col">
+              <div className="flex gap-x-12 mb-12 mx-[-4rem] overflow-x-scroll pb-4" style={{ order: 1 }}>
+                {review.identification_cards.map((card) => (
+                  <PhotoID key={card.id} card={card} />
+                ))}
+              </div>
 
-            <div className="flex gap-x-12 mb-12 mx-[-4rem] overflow-x-scroll pb-4">
-              {review.identification_cards.map((card) => (
-                <PhotoID key={card.id} card={card} />
+              {review.questions.map(({ id, question, options }, index) => (
+                <ReviewQuestion
+                  key={id}
+                  index={index}
+                  id={id}
+                  question={question}
+                  options={options}
+                  register={register}
+                  error={errors[id]}
+                />
               ))}
             </div>
-
-            {review.questions.slice(1).map(({ id, question, options }) => (
-              <ReviewQuestion
-                key={id}
-                id={id}
-                question={question}
-                options={options}
-                register={register}
-                error={errors[id]}
-              />
-            ))}
 
             <div className="flex items-start mb-12 p-4 rounded-lg border border-warning-border text-lg text-warning-text bg-warning-background">
               <WarningIcon className="mr-4" />
