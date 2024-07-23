@@ -5,7 +5,7 @@ import { pool } from '../../db'
 export const createOrUpdateUser = async (decodedToken: TD.DecodedKeycloakToken) => {
   const isAdmin = decodedToken.realm_access.roles.includes('admin')
 
-  const tags = await pool.query<TD.DBUser>(
+  const user = await pool.query<TD.DBUser>(
     `
     INSERT INTO users (keycloak_id, email, full_name, is_admin)
     VALUES
@@ -18,9 +18,10 @@ export const createOrUpdateUser = async (decodedToken: TD.DecodedKeycloakToken) 
         full_name=$3,
         is_admin=$4
     RETURNING
-      (id, email, full_name, is_admin)`,
+      id, email, full_name, is_admin
+    `,
     [decodedToken.sub, decodedToken.email, decodedToken.name, isAdmin],
   )
 
-  return tags.rows[0]
+  return user.rows[0]
 }

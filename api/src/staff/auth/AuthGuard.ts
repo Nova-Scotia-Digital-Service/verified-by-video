@@ -11,10 +11,13 @@ import { createOrUpdateUser } from './AuthData'
 export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest()
-    const authHeader: string = request.headers['authorization']
-    const token = authHeader.replace(/^Bearer /, '')
 
     try {
+      const authHeader: string | undefined = request.headers['authorization']
+      if (!authHeader) throw new Error('Missing HTTP header: "authorization"')
+
+      const token = authHeader.replace(/^Bearer /, '')
+
       const certsUrl = new URL(`${config.KEYCLOAK_ADDRESS}/realms/verified_by_video/protocol/openid-connect/certs`)
       const jwkSet = createRemoteJWKSet(certsUrl)
       const { payload: decodedToken } = await jwtVerify<TD.DecodedKeycloakToken>(token, jwkSet, {})
