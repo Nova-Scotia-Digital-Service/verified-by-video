@@ -20,13 +20,12 @@ jobs:
         with:
           cache: 'yarn'
           cache-dependency-path: 'yarn.lock'
-
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-
       - run: yarn install --immutable
       - run: yarn check-format
       - run: yarn workspace web test
       - run: docker compose run --build api yarn test
+
+      # - name: Upload coverage reports to Codecov
+      #   uses: codecov/codecov-action@v4.0.1
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
