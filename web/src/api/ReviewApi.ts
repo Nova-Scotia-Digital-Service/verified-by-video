@@ -10,7 +10,10 @@ export const getReviewDetail = (reviewId: string) => {
   return api.get<TD.Review>(`/reviews/${reviewId}`)
 }
 
-export const postReviewAnswers = (reviewId: string, data: { [question: string]: string }) => {
+export const postReviewAnswers = (
+  reviewId: string,
+  data: { status: TD.ReviewStatus; answers: { [question: string]: string } },
+) => {
   return api.post(`/reviews/${reviewId}`, data)
 }
 

@@ -1,7 +1,7 @@
 import * as TD from '../../types'
 
 import { useEffect } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm, UseFormHandleSubmit } from 'react-hook-form'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { AwaitResponse } from '../../components/AwaitResponse'
@@ -27,7 +27,8 @@ const DATE_FORMAT: Intl.DateTimeFormatOptions = {
 }
 
 type FormInputs = {
-  [key: string]: string
+  answers: { [key: string]: string }
+  comment: string
 }
 
 export const ReviewPage: React.FC = () => {
@@ -53,8 +54,13 @@ export const ReviewPage: React.FC = () => {
     formState: { errors },
   } = useForm<FormInputs>()
 
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    await postReviewAnswers(reviewId, data)
+  const onReject: SubmitHandler<FormInputs> = async (data) => {
+    await postReviewAnswers(reviewId, { status: 'DENIED', ...data })
+    navigate(paths.reviewList({}))
+  }
+
+  const onApprove: SubmitHandler<FormInputs> = async (data) => {
+    await postReviewAnswers(reviewId, { status: 'APPROVED', ...data })
     navigate(paths.reviewList({}))
   }
 
@@ -68,7 +74,7 @@ export const ReviewPage: React.FC = () => {
 
       <AwaitResponse response={reviewDetailResponse}>
         {(review) => (
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form>
             <div className="flex justify-between mb-12">
               <div>
                 <div className="mb-12">
@@ -113,7 +119,7 @@ export const ReviewPage: React.FC = () => {
                   question={question}
                   options={options}
                   register={register}
-                  error={errors[id]}
+                  error={errors.answers && errors.answers[id]}
                 />
               ))}
             </div>
@@ -131,6 +137,10 @@ export const ReviewPage: React.FC = () => {
 
             <HorizontalRule />
 
+            <h3 className="font-bold text-xl mb-4">Comments</h3>
+
+            <textarea className="w-full border border-slate rounded-md" {...register('comment')}></textarea>
+
             <div className="flex justify-between">
               <div className="flex gap-4">
                 <div className="w-80">
@@ -139,13 +149,13 @@ export const ReviewPage: React.FC = () => {
                   </SecondaryButton>
                 </div>
                 <div className="w-48">
-                  <SecondaryButton disabled type="submit">
-                    Close request
-                  </SecondaryButton>
+                  <SecondaryButton onClick={handleSubmit(onReject)}>Close request</SecondaryButton>
                 </div>
               </div>
               <div className="w-48">
-                <PrimaryButton type="submit">Continue</PrimaryButton>
+                <PrimaryButton type="submit" onClick={handleSubmit(onApprove)}>
+                  Continue
+                </PrimaryButton>
               </div>
             </div>
           </form>

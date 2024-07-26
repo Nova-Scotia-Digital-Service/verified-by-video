@@ -2,7 +2,7 @@ import { FieldError, FieldValues, UseFormRegister } from 'react-hook-form'
 
 import * as TD from '../../../types'
 
-const RadioOption = ({
+const ReviewRadioOption = ({
   name,
   value,
   register,
@@ -10,12 +10,12 @@ const RadioOption = ({
 }: {
   name: string
   value: string
-  register: any
+  register: UseFormRegister<any>
   children: string
 }) => {
   return (
     <label className="flex items-center text-lg mb-2 hover:text-black">
-      <input type="radio" value={value} className="size-6 mr-2" {...register(name, { required: true })} />
+      <input type="radio" value={value} className="size-6 mr-2" {...register(`answers.${name}`, { required: true })} />
       {children}
     </label>
   )
@@ -39,9 +39,9 @@ export const ReviewQuestion = <T extends FieldValues>({
       )}
     </div>
     {options.map((option) => (
-      <RadioOption key={option.id} name={questionId} value={option.id} register={register}>
+      <ReviewRadioOption key={option.id} name={questionId} value={option.id} register={register}>
         {option.text}
-      </RadioOption>
+      </ReviewRadioOption>
     ))}
   </div>
 )

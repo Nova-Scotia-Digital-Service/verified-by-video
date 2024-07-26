@@ -220,7 +220,13 @@ export const getReview = async (review_id: string) => {
   return [review.rows[0], questions.rows, prompts.rows, identification_cards.rows] as const
 }
 
-export const postReviewAnswers = async (user: TD.DBUser, review_id: string, answers: string[]) => {
+export const postReviewAnswers = async (
+  user: TD.DBUser,
+  review_id: string,
+  status: TD.ReviewStatus,
+  answers: string[],
+  comment?: string,
+) => {
   const client = await pool.connect()
   await client.query('BEGIN')
   await client.query(
@@ -228,18 +234,31 @@ export const postReviewAnswers = async (user: TD.DBUser, review_id: string, answ
     INSERT INTO review_answers
       (option_id)
     VALUES
-      ${buildPgParams(answers)}`,
+      ${buildPgParams(answers)}
+    `,
     answers,
   )
   await client.query(
     `
     UPDATE reviews
     SET
-      status = 'APPROVED',
+      status = $1,
       reviewer_id = $2
-    WHERE id = $1`,
-    [review_id, user.id],
+    WHERE id = $3
+    `,
+    [status, user.id, review_id],
   )
+  if (comment) {
+    await client.query(
+      `
+      INSERT INTO review_comments
+        (review_id, reviewer_id, text)
+      VALUES
+        ($1, $2, $3)
+      `,
+      [review_id, user.id, comment],
+    )
+  }
   await client.query('COMMIT')
   await client.release()
 }

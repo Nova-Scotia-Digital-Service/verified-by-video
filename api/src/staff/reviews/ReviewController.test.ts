@@ -60,7 +60,7 @@ describe('ReviewController', () => {
         '62333928-ade6-41c6-b131-d11efff04179': '153bc35d-3ae4-4746-abd4-106b12aeb187',
       }
 
-      await new ReviewController().postReview({ user }, reviewId, reviewAnswers)
+      await new ReviewController().postReview({ user }, reviewId, { status: 'APPROVED', answers: reviewAnswers })
     })
   })
 
