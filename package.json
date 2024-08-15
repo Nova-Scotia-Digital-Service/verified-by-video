@@ -7,7 +7,7 @@
   "packageManager": "yarn@4.3.1",
   "engines": {
     "node": ">=v20.11.0 <21.0.0",
-    "yarn": "^4.1.0"
+    "yarn": "^4.3.1"
   },
   "repository": {
     "url": "https://github.com/fullboar/verified-by-video",
@@ -19,6 +19,8 @@
   ],
   "scripts": {
     "start": "docker compose up --build",
+    "restart:api": "docker compose down api; docker compose up --build -d api",
+    "restart:web": "docker compose down web; docker compose up --build -d web",
     "build:api": "yarn workspace api build",
     "build:web": "yarn workspace web build",
     "serve:api": "yarn workspace api serve",
@@ -33,9 +35,10 @@
     "minio:delete-all-buckets": "docker compose exec -T minio bash < ./fixtures/minio-delete-all-buckets.sh",
     "create-user": "node ./fixtures/create-user.mjs",
     "create-submission": "yarn workspace api create-submission",
-    "test": "yarn test:web && yarn test:api",
-    "test:api": "docker compose run --build api yarn test",
-    "test:web": "docker compose run --build web yarn test",
+    "test": "yarn test:typecheck && yarn test:web && yarn test:api",
+    "test:api": "docker compose run --build --rm api yarn test",
+    "test:web": "docker compose run --build --rm web yarn test",
+    "test:typecheck": "yarn workspace api test:typecheck && yarn workspace web test:typecheck",
     "check-format": "prettier -c '**/*.+(js|jsx|ts|tsx|json|md|yml|yaml|html)'"
   },
   "devDependencies": {

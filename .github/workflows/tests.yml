@@ -22,6 +22,7 @@ jobs:
           cache-dependency-path: 'yarn.lock'
       - run: yarn install --immutable
       - run: yarn check-format
+      - run: yarn test:typecheck
       - run: yarn workspace web test
       - run: docker compose run --build api yarn test
 
