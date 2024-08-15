@@ -1,6 +1,7 @@
 {
   "realm": "verified_by_video",
   "enabled": true,
+  "loginTheme": "verified-by-video",
   "clients": [
     {
       "clientId": "vbv_dashboard",

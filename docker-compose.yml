@@ -80,7 +80,9 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - ./fixtures/keycloak-dev-realm.json:/opt/keycloak/data/import/keycloak-dev-realm.json
+      - keycloak-data:/opt/keycloak/data
+      - ./keycloak/keycloak-dev-realm.json:/opt/keycloak/data/import/keycloak-dev-realm.json
+      - ./keycloak/themes:/opt/keycloak/themes
     environment:
       - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:?}
       - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:?}
@@ -91,3 +93,4 @@ volumes:
   postgres-data:
   caddy-data:
   caddy-config:
+  keycloak-data:
