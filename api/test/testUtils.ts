@@ -53,7 +53,7 @@ export const populateDb = async () => {
   await runner({
     migrationsTable: MIGRATIONS_TABLE,
     dbClient: testDbClient,
-    dir: 'db/migrations',
+    dir: '../db/migrations',
     direction: 'up',
     logger: {
       debug: () => {},
@@ -64,7 +64,7 @@ export const populateDb = async () => {
     noLock: true,
   })
 
-  const data = await fs.readFile('fixtures/example-data.sql', { encoding: 'utf-8' })
+  const data = await fs.readFile('../fixtures/example-data.sql', { encoding: 'utf-8' })
   await testDbClient.query(data)
   await testDbClient.end()
 }
@@ -75,7 +75,7 @@ export const unpopulateDb = async () => {
   await runner({
     migrationsTable: MIGRATIONS_TABLE,
     dbClient: testDbClient,
-    dir: 'db/migrations',
+    dir: '../db/migrations',
     direction: 'down',
     count: Infinity,
     logger: {

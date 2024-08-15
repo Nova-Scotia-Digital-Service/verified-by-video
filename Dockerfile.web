@@ -1,6 +1,6 @@
 FROM node:20 AS install
 
-WORKDIR /app
+WORKDIR /app/web
 COPY .yarn/releases .yarn/releases
 COPY .yarnrc.yml .yarnrc.yml
 COPY web/package.json package.json
@@ -8,6 +8,7 @@ RUN corepack enable
 RUN yarn install
 
 COPY web .
+COPY shared ../shared
 
 FROM install AS build
 
@@ -15,7 +16,7 @@ RUN yarn build
 
 FROM caddy:alpine AS production
 
-COPY --from=build /app/build /app/build
+COPY --from=build /app/web/build /app/build
 COPY web/Caddyfile /etc/caddy/Caddyfile
 RUN caddy fmt --overwrite /etc/caddy/Caddyfile
 

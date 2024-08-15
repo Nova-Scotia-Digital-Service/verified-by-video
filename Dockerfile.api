@@ -1,7 +1,7 @@
 FROM node:20 AS install
 
 ENV NODE_ENV production
-WORKDIR /app
+WORKDIR /app/api
 COPY .yarn/releases .yarn/releases
 COPY .yarnrc.yml .yarnrc.yml
 COPY api/package.json package.json
@@ -9,8 +9,9 @@ RUN corepack enable
 RUN yarn install
 
 COPY api .
-COPY db ./db
-COPY fixtures ./fixtures
+COPY shared ../shared
+COPY db ../db
+COPY fixtures ../fixtures
 
 FROM install AS build
 
@@ -20,8 +21,8 @@ FROM node:20 AS production
 
 ENV NODE_ENV production
 WORKDIR /app
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/build ./build
+COPY --from=build /app/api/node_modules ./node_modules
+COPY --from=build /app/api/build ./build
 
 EXPOSE 3100
 

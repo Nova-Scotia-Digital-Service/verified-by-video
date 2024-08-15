@@ -1,4 +1,4 @@
-export type * from './shared'
+export type * from '../../../shared/types'
 
 export type STATUS = APIResponse<any>['status']
 
