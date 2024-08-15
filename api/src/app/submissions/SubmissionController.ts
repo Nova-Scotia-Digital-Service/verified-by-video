@@ -1,4 +1,4 @@
-import * as TD from '../types'
+import * as TD from '../../types'
 
 import {
   Get,
@@ -15,11 +15,11 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiConsumes, ApiProperty } from '@nestjs/swagger'
 import { v4 as uuid } from 'uuid'
 
-import config from '../config'
-import { minioClient } from '../minio'
+import config from '../../config'
+import { minioClient } from '../../minio'
 
 import { createPhotoID, createSubmission, getSubmission } from './SubmissionData'
-import { createReview } from '../staff/reviews/ReviewData'
+import { createReview } from '../reviews/ReviewData'
 
 class SubmissionBodySchema {
   @ApiProperty({ type: 'string' })

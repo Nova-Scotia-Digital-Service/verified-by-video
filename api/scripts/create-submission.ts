@@ -1,8 +1,8 @@
 import { configDotenv } from 'dotenv'
 
-import { createSession } from '../src/sessions/SessionData'
-import { createPhotoID, createSubmission } from '../src/submissions/SubmissionData'
-import { createReview } from '../src/staff/reviews/ReviewData'
+import { createSession } from '../src/app/sessions/SessionData'
+import { createPhotoID, createSubmission } from '../src/app/submissions/SubmissionData'
+import { createReview } from '../src/app/reviews/ReviewData'
 
 configDotenv()
 

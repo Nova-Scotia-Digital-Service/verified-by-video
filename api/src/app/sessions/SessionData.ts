@@ -1,8 +1,8 @@
-import * as TD from '../types'
+import * as TD from '../../types'
 
-import { pool } from '../db'
-import { buildNestedPgParams } from '../utils/buildPgParams'
-import { getRandomFromArray } from '../utils/random'
+import { pool } from '../../db'
+import { buildNestedPgParams } from '../../utils/buildPgParams'
+import { getRandomFromArray } from '../../utils/random'
 
 const prompts: string[] = [
   'Hold up one finger',

@@ -1,4 +1,4 @@
-import * as TD from '../types'
+import * as TD from '../../types'
 
 import { Controller, Post } from '@nestjs/common'
 

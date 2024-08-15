@@ -3,7 +3,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 
 import config from './config'
 
-import { AppModule } from './app.module'
+import { AppModule } from './app/app.module'
 
 process.on('unhandledRejection', (error) => {
   if (error instanceof Error) {

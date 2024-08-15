@@ -1,6 +1,6 @@
-import * as TD from '../types'
+import * as TD from '../../types'
 
-import { pool } from '../db'
+import { pool } from '../../db'
 
 export const getSubmission = async (submission_id: string) => {
   const submission = await pool.query<TD.DBSubmission>(

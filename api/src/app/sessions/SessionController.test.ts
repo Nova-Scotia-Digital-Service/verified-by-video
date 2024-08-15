@@ -1,7 +1,7 @@
-import * as TD from '../types'
+import * as TD from '../../types'
 
-import { pool } from '../db'
-import { unpopulateDb, populateDb } from '../../test/testUtils'
+import { pool } from '../../db'
+import { unpopulateDb, populateDb } from '../../../test/testUtils'
 
 import { SessionController } from './SessionController'
 

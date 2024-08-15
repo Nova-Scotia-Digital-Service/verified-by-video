@@ -1,7 +1,7 @@
 import { Readable } from 'stream'
 
-import { pool } from '../db'
-import { populateDb, unpopulateDb } from '../../test/testUtils'
+import { pool } from '../../db'
+import { populateDb, unpopulateDb } from '../../../test/testUtils'
 
 import { SubmissionController } from './SubmissionController'
 
