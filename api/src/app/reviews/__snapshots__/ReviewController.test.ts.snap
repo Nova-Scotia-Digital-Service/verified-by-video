@@ -223,7 +223,7 @@ exports[`ReviewController getReview returns data 1`] = `
     },
   ],
   "session_id": "88acfa3d-bf2f-4cae-8746-60a9106f6d56",
-  "status": "PENDING",
+  "status": "STARTED",
   "submission": {
     "id": "214f747f-778a-4d4b-ab3b-5ed0c9410c69",
     "session_id": "88acfa3d-bf2f-4cae-8746-60a9106f6d56",
@@ -281,7 +281,7 @@ exports[`ReviewController getReview returns data 2`] = `
   ],
   "questions": [],
   "session_id": "33aeaab8-0a6f-477f-815a-eb0559b1ba3a",
-  "status": "DENIED",
+  "status": "REJECTED",
   "submission": {
     "id": "be5a2859-8c30-4970-978f-ea30b295ad86",
     "session_id": "33aeaab8-0a6f-477f-815a-eb0559b1ba3a",
@@ -299,8 +299,14 @@ exports[`ReviewController getReviewList returns data 1`] = `
 [
   {
     "id": "532bd3f4-a0c5-4a97-87a9-19d46981747d",
-    "reviewer": null,
-    "status": "PENDING",
+    "reviewer": {
+      "email": "test@example.ca",
+      "full_name": "User One",
+      "id": "098d6748-4803-48e9-8d87-8a3479562c00",
+      "is_admin": false,
+      "keycloak_id": null,
+    },
+    "status": "STARTED",
     "submission": {
       "id": "214f747f-778a-4d4b-ab3b-5ed0c9410c69",
       "session_id": "88acfa3d-bf2f-4cae-8746-60a9106f6d56",
@@ -314,8 +320,14 @@ exports[`ReviewController getReviewList returns data 1`] = `
   },
   {
     "id": "cbb5b46a-ad3b-4a5f-954f-bff18024d1d6",
-    "reviewer": null,
-    "status": "DENIED",
+    "reviewer": {
+      "email": "test@example.com",
+      "full_name": "User Two",
+      "id": "5420a722-de9d-4d4a-a586-5614cdb37c99",
+      "is_admin": false,
+      "keycloak_id": null,
+    },
+    "status": "REJECTED",
     "submission": {
       "id": "be5a2859-8c30-4970-978f-ea30b295ad86",
       "session_id": "33aeaab8-0a6f-477f-815a-eb0559b1ba3a",

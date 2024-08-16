@@ -55,7 +55,7 @@ export const ReviewPage: React.FC = () => {
   } = useForm<FormInputs>()
 
   const onReject: SubmitHandler<FormInputs> = async (data) => {
-    await postReviewAnswers(reviewId, { status: 'DENIED', ...data })
+    await postReviewAnswers(reviewId, { status: 'REJECTED', ...data })
     navigate(paths.reviewList({}))
   }
 

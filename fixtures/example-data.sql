@@ -1,4 +1,9 @@
 BEGIN;
+    INSERT INTO public.users VALUES
+        ('098d6748-4803-48e9-8d87-8a3479562c00', 'test@example.ca', 'User One', false),
+        ('5420a722-de9d-4d4a-a586-5614cdb37c99', 'test@example.com', 'User Two', false),
+        ('837954a6-4ff2-449a-ac0b-35b9883fe1ec', 'test@example.co.uk', 'Admin User', true);
+
     INSERT INTO public.sessions VALUES
         ('88acfa3d-bf2f-4cae-8746-60a9106f6d56', '2024-05-08 19:01:48.776913+00', '2024-05-08 19:11:48.776913+00'),
         ('33aeaab8-0a6f-477f-815a-eb0559b1ba3a', '2024-05-10 13:05:18.691377+00', '2024-05-10 13:15:18.691377+00');
@@ -12,8 +17,8 @@ BEGIN;
         ('50ff9898-9bba-43be-ab68-8dcb9ec3e879', '33aeaab8-0a6f-477f-815a-eb0559b1ba3a', 'Nod your head');
 
     INSERT INTO public.submissions VALUES
-        ('214f747f-778a-4d4b-ab3b-5ed0c9410c69', '88acfa3d-bf2f-4cae-8746-60a9106f6d56', '/media/example-video.mp4', '2024-05-08 19:01:48.776913+00'),
-        ('be5a2859-8c30-4970-978f-ea30b295ad86', '33aeaab8-0a6f-477f-815a-eb0559b1ba3a', '/media/example-video.mp4', '2024-05-10 13:05:18.691377+00');
+        ('214f747f-778a-4d4b-ab3b-5ed0c9410c69', '88acfa3d-bf2f-4cae-8746-60a9106f6d56', '/media/example-video.mp4', '2024-05-08 19:01:48.776913+00', 'UNDER_REVIEW'),
+        ('be5a2859-8c30-4970-978f-ea30b295ad86', '33aeaab8-0a6f-477f-815a-eb0559b1ba3a', '/media/example-video.mp4', '2024-05-10 13:05:18.691377+00', 'REJECTED');
 
     INSERT INTO public.identification_cards (id, session_id, description, photo_url, upload_date) VALUES
         ('b70fc479-f960-4e43-92b0-669adf225a95', '88acfa3d-bf2f-4cae-8746-60a9106f6d56', 'Photo from the mobile app', '/media/example-photo-from-app.png', '2024-05-08 19:03:51.000000+00'),
@@ -23,8 +28,8 @@ BEGIN;
         ('ec302835-cdcc-459a-bd5f-368b865a6a8a', '33aeaab8-0a6f-477f-815a-eb0559b1ba3a', 'Photo from the mobile app', '/media/example-photo-from-app.png', '2024-05-08 19:03:51.000000+00');
 
     INSERT INTO public.reviews VALUES
-        ('532bd3f4-a0c5-4a97-87a9-19d46981747d', '214f747f-778a-4d4b-ab3b-5ed0c9410c69', 'PENDING'),
-        ('cbb5b46a-ad3b-4a5f-954f-bff18024d1d6', 'be5a2859-8c30-4970-978f-ea30b295ad86', 'DENIED');
+        ('532bd3f4-a0c5-4a97-87a9-19d46981747d', '214f747f-778a-4d4b-ab3b-5ed0c9410c69', 'STARTED', '098d6748-4803-48e9-8d87-8a3479562c00', '2024-05-09 14:41:23.551369+00'),
+        ('cbb5b46a-ad3b-4a5f-954f-bff18024d1d6', 'be5a2859-8c30-4970-978f-ea30b295ad86', 'REJECTED', '5420a722-de9d-4d4a-a586-5614cdb37c99', '2024-05-10 15:26:08.739283+00');
 
     INSERT INTO public.review_questions VALUES
         ('62333928-ade6-41c6-b131-d11efff04179', '532bd3f4-a0c5-4a97-87a9-19d46981747d', 'Did the user correctly follow the prompts in the video?');
@@ -99,9 +104,4 @@ BEGIN;
     INSERT INTO public.review_tags VALUES
         ('0f1e96ec-2008-4f3d-9f48-79e3783e237f', '532bd3f4-a0c5-4a97-87a9-19d46981747d', '1529c4ad-c5f7-404c-b880-6ffc9ad4ca1c'),
         ('ccf3bece-7df3-453d-9d3b-373461e13839', '532bd3f4-a0c5-4a97-87a9-19d46981747d', '67302e01-4197-47e1-b78e-466064ac5691');
-
-    INSERT INTO public.users VALUES
-        ('098d6748-4803-48e9-8d87-8a3479562c00', 'test@example.ca', 'User One', false),
-        ('5420a722-de9d-4d4a-a586-5614cdb37c99', 'test@example.com', 'User Two', false),
-        ('837954a6-4ff2-449a-ac0b-35b9883fe1ec', 'test@example.co.uk', 'Admin User', true);
 COMMIT;

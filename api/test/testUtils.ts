@@ -72,19 +72,13 @@ export const populateDb = async () => {
 export const unpopulateDb = async () => {
   const testDbClient = getPgClient(TEST_DB_NAME)
   await testDbClient.connect()
-  await runner({
-    migrationsTable: MIGRATIONS_TABLE,
-    dbClient: testDbClient,
-    dir: '../db/migrations',
-    direction: 'down',
-    count: Infinity,
-    logger: {
-      debug: () => {},
-      info: () => {},
-      warn: console.warn,
-      error: console.error,
-    },
-    noLock: true,
-  })
+
+  await testDbClient.query(
+    `
+    DROP SCHEMA public CASCADE;
+    CREATE SCHEMA public;
+    `,
+  )
+
   await testDbClient.end()
 }

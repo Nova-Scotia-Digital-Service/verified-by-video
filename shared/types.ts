@@ -1,4 +1,5 @@
-export type ReviewStatus = 'PENDING' | 'APPROVED' | 'DENIED'
+export type ReviewStatus = 'STARTED' | 'ESCALATED' | 'APPROVED' | 'REJECTED'
+export type SubmissionStatus = 'NEW' | 'UNDER_REVIEW' | 'ESCALATED' | 'APPROVED' | 'REJECTED'
 
 export type Prompt = {
   id: string
@@ -19,6 +20,18 @@ export type Submission = {
   video_url: string
   upload_date: Date
   session_id: string
+}
+
+export type APISubmissionSummary = {
+  id: string
+  upload_date: Date
+  reviews: {
+    id: string
+    status: ReviewStatus
+    created_at: Date
+    reviewer_name: string
+  }[]
+  status: SubmissionStatus
 }
 
 export type IdentificationCard = {

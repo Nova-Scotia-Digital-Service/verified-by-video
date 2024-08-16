@@ -12,7 +12,7 @@ import { TabButton } from './components/TabButton'
 import { TagFilter } from './components/TagFilter'
 
 export const ReviewListPage: React.FC = () => {
-  const [statusFilter, setStatusFilter] = useState<TD.ReviewStatus>('PENDING')
+  const [statusFilter, setStatusFilter] = useState<TD.ReviewStatus>('STARTED')
   const [filteredTags, setFilteredTags] = useState<string[]>([])
   const [reviewListResponse, setReviewListResponse] = useResponse<TD.ReviewList>()
 
@@ -31,14 +31,14 @@ export const ReviewListPage: React.FC = () => {
       <h1 className="text-3xl font-bold mt-12 mb-6">Videos</h1>
 
       <div className="flex gap-3 mb-6">
-        <TabButton onClick={() => setStatusFilter('PENDING')} active={statusFilter === 'PENDING'}>
+        <TabButton onClick={() => setStatusFilter('STARTED')} active={statusFilter === 'STARTED'}>
           Uploaded
         </TabButton>
         <TabButton onClick={() => setStatusFilter('APPROVED')} active={statusFilter === 'APPROVED'}>
           Approved
         </TabButton>
-        <TabButton onClick={() => setStatusFilter('DENIED')} active={statusFilter === 'DENIED'}>
-          Denied
+        <TabButton onClick={() => setStatusFilter('REJECTED')} active={statusFilter === 'REJECTED'}>
+          Rejected
         </TabButton>
       </div>
 

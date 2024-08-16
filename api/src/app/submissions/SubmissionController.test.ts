@@ -3,7 +3,7 @@ import { Readable } from 'stream'
 import { pool } from '../../db'
 import { populateDb, unpopulateDb } from '../../../test/testUtils'
 
-import { SubmissionController } from './SubmissionController'
+import { StaffSubmissionController, SubmissionController } from './SubmissionController'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 const VIDEO_URL_REGEX = /^media\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}.mp4$/
@@ -16,6 +16,15 @@ beforeAll(async () => {
 afterAll(async () => {
   await unpopulateDb()
   await pool.end()
+})
+
+describe('StaffSubmissionController', () => {
+  describe('getSubmissionList', () => {
+    it('returns expected data', async () => {
+      const submissionList = await new StaffSubmissionController().getSubmissionList()
+      expect(submissionList).toMatchSnapshot()
+    })
+  })
 })
 
 describe('SubmissionController', () => {

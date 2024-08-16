@@ -108,7 +108,8 @@ export class ReviewController {
   public async postReview(
     @Req() request: { user: TD.DBUser },
     @Param('review_id') review_id: string,
-    @Body() body: { status: TD.ReviewStatus; answers: { [question: string]: string }; comment?: string },
+    @Body()
+    body: { status: Exclude<TD.ReviewStatus, 'STARTED'>; answers: { [question: string]: string }; comment?: string },
   ): Promise<void> {
     await postReviewAnswers(request.user, review_id, body.status, Object.values(body.answers), body.comment)
   }

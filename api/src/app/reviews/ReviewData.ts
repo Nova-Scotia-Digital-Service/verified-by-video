@@ -122,6 +122,16 @@ export const createReview = async (submission_id: string) => {
     }),
   )
 
+  await client.query(
+    `
+    UPDATE submissions
+    SET
+      status = 'UNDER_REVIEW'
+    WHERE id = $1
+    `,
+    [submission_id],
+  )
+
   await client.query('COMMIT')
   await client.release()
 
@@ -223,7 +233,7 @@ export const getReview = async (review_id: string) => {
 export const postReviewAnswers = async (
   user: TD.DBUser,
   review_id: string,
-  status: TD.ReviewStatus,
+  status: Exclude<TD.ReviewStatus, 'STARTED'>,
   answers: string[],
   comment?: string,
 ) => {
@@ -259,6 +269,21 @@ export const postReviewAnswers = async (
       [review_id, user.id, comment],
     )
   }
+
+  const submissionStatus: TD.SubmissionStatus = status
+  await client.query(
+    `
+    UPDATE submissions
+    SET
+      status = $2
+    FROM reviews
+    WHERE
+      submissions.id = reviews.submission_id
+      AND reviews.id = $1
+    `,
+    [review_id, submissionStatus],
+  )
+
   await client.query('COMMIT')
   await client.release()
 }

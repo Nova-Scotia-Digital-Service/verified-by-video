@@ -10,15 +10,18 @@ import {
   UseInterceptors,
   UploadedFile,
   Body,
+  UseGuards,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
-import { ApiConsumes, ApiProperty } from '@nestjs/swagger'
+import { ApiConsumes, ApiProperty, ApiBearerAuth as SwaggerRequireAuth } from '@nestjs/swagger'
 import { v4 as uuid } from 'uuid'
 
 import config from '../../config'
 import { minioClient } from '../../minio'
 
-import { createPhotoID, createSubmission, getSubmission } from './SubmissionData'
+import { AuthGuard } from '../auth/AuthGuard'
+
+import { createPhotoID, createSubmission, getSubmission, getSubmissionList } from './SubmissionData'
 import { createReview } from '../reviews/ReviewData'
 
 class SubmissionBodySchema {
@@ -85,5 +88,23 @@ export class SubmissionController {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND)
     }
     return submission
+  }
+}
+
+@Controller('/staff/submissions')
+export class StaffSubmissionController {
+  @UseGuards(AuthGuard)
+  @SwaggerRequireAuth()
+  @Get('/')
+  public async getSubmissionList(): Promise<TD.APISubmissionSummary[]> {
+    const submissionList = await getSubmissionList()
+
+    return submissionList.map((submission) => ({
+      ...submission,
+      reviews: submission.reviews.map((review) => ({
+        ...review,
+        created_at: new Date(review.created_at),
+      })),
+    }))
   }
 }

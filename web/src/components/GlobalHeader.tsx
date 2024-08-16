@@ -17,6 +17,8 @@ export const GlobalHeader = () => {
     <div className="flex justify-between items-center h-12 px-8 w-full bg-header-background text-header-text">
       <Link to={paths.home({})}>Home</Link>
       <div className="flex gap-4 items-center h-4">
+        <Link to={paths.reviewHistory({})}>Review History</Link>
+        <Separator orientation="vertical" />
         <Link to={paths.tagAdmin({})}>Admin</Link>
         <Separator orientation="vertical" />
         <button type="button" onClick={handleLogout}>
