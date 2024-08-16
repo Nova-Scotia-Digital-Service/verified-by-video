@@ -24,10 +24,24 @@ export const getSubmissionList = async () => {
     id: string
     upload_date: Date
     status: TD.SubmissionStatus
+    tags: { id: string; text: string }[]
     reviews: { id: string; status: TD.ReviewStatus; created_at: string; reviewer_name: string }[]
   }>(
     `
     WITH
+      aggregated_tags AS (
+        SELECT
+          submission_tags.submission_id,
+          jsonb_agg(
+            jsonb_build_object(
+              'id', tags.id,
+              'text', tags.text
+            )
+          ) AS tags
+        FROM submission_tags
+        JOIN tags ON tags.id = submission_tags.tag_id
+        GROUP BY submission_tags.submission_id
+      ),
       aggregated_reviews AS (
         WITH
           aggregated_reviewers AS (
@@ -55,10 +69,15 @@ export const getSubmissionList = async () => {
       submissions.upload_date,
       submissions.status,
       COALESCE(
+        aggregated_tags.tags,
+        '[]'
+      ) AS tags,
+      COALESCE(
         aggregated_reviews.reviews,
         '[]'
       ) AS reviews
     FROM submissions
+    LEFT JOIN aggregated_tags ON aggregated_tags.submission_id = submissions.id
     LEFT JOIN aggregated_reviews ON aggregated_reviews.submission_id = submissions.id
     ORDER BY upload_date ASC
     `,

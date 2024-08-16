@@ -83,7 +83,7 @@ export const ReviewPage: React.FC = () => {
                     {review.submission.upload_date.toLocaleDateString('en-CA', DATE_FORMAT)}{' '}
                   </div>
 
-                  <TagCloud reviewId={review.id} tags={review.tags} />
+                  <TagCloud submissionId={review.submission.id} tags={review.submission.tags} />
                 </div>
                 <div className="max-w-96">
                   <h3 className="font-bold text-2xl mb-4">Prompts the user was provided in the mobile app:</h3>

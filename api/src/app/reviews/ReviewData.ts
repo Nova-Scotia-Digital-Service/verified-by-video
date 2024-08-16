@@ -139,8 +139,29 @@ export const createReview = async (submission_id: string) => {
 }
 
 export const getReviewList = async () => {
-  const reviews = await pool.query<TD.DBReviewSummary>(
+  const reviews = await pool.query<{
+    id: string
+    status: TD.ReviewStatus
+    video_url: string
+    upload_date: Date
+    session_id: string
+    submission_id: string
+    tags: TD.Tag[]
+    reviewer: TD.DBUser
+  }>(
     `
+    WITH
+      aggregated_tags AS (
+        SELECT
+          submission_tags.submission_id,
+          jsonb_build_object(
+            'id', tags.id,
+            'text', tags.text
+          ) AS tags
+        FROM submission_tags
+        JOIN tags ON tags.id = submission_tags.tag_id
+        GROUP BY submission_tags.submission_id, tags.id
+      )
     SELECT
       reviews.id,
       reviews.status,
@@ -149,14 +170,13 @@ export const getReviewList = async () => {
       submissions.video_url,
       submissions.upload_date,
       array_remove(
-        array_agg(tags.text),
+        array_agg(aggregated_tags.tags),
         NULL
       ) AS tags,
       to_json(users) as reviewer
     FROM reviews
     JOIN submissions ON submissions.id = reviews.submission_id
-    LEFT JOIN review_tags ON review_tags.review_id = reviews.id
-    LEFT JOIN tags ON tags.id = review_tags.tag_id
+    LEFT JOIN aggregated_tags ON aggregated_tags.submission_id = submissions.id
     LEFT JOIN users ON users.id = reviews.reviewer_id
     GROUP BY submissions.id, reviews.id, users.id
     ORDER BY upload_date ASC
@@ -169,8 +189,28 @@ export const getReviewList = async () => {
 export const getReview = async (review_id: string) => {
   const client = await pool.connect()
   await client.query('BEGIN')
-  const review = await client.query<TD.DBReviewSummary>(
+  const review = await client.query<{
+    id: string
+    status: TD.ReviewStatus
+    video_url: string
+    upload_date: Date
+    session_id: string
+    submission_id: string
+    tags: { id: string; text: string }[]
+  }>(
     `
+    WITH
+      aggregated_tags AS (
+        SELECT
+          submission_tags.submission_id,
+          jsonb_build_object(
+            'id', tags.id,
+            'text', tags.text
+          ) AS tags
+        FROM submission_tags
+        JOIN tags ON tags.id = submission_tags.tag_id
+        GROUP BY submission_tags.submission_id, tags.id
+      )
     SELECT
       reviews.id,
       reviews.status,
@@ -179,13 +219,12 @@ export const getReview = async (review_id: string) => {
       submissions.video_url,
       submissions.upload_date,
       array_remove(
-        array_agg(tags.text),
+        array_agg(aggregated_tags.tags),
         NULL
       ) AS tags
     FROM reviews
     JOIN submissions ON submissions.id = reviews.submission_id
-    LEFT JOIN review_tags ON review_tags.review_id = reviews.id
-    LEFT JOIN tags ON tags.id = review_tags.tag_id
+    LEFT JOIN aggregated_tags ON aggregated_tags.submission_id = submissions.id
     WHERE reviews.id = $1
     GROUP BY submissions.id, reviews.id`,
     [review_id],

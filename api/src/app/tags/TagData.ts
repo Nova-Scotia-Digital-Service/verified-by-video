@@ -30,9 +30,10 @@ export const deleteTag = async (tagId: string) => {
   await client.query('BEGIN')
   await client.query(
     `
-    DELETE FROM review_tags
+    DELETE FROM submission_tags
     WHERE
-      review_tags.tag_id = $1`,
+      submission_tags.tag_id = $1
+    `,
     [tagId],
   )
   await client.query(
@@ -46,26 +47,26 @@ export const deleteTag = async (tagId: string) => {
   await client.release()
 }
 
-export const applyTagToReview = async (reviewId: string, tagId: string) => {
+export const applyTagToSubmission = async (submissionId: string, tagId: string) => {
   await pool.query(
     `
-    INSERT INTO review_tags
-      (review_id, tag_id)
+    INSERT INTO submission_tags
+      (submission_id, tag_id)
     VALUES
-      ($1, $2)`,
-    [reviewId, tagId],
+      ($1, $2)
+    `,
+    [submissionId, tagId],
   )
 }
 
-export const removeTagFromReview = async (reviewId: string, tagText: string) => {
+export const removeTagFromSubmission = async (submissionId: string, tagId: string) => {
   await pool.query(
     `
-    DELETE FROM review_tags
-    USING tags
+    DELETE FROM submission_tags
     WHERE
-      review_tags.review_id = $1 AND
-      review_tags.tag_id = tags.id AND
-      tags.text = $2`,
-    [reviewId, tagText],
+      submission_tags.submission_id = $1 AND
+      submission_tags.tag_id = $2
+    `,
+    [submissionId, tagId],
   )
 }

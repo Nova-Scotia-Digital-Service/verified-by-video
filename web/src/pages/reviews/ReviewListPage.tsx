@@ -14,7 +14,7 @@ import { TagFilter } from './components/TagFilter'
 export const ReviewListPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<TD.ReviewStatus>('STARTED')
   const [filteredTags, setFilteredTags] = useState<string[]>([])
-  const [reviewListResponse, setReviewListResponse] = useResponse<TD.ReviewList>()
+  const [reviewListResponse, setReviewListResponse] = useResponse<TD.ReviewSummary[]>()
 
   useEffect(() => {
     getReviewList()
@@ -51,7 +51,7 @@ export const ReviewListPage: React.FC = () => {
               .filter(
                 (review) =>
                   review.status === statusFilter &&
-                  (filteredTags.length === 0 || review.tags.some((rt) => filteredTags.includes(rt))),
+                  (filteredTags.length === 0 || review.submission.tags.some(({ id }) => filteredTags.includes(id))),
               )
               .map((review) => {
                 return <ReviewCard key={review.id} review={review} />

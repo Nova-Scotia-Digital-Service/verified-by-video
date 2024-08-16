@@ -25,6 +25,7 @@ export type Submission = {
 export type APISubmissionSummary = {
   id: string
   upload_date: Date
+  tags: Tag[]
   reviews: {
     id: string
     status: ReviewStatus
@@ -52,16 +53,30 @@ export type Reviewer = {
 export type Review = {
   id: string
   status: ReviewStatus
-  submission: Submission
-  tags: Tag['text'][]
+  submission: {
+    id: string
+    video_url: string
+    upload_date: Date
+    session_id: string
+    tags: Tag[]
+  }
   prompts: Prompt[]
   identification_cards: IdentificationCard[]
   questions: ReviewQuestion[]
-  reviewer: Reviewer | null
 }
 
-export type ReviewSummary = Omit<Review, 'prompts' | 'identification_cards' | 'questions'>
-export type ReviewList = ReviewSummary[]
+export type ReviewSummary = {
+  id: string
+  status: ReviewStatus
+  submission: {
+    id: string
+    video_url: string
+    upload_date: Date
+    session_id: string
+    tags: Tag[]
+  }
+  reviewer: Reviewer | null
+}
 
 export type ReviewQuestion = {
   id: string

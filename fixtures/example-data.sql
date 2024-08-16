@@ -101,7 +101,7 @@ BEGIN;
         ('1529c4ad-c5f7-404c-b880-6ffc9ad4ca1c', 'Tag 1'),
         ('67302e01-4197-47e1-b78e-466064ac5691', 'Tag 2'),
         ('fc1bdf3c-6457-4604-aeb6-48ba42a73eb9', 'Tag 3');
-    INSERT INTO public.review_tags VALUES
-        ('0f1e96ec-2008-4f3d-9f48-79e3783e237f', '532bd3f4-a0c5-4a97-87a9-19d46981747d', '1529c4ad-c5f7-404c-b880-6ffc9ad4ca1c'),
-        ('ccf3bece-7df3-453d-9d3b-373461e13839', '532bd3f4-a0c5-4a97-87a9-19d46981747d', '67302e01-4197-47e1-b78e-466064ac5691');
+    INSERT INTO public.submission_tags VALUES
+        ('0f1e96ec-2008-4f3d-9f48-79e3783e237f', '214f747f-778a-4d4b-ab3b-5ed0c9410c69', '1529c4ad-c5f7-404c-b880-6ffc9ad4ca1c'),
+        ('ccf3bece-7df3-453d-9d3b-373461e13839', '214f747f-778a-4d4b-ab3b-5ed0c9410c69', '67302e01-4197-47e1-b78e-466064ac5691');
 COMMIT;

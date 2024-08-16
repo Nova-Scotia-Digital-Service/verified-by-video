@@ -13,6 +13,16 @@ exports[`StaffSubmissionController getSubmissionList returns expected data 1`] =
       },
     ],
     "status": "UNDER_REVIEW",
+    "tags": [
+      {
+        "id": "1529c4ad-c5f7-404c-b880-6ffc9ad4ca1c",
+        "text": "Tag 1",
+      },
+      {
+        "id": "67302e01-4197-47e1-b78e-466064ac5691",
+        "text": "Tag 2",
+      },
+    ],
     "upload_date": 2024-05-08T19:01:48.776Z,
   },
   {
@@ -26,6 +36,7 @@ exports[`StaffSubmissionController getSubmissionList returns expected data 1`] =
       },
     ],
     "status": "REJECTED",
+    "tags": [],
     "upload_date": 2024-05-10T13:05:18.691Z,
   },
 ]

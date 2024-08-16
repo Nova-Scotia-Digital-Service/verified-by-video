@@ -222,21 +222,23 @@ exports[`ReviewController getReview returns data 1`] = `
       "question": "Are you confident this is who they say they are?",
     },
   ],
-  "session_id": "88acfa3d-bf2f-4cae-8746-60a9106f6d56",
   "status": "STARTED",
   "submission": {
     "id": "214f747f-778a-4d4b-ab3b-5ed0c9410c69",
     "session_id": "88acfa3d-bf2f-4cae-8746-60a9106f6d56",
+    "tags": [
+      {
+        "id": "67302e01-4197-47e1-b78e-466064ac5691",
+        "text": "Tag 2",
+      },
+      {
+        "id": "1529c4ad-c5f7-404c-b880-6ffc9ad4ca1c",
+        "text": "Tag 1",
+      },
+    ],
     "upload_date": 2024-05-08T19:01:48.776Z,
     "video_url": Any<SignedURL>,
   },
-  "submission_id": "214f747f-778a-4d4b-ab3b-5ed0c9410c69",
-  "tags": [
-    "Tag 1",
-    "Tag 2",
-  ],
-  "upload_date": 2024-05-08T19:01:48.776Z,
-  "video_url": "/media/example-video.mp4",
 }
 `;
 
@@ -280,18 +282,14 @@ exports[`ReviewController getReview returns data 2`] = `
     },
   ],
   "questions": [],
-  "session_id": "33aeaab8-0a6f-477f-815a-eb0559b1ba3a",
   "status": "REJECTED",
   "submission": {
     "id": "be5a2859-8c30-4970-978f-ea30b295ad86",
     "session_id": "33aeaab8-0a6f-477f-815a-eb0559b1ba3a",
+    "tags": [],
     "upload_date": 2024-05-10T13:05:18.691Z,
     "video_url": Any<SignedURL>,
   },
-  "submission_id": "be5a2859-8c30-4970-978f-ea30b295ad86",
-  "tags": [],
-  "upload_date": 2024-05-10T13:05:18.691Z,
-  "video_url": "/media/example-video.mp4",
 }
 `;
 
@@ -310,13 +308,19 @@ exports[`ReviewController getReviewList returns data 1`] = `
     "submission": {
       "id": "214f747f-778a-4d4b-ab3b-5ed0c9410c69",
       "session_id": "88acfa3d-bf2f-4cae-8746-60a9106f6d56",
+      "tags": [
+        {
+          "id": "67302e01-4197-47e1-b78e-466064ac5691",
+          "text": "Tag 2",
+        },
+        {
+          "id": "1529c4ad-c5f7-404c-b880-6ffc9ad4ca1c",
+          "text": "Tag 1",
+        },
+      ],
       "upload_date": 2024-05-08T19:01:48.776Z,
       "video_url": "/media/example-video.mp4",
     },
-    "tags": [
-      "Tag 1",
-      "Tag 2",
-    ],
   },
   {
     "id": "cbb5b46a-ad3b-4a5f-954f-bff18024d1d6",
@@ -331,10 +335,10 @@ exports[`ReviewController getReviewList returns data 1`] = `
     "submission": {
       "id": "be5a2859-8c30-4970-978f-ea30b295ad86",
       "session_id": "33aeaab8-0a6f-477f-815a-eb0559b1ba3a",
+      "tags": [],
       "upload_date": 2024-05-10T13:05:18.691Z,
       "video_url": "/media/example-video.mp4",
     },
-    "tags": [],
   },
 ]
 `;

@@ -4,6 +4,7 @@ import { pool } from '../../db'
 import { populateDb, unpopulateDb } from '../../../test/testUtils'
 
 import { StaffSubmissionController, SubmissionController } from './SubmissionController'
+import { ReviewController } from '../reviews/ReviewController'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 const VIDEO_URL_REGEX = /^media\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}.mp4$/
@@ -23,6 +24,41 @@ describe('StaffSubmissionController', () => {
     it('returns expected data', async () => {
       const submissionList = await new StaffSubmissionController().getSubmissionList()
       expect(submissionList).toMatchSnapshot()
+    })
+  })
+
+  describe('applyTagToSubmission', () => {
+    it('applies a tag to a submission', async () => {
+      const reviewId = 'cbb5b46a-ad3b-4a5f-954f-bff18024d1d6'
+      const tagId = 'fc1bdf3c-6457-4604-aeb6-48ba42a73eb9'
+
+      const reviewBefore = await new ReviewController().getReview(reviewId)
+      expect(reviewBefore.submission.tags).toEqual([])
+
+      await new StaffSubmissionController().applyTagToSubmission(reviewBefore.submission.id, { tag_id: tagId })
+
+      const reviewAfter = await new ReviewController().getReview(reviewId)
+      expect(reviewAfter.submission.tags).toEqual([{ id: tagId, text: 'Tag 3' }])
+    })
+  })
+
+  describe('removeTagFromSubmission', () => {
+    it('removes a tag from a submission', async () => {
+      const reviewId = 'cbb5b46a-ad3b-4a5f-954f-bff18024d1d6'
+      const otherReviewId = '532bd3f4-a0c5-4a97-87a9-19d46981747d'
+      const tagId = 'fc1bdf3c-6457-4604-aeb6-48ba42a73eb9'
+
+      const reviewBefore = await new ReviewController().getReview(reviewId)
+      const otherReviewBefore = await new ReviewController().getReview(otherReviewId)
+      expect(reviewBefore.submission.tags).toEqual([{ id: tagId, text: 'Tag 3' }])
+      expect(otherReviewBefore.submission.tags.length).toBe(2)
+
+      await new StaffSubmissionController().removeTagFromSubmission(reviewBefore.submission.id, tagId)
+
+      const reviewAfter = await new ReviewController().getReview(reviewId)
+      const otherReviewAfter = await new ReviewController().getReview(otherReviewId)
+      expect(reviewAfter.submission.tags).toEqual([])
+      expect(otherReviewAfter.submission.tags.length).toBe(2)
     })
   })
 })

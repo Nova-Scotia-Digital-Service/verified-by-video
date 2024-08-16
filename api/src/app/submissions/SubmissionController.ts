@@ -11,6 +11,7 @@ import {
   UploadedFile,
   Body,
   UseGuards,
+  Delete,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiConsumes, ApiProperty, ApiBearerAuth as SwaggerRequireAuth } from '@nestjs/swagger'
@@ -22,6 +23,7 @@ import { minioClient } from '../../minio'
 import { AuthGuard } from '../auth/AuthGuard'
 
 import { createPhotoID, createSubmission, getSubmission, getSubmissionList } from './SubmissionData'
+import { applyTagToSubmission, removeTagFromSubmission } from '../tags/TagData'
 import { createReview } from '../reviews/ReviewData'
 
 class SubmissionBodySchema {
@@ -106,5 +108,25 @@ export class StaffSubmissionController {
         created_at: new Date(review.created_at),
       })),
     }))
+  }
+
+  @UseGuards(AuthGuard)
+  @SwaggerRequireAuth()
+  @Post('/:submission_id/tag')
+  public async applyTagToSubmission(
+    @Param('submission_id') submission_id: string,
+    @Body() { tag_id }: { tag_id: string },
+  ): Promise<void> {
+    await applyTagToSubmission(submission_id, tag_id)
+  }
+
+  @UseGuards(AuthGuard)
+  @SwaggerRequireAuth()
+  @Delete('/:submission_id/tag/:tag_id')
+  public async removeTagFromSubmission(
+    @Param('submission_id') submission_id: string,
+    @Param('tag_id') tag_id: string,
+  ): Promise<void> {
+    await removeTagFromSubmission(submission_id, tag_id)
   }
 }

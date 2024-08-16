@@ -9,6 +9,8 @@ import { useResponse } from '../../hooks/useResponse'
 import { AwaitResponse } from '../../components/AwaitResponse'
 import { StyledLink } from '../../components/StyledLink'
 
+import { TagCloud } from './components/TagCloud'
+
 const DATE_FORMAT: Intl.DateTimeFormatOptions = {
   dateStyle: 'full',
   timeStyle: 'short',
@@ -31,6 +33,9 @@ const Submission = ({ submission }: { submission: TD.APISubmissionSummary }) => 
     <li className="list-disc mb-4">
       <div>
         Submitted {submission.upload_date.toLocaleString('en-CA', DATE_FORMAT)} - {submission.status}
+        <div className="inline-block ml-4">
+          <TagCloud submissionId={submission.id} tags={submission.tags} />
+        </div>
       </div>
       <ul className="pl-8">
         {submission.reviews.map((review) => (
