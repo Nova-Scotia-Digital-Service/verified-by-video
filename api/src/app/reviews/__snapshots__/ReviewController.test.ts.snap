@@ -52,18 +52,22 @@ exports[`ReviewController getReview returns data 1`] = `
       "options": [
         {
           "id": "153bc35d-3ae4-4746-abd4-106b12aeb187",
+          "selected": false,
           "text": "Yes, all prompts followed by user in the correct order",
         },
         {
           "id": "390641de-5288-4261-ad59-7f28b05482c0",
+          "selected": false,
           "text": "Didn't follow the prompts correctly",
         },
         {
           "id": "287b76d4-21b4-4f5b-bfaa-1163abe5cc42",
+          "selected": false,
           "text": "Too low quality video/photo for matching",
         },
         {
           "id": "02955e84-81b2-4eb9-9aef-4913ec9e3dc8",
+          "selected": false,
           "text": "Couldn't complete for other reason",
         },
       ],
@@ -74,14 +78,17 @@ exports[`ReviewController getReview returns data 1`] = `
       "options": [
         {
           "id": "7d479637-c890-47fb-b879-a9c27355e776",
+          "selected": false,
           "text": "NONPHOTO, PERCY or an acceptable variation",
         },
         {
           "id": "b392059a-445a-436b-8fcf-cf43a5b6b8da",
+          "selected": false,
           "text": "Didn't provide the correct name",
         },
         {
           "id": "d1ce043d-8b6d-42c2-9c03-0972a514c3ca",
+          "selected": false,
           "text": "Couldn't complete for other reason",
         },
       ],
@@ -92,18 +99,22 @@ exports[`ReviewController getReview returns data 1`] = `
       "options": [
         {
           "id": "a6005f55-aac0-4e26-ba67-11aff456bf5b",
+          "selected": false,
           "text": "Yes, all match",
         },
         {
           "id": "0da3c0e3-6535-496b-85cc-186cc84ca767",
+          "selected": false,
           "text": "Not all match",
         },
         {
           "id": "eb6f5cdf-14fc-455e-bab4-2b27e98942c9",
+          "selected": false,
           "text": "Too low quality video or photo for matching",
         },
         {
           "id": "6a9a2cb0-b9a2-4959-b483-bbc6c4197593",
+          "selected": false,
           "text": "Couldn't complete for other reason",
         },
       ],
@@ -114,14 +125,17 @@ exports[`ReviewController getReview returns data 1`] = `
       "options": [
         {
           "id": "4b85d528-a3a8-49c3-a13d-30c566c0c329",
+          "selected": false,
           "text": "Nova Scotia Driver's License",
         },
         {
           "id": "c694c9d7-d5f4-4024-8834-21a800c3a4be",
+          "selected": false,
           "text": "Other type",
         },
         {
           "id": "ece94423-fb18-4aa9-8c16-6f46da09c259",
+          "selected": false,
           "text": "I can't confirm",
         },
       ],
@@ -132,14 +146,17 @@ exports[`ReviewController getReview returns data 1`] = `
       "options": [
         {
           "id": "64b8cfd3-6d98-40c8-af7a-1dc1c9cc4df2",
+          "selected": false,
           "text": "12121212",
         },
         {
           "id": "c40383be-a2c2-4eb7-8b91-93ee430efb3f",
+          "selected": false,
           "text": "Other type",
         },
         {
           "id": "5254b514-30bf-4615-8db5-b8d1225b4488",
+          "selected": false,
           "text": "I can't confirm",
         },
       ],
@@ -150,14 +167,17 @@ exports[`ReviewController getReview returns data 1`] = `
       "options": [
         {
           "id": "3b1ca3d6-de80-4b27-aeff-2c8d4237088c",
+          "selected": false,
           "text": "January 1, 1990",
         },
         {
           "id": "19a884e4-02d9-4f41-9fb6-2a7b528f3db4",
+          "selected": false,
           "text": "Does not match",
         },
         {
           "id": "a44ee7e6-ae27-42ef-aa3e-ce9b54a3dbcf",
+          "selected": false,
           "text": "I can't confirm",
         },
       ],
@@ -168,14 +188,17 @@ exports[`ReviewController getReview returns data 1`] = `
       "options": [
         {
           "id": "80ed0dc2-1a93-4c38-ae36-25cbc8659c53",
+          "selected": false,
           "text": "NONPHOTO, PERCY or an acceptable variation",
         },
         {
           "id": "f4b80b72-4df8-4433-bbf6-41fc80ed8455",
+          "selected": false,
           "text": "Does not match",
         },
         {
           "id": "b87e1c07-0af9-44f1-85df-e32142a8c5d3",
+          "selected": false,
           "text": "I can't confirm",
         },
       ],
@@ -186,18 +209,22 @@ exports[`ReviewController getReview returns data 1`] = `
       "options": [
         {
           "id": "86b271cf-6517-40ac-a11b-ae91c81dbafa",
+          "selected": false,
           "text": "Is valid, not expired",
         },
         {
           "id": "67440bce-44ca-4c57-9d0a-e6e8881a2997",
+          "selected": false,
           "text": "Expired",
         },
         {
           "id": "c0df2424-327b-4220-b6bd-add4dc58fd92",
+          "selected": false,
           "text": "Doesn't appear to be genuine (e.g. not an original document, missing security feature)",
         },
         {
           "id": "dbd486a9-e3b5-4fe1-a0ba-0a7682422684",
+          "selected": false,
           "text": "Not an acceptable document",
         },
       ],
@@ -208,14 +235,17 @@ exports[`ReviewController getReview returns data 1`] = `
       "options": [
         {
           "id": "357a3e84-8376-4594-ab3f-a6b8c436c2da",
+          "selected": false,
           "text": "Yes I am confident",
         },
         {
           "id": "6fea484e-c28e-45b2-ab38-a84a4790eefa",
+          "selected": false,
           "text": "Possible suspicious activity",
         },
         {
           "id": "d2d4ec17-dff5-4ece-8923-44f6130d195f",
+          "selected": false,
           "text": "Not confident enough to verify for other reason",
         },
       ],
@@ -291,54 +321,4 @@ exports[`ReviewController getReview returns data 2`] = `
     "video_url": Any<SignedURL>,
   },
 }
-`;
-
-exports[`ReviewController getReviewList returns data 1`] = `
-[
-  {
-    "id": "532bd3f4-a0c5-4a97-87a9-19d46981747d",
-    "reviewer": {
-      "email": "test@example.ca",
-      "full_name": "User One",
-      "id": "098d6748-4803-48e9-8d87-8a3479562c00",
-      "is_admin": false,
-      "keycloak_id": null,
-    },
-    "status": "STARTED",
-    "submission": {
-      "id": "214f747f-778a-4d4b-ab3b-5ed0c9410c69",
-      "session_id": "88acfa3d-bf2f-4cae-8746-60a9106f6d56",
-      "tags": [
-        {
-          "id": "67302e01-4197-47e1-b78e-466064ac5691",
-          "text": "Tag 2",
-        },
-        {
-          "id": "1529c4ad-c5f7-404c-b880-6ffc9ad4ca1c",
-          "text": "Tag 1",
-        },
-      ],
-      "upload_date": 2024-05-08T19:01:48.776Z,
-      "video_url": "/media/example-video.mp4",
-    },
-  },
-  {
-    "id": "cbb5b46a-ad3b-4a5f-954f-bff18024d1d6",
-    "reviewer": {
-      "email": "test@example.com",
-      "full_name": "User Two",
-      "id": "5420a722-de9d-4d4a-a586-5614cdb37c99",
-      "is_admin": false,
-      "keycloak_id": null,
-    },
-    "status": "REJECTED",
-    "submission": {
-      "id": "be5a2859-8c30-4970-978f-ea30b295ad86",
-      "session_id": "33aeaab8-0a6f-477f-815a-eb0559b1ba3a",
-      "tags": [],
-      "upload_date": 2024-05-10T13:05:18.691Z,
-      "video_url": "/media/example-video.mp4",
-    },
-  },
-]
 `;

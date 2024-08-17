@@ -1,42 +1,27 @@
 import * as TD from '../../types'
 
 import { useEffect } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+
+import { Link, useParams } from 'react-router-dom'
 
 import { AwaitResponse } from '../../components/AwaitResponse'
-import { PrimaryButton, SecondaryButton } from '../../components/Button'
-import { HorizontalRule } from '../../components/HorizontalRule'
 
-import { getReviewDetail, postReviewAnswers } from '../../api/ReviewApi'
 import { useResponse } from '../../hooks/useResponse'
-
-import { TagCloud } from './components/TagCloud'
-import { ReviewQuestion } from './components/ReviewQuestion'
-import { PhotoID } from './components/PhotoID'
 
 import { paths } from '../../paths'
 
+import { getReviewDetail } from '../../api/ReviewApi'
+
+import { ReviewForm } from './components/ReviewForm'
+import { ReviewFinished } from './components/ReviewFinished'
+
 import { ReactComponent as BackArrowIcon } from '../../assets/icon-back-arrow.svg'
-import { ReactComponent as WarningIcon } from '../../assets/icon-warning.svg'
 
-const DATE_FORMAT: Intl.DateTimeFormatOptions = {
-  month: 'short',
-  year: 'numeric',
-  day: 'numeric',
-}
-
-type FormInputs = {
-  answers: { [key: string]: string }
-  comment: string
-}
-
-export const ReviewPage: React.FC = () => {
-  const navigate = useNavigate()
-  const [reviewDetailResponse, setReviewDetailResponse] = useResponse<TD.Review>()
-
+export const ReviewDetailPage: React.FC = () => {
   const { reviewId } = useParams()
   if (!reviewId) throw new Error(`Path parameter not found`)
+
+  const [reviewDetailResponse, setReviewDetailResponse] = useResponse<TD.Review>()
 
   useEffect(() => {
     getReviewDetail(reviewId)
@@ -48,25 +33,9 @@ export const ReviewPage: React.FC = () => {
       })
   }, [])
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<FormInputs>()
-
-  const onReject: SubmitHandler<FormInputs> = async (data) => {
-    await postReviewAnswers(reviewId, { status: 'REJECTED', ...data })
-    navigate(paths.reviewList({}))
-  }
-
-  const onApprove: SubmitHandler<FormInputs> = async (data) => {
-    await postReviewAnswers(reviewId, { status: 'APPROVED', ...data })
-    navigate(paths.reviewList({}))
-  }
-
   return (
     <div className="container py-12 px-16 w-[68rem]">
-      <Link to={paths.reviewList({})} className="flex items-center font-bold text-sm hover:opacity-60">
+      <Link to={paths.home({})} className="flex items-center font-bold text-sm hover:opacity-60">
         <BackArrowIcon className="mr-2 mt-[2px]" />
         Back
       </Link>
@@ -74,91 +43,9 @@ export const ReviewPage: React.FC = () => {
 
       <AwaitResponse response={reviewDetailResponse}>
         {(review) => (
-          <form>
-            <div className="flex justify-between mb-12">
-              <div>
-                <div className="mb-12">
-                  <div className="font-bold text-md">Video Date</div>
-                  <div className="font-bold text-2xl mb-2">
-                    {review.submission.upload_date.toLocaleDateString('en-CA', DATE_FORMAT)}{' '}
-                  </div>
-
-                  <TagCloud submissionId={review.submission.id} tags={review.submission.tags} />
-                </div>
-                <div className="max-w-96">
-                  <h3 className="font-bold text-2xl mb-4">Prompts the user was provided in the mobile app:</h3>
-                  <ol className="ml-6 text-lg">
-                    {review.prompts.map((prompt) => (
-                      <li key={prompt.id} className="mb-4 pl-2 list-decimal">
-                        {prompt.text}
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              </div>
-
-              <video controls className="w-[28rem] h-[40rem] rounded-lg">
-                <source src={review.submission.video_url} type="video/mp4" />
-              </video>
-            </div>
-
-            <HorizontalRule />
-
-            <div className="flex flex-col">
-              <div className="flex gap-x-12 mb-12 mx-[-4rem] overflow-x-scroll pb-4" style={{ order: 1 }}>
-                {review.identification_cards.map((card) => (
-                  <PhotoID key={card.id} card={card} />
-                ))}
-              </div>
-
-              {review.questions.map(({ id, question, options }, index) => (
-                <ReviewQuestion
-                  key={id}
-                  index={index}
-                  id={id}
-                  question={question}
-                  options={options}
-                  register={register}
-                  error={errors.answers && errors.answers[id]}
-                />
-              ))}
-            </div>
-
-            <div className="flex items-start mb-12 p-4 rounded-lg border border-warning-border text-lg text-warning-text bg-warning-background">
-              <WarningIcon className="mr-4" />
-              <div>
-                <h2 className="font-bold mb-4 leading-none">Important</h2>
-                <div>
-                  This screen contains personal information and should not be printed or captured, except when reporting
-                  suspicious activity.
-                </div>
-              </div>
-            </div>
-
-            <HorizontalRule />
-
-            <h3 className="font-bold text-xl mb-4">Comments</h3>
-
-            <textarea className="w-full border border-slate rounded-md" {...register('comment')}></textarea>
-
-            <div className="flex justify-between">
-              <div className="flex gap-4">
-                <div className="w-80">
-                  <SecondaryButton disabled type="submit">
-                    Transfer request to specialist
-                  </SecondaryButton>
-                </div>
-                <div className="w-48">
-                  <SecondaryButton onClick={handleSubmit(onReject)}>Close request</SecondaryButton>
-                </div>
-              </div>
-              <div className="w-48">
-                <PrimaryButton type="submit" onClick={handleSubmit(onApprove)}>
-                  Continue
-                </PrimaryButton>
-              </div>
-            </div>
-          </form>
+          <div key={reviewId}>
+            {review.status === 'STARTED' ? <ReviewForm review={review} /> : <ReviewFinished review={review} />}
+          </div>
         )}
       </AwaitResponse>
     </div>

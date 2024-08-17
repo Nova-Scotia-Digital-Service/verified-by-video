@@ -85,16 +85,16 @@ const generateReviewQuestions = () => {
   return reviewQuestionTemplate
 }
 
-export const createReview = async (submission_id: string) => {
+export const createReview = async (reviewer: TD.DBUser, submission_id: string) => {
   const client = await pool.connect()
   await client.query('BEGIN')
   const reviewResult = await client.query<Pick<TD.DBReview, 'id'>>(
     `
-    INSERT INTO reviews (submission_id)
-    VALUES ($1)
+    INSERT INTO reviews (submission_id, reviewer_id)
+    VALUES ($1, $2)
     RETURNING id
-  `,
-    [submission_id],
+    `,
+    [submission_id, reviewer && reviewer.id],
   )
 
   const reviewQuestions = generateReviewQuestions()
@@ -138,54 +138,6 @@ export const createReview = async (submission_id: string) => {
   return reviewResult.rows[0]
 }
 
-export const getReviewList = async () => {
-  const reviews = await pool.query<{
-    id: string
-    status: TD.ReviewStatus
-    video_url: string
-    upload_date: Date
-    session_id: string
-    submission_id: string
-    tags: TD.Tag[]
-    reviewer: TD.DBUser
-  }>(
-    `
-    WITH
-      aggregated_tags AS (
-        SELECT
-          submission_tags.submission_id,
-          jsonb_build_object(
-            'id', tags.id,
-            'text', tags.text
-          ) AS tags
-        FROM submission_tags
-        JOIN tags ON tags.id = submission_tags.tag_id
-        GROUP BY submission_tags.submission_id, tags.id
-      )
-    SELECT
-      reviews.id,
-      reviews.status,
-      submissions.id as submission_id,
-      submissions.session_id,
-      submissions.video_url,
-      submissions.upload_date,
-      array_remove(
-        array_agg(aggregated_tags.tags),
-        NULL
-      ) AS tags,
-      to_json(users) as reviewer
-    FROM reviews
-    JOIN submissions ON submissions.id = reviews.submission_id
-    LEFT JOIN aggregated_tags ON aggregated_tags.submission_id = submissions.id
-    LEFT JOIN users ON users.id = reviews.reviewer_id
-    GROUP BY submissions.id, reviews.id, users.id
-    ORDER BY upload_date ASC
-    `,
-  )
-
-  return reviews.rows
-}
-
 export const getReview = async (review_id: string) => {
   const client = await pool.connect()
   await client.query('BEGIN')
@@ -226,7 +178,8 @@ export const getReview = async (review_id: string) => {
     JOIN submissions ON submissions.id = reviews.submission_id
     LEFT JOIN aggregated_tags ON aggregated_tags.submission_id = submissions.id
     WHERE reviews.id = $1
-    GROUP BY submissions.id, reviews.id`,
+    GROUP BY submissions.id, reviews.id
+    `,
     [review_id],
   )
   const questions = await client.query<{ id: string; question: string; option_id: string; option_text: string }>(
@@ -238,17 +191,30 @@ export const getReview = async (review_id: string) => {
       review_question_options.text as option_text
     FROM review_questions
     JOIN review_question_options ON review_questions.id = review_question_id
-    WHERE review_id = $1`,
+    WHERE review_id = $1
+    `,
     [review_id],
   )
-  const prompts = await client.query<TD.DBPrompt>(
+  const selected_options = await client.query<{ selected_option_ids: string[] | null }>(
+    `
+    SELECT
+      array_agg(review_answers.option_id) as selected_option_ids
+    FROM review_questions
+    JOIN review_question_options ON review_questions.id = review_question_id
+    JOIN review_answers ON review_question_options.id = review_answers.option_id
+    WHERE review_id = $1
+    `,
+    [review_id],
+  )
+  const prompts = await client.query<{ id: string; session_id: string; text: string }>(
     `
     SELECT
       id,
       session_id,
       text
     FROM prompts
-    WHERE session_id = $1`,
+    WHERE session_id = $1
+    `,
     [review.rows[0].session_id],
   )
   const identification_cards = await client.query<TD.DBIdentificationCard>(
@@ -260,16 +226,23 @@ export const getReview = async (review_id: string) => {
       photo_url,
       upload_date
     FROM identification_cards
-    WHERE session_id = $1`,
+    WHERE session_id = $1
+    `,
     [review.rows[0].session_id],
   )
   await client.query('COMMIT')
   await client.release()
 
-  return [review.rows[0], questions.rows, prompts.rows, identification_cards.rows] as const
+  return {
+    review: review.rows[0],
+    questions: questions.rows,
+    selectedOptions: selected_options.rows[0].selected_option_ids,
+    prompts: prompts.rows,
+    identificationCards: identification_cards.rows,
+  }
 }
 
-export const postReviewAnswers = async (
+export const finishReview = async (
   user: TD.DBUser,
   review_id: string,
   status: Exclude<TD.ReviewStatus, 'STARTED'>,

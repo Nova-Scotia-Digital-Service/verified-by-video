@@ -24,7 +24,6 @@ import { AuthGuard } from '../auth/AuthGuard'
 
 import { createPhotoID, createSubmission, getSubmission, getSubmissionList } from './SubmissionData'
 import { applyTagToSubmission, removeTagFromSubmission } from '../tags/TagData'
-import { createReview } from '../reviews/ReviewData'
 
 class SubmissionBodySchema {
   @ApiProperty({ type: 'string' })
@@ -62,7 +61,6 @@ export class SubmissionController {
     await minioClient.putObject(config.S3_BUCKET_NAME, filePath, video_file.buffer, video_file.size)
 
     const submission = await createSubmission(session_id, filePath)
-    await createReview(submission.id)
     return submission
   }
 

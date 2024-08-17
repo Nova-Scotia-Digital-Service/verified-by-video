@@ -8,35 +8,26 @@ import { AuthGuard } from '../auth/AuthGuard'
 import { minioClient } from '../../minio'
 import config from '../../config'
 
-import { getReview, getReviewList, postReviewAnswers } from './ReviewData'
+import { createReview, getReview, finishReview } from './ReviewData'
 
 @Controller('/staff/reviews')
 export class ReviewController {
   @UseGuards(AuthGuard)
   @SwaggerRequireAuth()
-  @Get('/')
-  public async getReviewList(): Promise<TD.ReviewSummary[]> {
-    return (await getReviewList()).map(
-      ({ id, status, tags, submission_id, session_id, video_url, upload_date, reviewer }) => ({
-        id,
-        status,
-        submission: {
-          id: submission_id,
-          session_id,
-          video_url,
-          upload_date,
-          tags,
-        },
-        reviewer,
-      }),
-    )
+  @Post('/')
+  public async createReview(
+    @Req() request: { user: TD.DBUser },
+    @Body() body: TD.APICreateReviewRequest,
+  ): Promise<TD.APICreateReviewResponse> {
+    const { id } = await createReview(request.user, body.submission_id)
+    return { id }
   }
 
   @UseGuards(AuthGuard)
   @SwaggerRequireAuth()
   @Get('/:review_id')
   public async getReview(@Param('review_id') review_id: string): Promise<TD.Review> {
-    const [review, questions, prompts, identification_cards] = await getReview(review_id)
+    const { review, questions, prompts, selectedOptions, identificationCards } = await getReview(review_id)
 
     const reviewQuestions: TD.ReviewQuestion[] = []
 
@@ -50,6 +41,7 @@ export class ReviewController {
             {
               id: question.option_id,
               text: question.option_text,
+              selected: selectedOptions?.includes(question.option_id) || false,
             },
           ],
         }
@@ -58,6 +50,7 @@ export class ReviewController {
         existingQuestion.options.push({
           id: question.option_id,
           text: question.option_text,
+          selected: selectedOptions?.includes(question.option_id) || false,
         })
       }
     }
@@ -68,7 +61,7 @@ export class ReviewController {
     }
 
     const signedIdentificationCards = await Promise.all(
-      identification_cards.map(async (card) => {
+      identificationCards.map(async (card) => {
         if (!card.photo_url) return card
 
         let signedPhotoUrl = await minioClient.presignedGetObject(config.S3_BUCKET_NAME, card.photo_url, 60 * 60)
@@ -101,12 +94,11 @@ export class ReviewController {
   @UseGuards(AuthGuard)
   @SwaggerRequireAuth()
   @Post('/:review_id')
-  public async postReview(
+  public async finishReview(
     @Req() request: { user: TD.DBUser },
     @Param('review_id') review_id: string,
-    @Body()
-    body: { status: Exclude<TD.ReviewStatus, 'STARTED'>; answers: { [question: string]: string }; comment?: string },
+    @Body() body: TD.APIFinishReviewRequest,
   ): Promise<void> {
-    await postReviewAnswers(request.user, review_id, body.status, Object.values(body.answers), body.comment)
+    await finishReview(request.user, review_id, body.status, Object.values(body.answers), body.comment)
   }
 }

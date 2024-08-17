@@ -2,7 +2,6 @@ import { configDotenv } from 'dotenv'
 
 import { createSession } from '../src/app/sessions/SessionData'
 import { createPhotoID, createSubmission } from '../src/app/submissions/SubmissionData'
-import { createReview } from '../src/app/reviews/ReviewData'
 
 configDotenv()
 
@@ -14,9 +13,7 @@ const generateSubmissions = async (count) => {
     await createPhotoID(session.id, "Front of Nova Scotia Driver's License", 'media/example-photo-license-front.png')
     await createPhotoID(session.id, "Back of Nova Scotia Driver's License", 'media/example-photo-license-back.png')
 
-    const review = await createReview(submission.id)
-
-    console.log(`Submission created: http://localhost:3000/reviews/${review.id}`)
+    console.log(`Submission created: http://localhost:3000/submissions/${submission.id}`)
   }
 
   process.exit(0)

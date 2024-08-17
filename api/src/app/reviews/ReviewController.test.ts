@@ -23,14 +23,6 @@ expect.addSnapshotSerializer({
 })
 
 describe('ReviewController', () => {
-  describe('getReviewList', () => {
-    it('returns data', async () => {
-      const reviewList = await new ReviewController().getReviewList()
-      expect(reviewList.length).toBe(2)
-      expect(reviewList).toMatchSnapshot()
-    })
-  })
-
   describe('getReview', () => {
     it('returns data', async () => {
       expect(await new ReviewController().getReview('532bd3f4-a0c5-4a97-87a9-19d46981747d')).toMatchSnapshot()
@@ -38,7 +30,7 @@ describe('ReviewController', () => {
     })
   })
 
-  describe('postReview', () => {
+  describe('finishReview', () => {
     it('accepts data', async () => {
       const reviewId = '532bd3f4-a0c5-4a97-87a9-19d46981747d'
       const user: TD.DBUser = {
@@ -60,7 +52,7 @@ describe('ReviewController', () => {
         '62333928-ade6-41c6-b131-d11efff04179': '153bc35d-3ae4-4746-abd4-106b12aeb187',
       }
 
-      await new ReviewController().postReview({ user }, reviewId, { status: 'APPROVED', answers: reviewAnswers })
+      await new ReviewController().finishReview({ user }, reviewId, { status: 'APPROVED', answers: reviewAnswers })
     })
   })
 })

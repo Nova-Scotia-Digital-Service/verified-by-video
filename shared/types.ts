@@ -35,19 +35,26 @@ export type APISubmissionSummary = {
   status: SubmissionStatus
 }
 
+export type APICreateReviewRequest = {
+  submission_id: string
+}
+
+export type APICreateReviewResponse = {
+  id: string
+}
+
+export type APIFinishReviewRequest = {
+  status: Exclude<ReviewStatus, 'STARTED'>
+  answers: { [question: string]: string }
+  comment?: string
+}
+
 export type IdentificationCard = {
   id: string
   session_id: string
   description: string
   photo_url?: string
   upload_date?: Date
-}
-
-export type Reviewer = {
-  id: string
-  email: string
-  full_name: string
-  is_admin: boolean
 }
 
 export type Review = {
@@ -65,25 +72,13 @@ export type Review = {
   questions: ReviewQuestion[]
 }
 
-export type ReviewSummary = {
-  id: string
-  status: ReviewStatus
-  submission: {
-    id: string
-    video_url: string
-    upload_date: Date
-    session_id: string
-    tags: Tag[]
-  }
-  reviewer: Reviewer | null
-}
-
 export type ReviewQuestion = {
   id: string
   question: string
   options: {
     id: string
     text: string
+    selected: boolean
   }[]
 }
 
