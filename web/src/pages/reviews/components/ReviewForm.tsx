@@ -39,6 +39,11 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({ review }) => {
     formState: { errors },
   } = useForm<FormInputs>()
 
+  const onEscalate: SubmitHandler<FormInputs> = async (data) => {
+    await finishReview(review.id, { status: 'ESCALATED', ...data })
+    navigate(paths.home({}))
+  }
+
   const onReject: SubmitHandler<FormInputs> = async (data) => {
     await finishReview(review.id, { status: 'REJECTED', ...data })
     navigate(paths.home({}))
@@ -111,18 +116,14 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({ review }) => {
       <div className="flex justify-between">
         <div className="flex gap-4">
           <div className="w-80">
-            <SecondaryButton disabled type="submit">
-              Transfer request to specialist
-            </SecondaryButton>
+            <SecondaryButton onClick={handleSubmit(onEscalate)}>Transfer request to specialist</SecondaryButton>
           </div>
           <div className="w-48">
             <SecondaryButton onClick={handleSubmit(onReject)}>Close request</SecondaryButton>
           </div>
         </div>
         <div className="w-48">
-          <PrimaryButton type="submit" onClick={handleSubmit(onApprove)}>
-            Continue
-          </PrimaryButton>
+          <PrimaryButton onClick={handleSubmit(onApprove)}>Continue</PrimaryButton>
         </div>
       </div>
     </form>
