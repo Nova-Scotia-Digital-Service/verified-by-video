@@ -1,4 +1,4 @@
-import * as TD from '../../types'
+import * as TD from '../../types/index'
 
 import { pool } from '../../db'
 
@@ -87,13 +87,17 @@ export const getSubmissionList = async () => {
 }
 
 export const createSubmission = async (session_id: string, video_url: string) => {
-  const submission = await pool.query<TD.DBSubmission>(
+  const submission = await pool.query<{ id: string; session_id: string; video_url: string; upload_date: Date }>(
     `
     INSERT INTO submissions (session_id, video_url)
     VALUES
       ($1, $2)
-    RETURNING *
-  `,
+    RETURNING
+      id,
+      session_id,
+      video_url,
+      upload_date
+    `,
     [session_id, video_url],
   )
 
@@ -101,13 +105,24 @@ export const createSubmission = async (session_id: string, video_url: string) =>
 }
 
 export const createPhotoID = async (session_id: string, description: string, photo_url: string) => {
-  const createdPhotoID = await pool.query<TD.DBIdentificationCard>(
+  const createdPhotoID = await pool.query<{
+    id: string
+    session_id: string
+    description: string
+    photo_url?: string
+    upload_date?: Date
+  }>(
     `
     INSERT INTO identification_cards (session_id, description, photo_url)
     VALUES
       ($1, $2, $3)
-    RETURNING *
-  `,
+    RETURNING
+      id,
+      session_id,
+      description,
+      photo_url,
+      upload_date
+    `,
     [session_id, description, photo_url],
   )
 

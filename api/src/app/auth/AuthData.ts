@@ -18,7 +18,10 @@ export const createOrUpdateUser = async (decodedToken: TD.DecodedKeycloakToken) 
         full_name=$3,
         is_admin=$4
     RETURNING
-      id, email, full_name, is_admin
+      id,
+      email,
+      full_name,
+      is_admin
     `,
     [decodedToken.sub, decodedToken.email, decodedToken.name, isAdmin],
   )

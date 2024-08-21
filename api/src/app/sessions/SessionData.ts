@@ -1,5 +1,3 @@
-import * as TD from '../../types'
-
 import { pool } from '../../db'
 import { buildNestedPgParams } from '../../utils/buildPgParams'
 import { getRandomFromArray } from '../../utils/random'
@@ -18,23 +16,34 @@ const prompts: string[] = [
 export const createSession = async () => {
   const client = await pool.connect()
   await client.query('BEGIN')
-  const createdSession = await client.query<TD.DBSession>(`
+  const createdSession = await client.query<{
+    id: string
+    created_at: Date
+    expires_at: Date
+  }>(
+    `
     INSERT INTO sessions
     DEFAULT VALUES
-    RETURNING *
-  `)
+    RETURNING
+      id,
+      created_at,
+      expires_at
+    `,
+  )
 
   const sessionId = createdSession.rows[0].id
 
   const promptsForSession = getRandomFromArray(prompts, 3)
   const sessionPromptPairs = promptsForSession.map((prompt) => [sessionId, prompt])
-  const createdPrompts = await client.query<TD.DBPrompt>(
+  const createdPrompts = await client.query<{ id: string; text: string }>(
     `
     INSERT INTO prompts (session_id, text)
     VALUES
       ${buildNestedPgParams(sessionPromptPairs)}
-    RETURNING id, text
-  `,
+    RETURNING
+      id,
+      text
+    `,
     sessionPromptPairs.flat(),
   )
   await client.query('COMMIT')

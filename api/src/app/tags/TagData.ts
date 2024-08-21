@@ -1,24 +1,29 @@
-import * as TD from '../../types'
-
 import { pool } from '../../db'
 
 export const getTagList = async () => {
-  const tags = await pool.query<TD.DBTag>(`
+  const tags = await pool.query<{ id: string; text: string }>(
+    `
     SELECT
-      id, text
-    FROM tags`)
+      id,
+      text
+    FROM tags
+    `,
+  )
 
   return tags.rows
 }
 
 export const createTag = async (text: string) => {
-  const result = await pool.query(
+  const result = await pool.query<{ id: string; text: string }>(
     `
     INSERT INTO tags
       (text)
     VALUES
       ($1)
-    RETURNING id, text`,
+    RETURNING
+      id,
+      text
+    `,
     [text],
   )
 
@@ -40,7 +45,8 @@ export const deleteTag = async (tagId: string) => {
     `
     DELETE FROM tags
     WHERE
-      tags.id = $1`,
+      tags.id = $1
+    `,
     [tagId],
   )
   await client.query('COMMIT')

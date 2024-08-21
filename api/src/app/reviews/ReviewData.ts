@@ -88,7 +88,7 @@ const generateReviewQuestions = () => {
 export const createReview = async (reviewer: TD.DBUser, submission_id: string) => {
   const client = await pool.connect()
   await client.query('BEGIN')
-  const reviewResult = await client.query<Pick<TD.DBReview, 'id'>>(
+  const reviewResult = await client.query<{ id: string }>(
     `
     INSERT INTO reviews (submission_id, reviewer_id)
     VALUES ($1, $2)
@@ -105,7 +105,6 @@ export const createReview = async (reviewer: TD.DBUser, submission_id: string) =
       INSERT INTO review_questions (review_id, question)
       VALUES ($1, $2)
       RETURNING id
-
       `,
         [reviewResult.rows[0].id, question.question],
       )
@@ -144,10 +143,10 @@ export const getReview = async (review_id: string) => {
   const review = await client.query<{
     id: string
     status: TD.ReviewStatus
+    submission_id: string
+    session_id: string
     video_url: string
     upload_date: Date
-    session_id: string
-    submission_id: string
     tags: { id: string; text: string }[]
   }>(
     `
@@ -217,7 +216,13 @@ export const getReview = async (review_id: string) => {
     `,
     [review.rows[0].session_id],
   )
-  const identification_cards = await client.query<TD.DBIdentificationCard>(
+  const identification_cards = await client.query<{
+    id: string
+    session_id: string
+    description: string
+    photo_url?: string
+    upload_date?: Date
+  }>(
     `
     SELECT
       id,
