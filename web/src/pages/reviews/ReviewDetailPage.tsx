@@ -31,7 +31,7 @@ export const ReviewDetailPage: React.FC = () => {
       .catch((error) => {
         setReviewDetailResponse({ status: 'ERROR', error: error })
       })
-  }, [])
+  }, [reviewId])
 
   return (
     <div className="container py-12 px-16 w-[68rem]">
@@ -39,7 +39,7 @@ export const ReviewDetailPage: React.FC = () => {
         <BackArrowIcon className="mr-2 mt-[2px]" />
         Back
       </Link>
-      <h2 className="text-4xl font-bold text-title mt-4 mb-16">Verify Identity to set up Mobile card</h2>
+      <h2 className="text-4xl font-bold text-title mt-4 mb-12">Verify Identity to set up Mobile card</h2>
 
       <AwaitResponse response={reviewDetailResponse}>
         {(review) => (

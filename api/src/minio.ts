@@ -9,3 +9,12 @@ export const minioClient = new Client({
   accessKey: config.MINIO_ACCESS_KEY,
   secretKey: config.MINIO_SECRET_ACCESS_KEY,
 })
+
+export const signMinioUrl = async (unsignedUrl: string) => {
+  let signedUrl = await minioClient.presignedGetObject(config.S3_BUCKET_NAME, unsignedUrl, 60 * 60)
+  if (config.NODE_ENV === 'development') {
+    signedUrl = signedUrl.replace('http://minio:9000', 'http://localhost:9002')
+  }
+
+  return signedUrl
+}

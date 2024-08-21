@@ -17,5 +17,5 @@
     "skipLibCheck": true
   },
   "include": ["api", "web"],
-  "exclude": ["node_modules", "*/build"]
+  "exclude": ["node_modules", "*/build", "web/tailwind.config.js", "web/postcss.config.js"]
 }

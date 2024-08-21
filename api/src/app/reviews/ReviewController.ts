@@ -5,8 +5,7 @@ import { ApiBearerAuth as SwaggerRequireAuth } from '@nestjs/swagger'
 
 import { AuthGuard } from '../auth/AuthGuard'
 
-import { minioClient } from '../../minio'
-import config from '../../config'
+import { signMinioUrl } from '../../minio'
 
 import { createReview, getReview, finishReview } from './ReviewData'
 
@@ -55,19 +54,14 @@ export class ReviewController {
       }
     }
 
-    let signedVideoUrl = await minioClient.presignedGetObject(config.S3_BUCKET_NAME, review.video_url, 60 * 60)
-    if (config.NODE_ENV === 'development') {
-      signedVideoUrl = signedVideoUrl.replace('http://minio:9000', 'http://localhost:9002')
-    }
+    const signedVideoUrl = await signMinioUrl(review.video_url)
 
     const signedIdentificationCards = await Promise.all(
       identificationCards.map(async (card) => {
         if (!card.photo_url) return card
 
-        let signedPhotoUrl = await minioClient.presignedGetObject(config.S3_BUCKET_NAME, card.photo_url, 60 * 60)
-        if (config.NODE_ENV === 'development') {
-          signedPhotoUrl = signedPhotoUrl.replace('http://minio:9000', 'http://localhost:9002')
-        }
+        const signedPhotoUrl = await signMinioUrl(card.photo_url)
+
         return {
           ...card,
           photo_url: signedPhotoUrl,
