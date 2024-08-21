@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { getSubmissionList } from '../../api/SubmissionApi'
 import { useResponse } from '../../hooks/useResponse'
+import { useUserIsAdmin } from '../../utils/keycloak'
 
 import { AwaitResponse } from '../../components/AwaitResponse'
 
@@ -46,7 +47,8 @@ const CardSet = ({ title, submissions }: { title: string; submissions: TD.APISub
 }
 
 export const SubmissionListPage: React.FC = () => {
-  const [statusFilter, setStatusFilter] = useState<TD.SubmissionStatus>('NEW')
+  const userIsAdmin = useUserIsAdmin()
+  const [statusFilter, setStatusFilter] = useState<TD.SubmissionStatus>(userIsAdmin ? 'ESCALATED' : 'NEW')
   const [filteredTags, setFilteredTags] = useState<string[]>([])
   const [submissionListResponse, setSubmissionListResponse] = useResponse<TD.APISubmissionSummary[]>()
 
@@ -82,9 +84,11 @@ export const SubmissionListPage: React.FC = () => {
           return (
             <>
               <div className="flex gap-4 mb-6">
-                <FilterTab onClick={() => setStatusFilter('ESCALATED')} active={statusFilter === 'ESCALATED'}>
-                  Escalated ({`${escalatedSubmissions.length}`})
-                </FilterTab>
+                {userIsAdmin && (
+                  <FilterTab onClick={() => setStatusFilter('ESCALATED')} active={statusFilter === 'ESCALATED'}>
+                    Escalated ({`${escalatedSubmissions.length}`})
+                  </FilterTab>
+                )}
                 <FilterTab onClick={() => setStatusFilter('NEW')} active={statusFilter === 'NEW'}>
                   New ({`${newSubmissions.length}`})
                 </FilterTab>
@@ -99,7 +103,9 @@ export const SubmissionListPage: React.FC = () => {
                 </FilterTab>
               </div>
 
-              {statusFilter === 'ESCALATED' && <CardSet title="Escalated" submissions={escalatedSubmissions} />}
+              {userIsAdmin && statusFilter === 'ESCALATED' && (
+                <CardSet title="Escalated" submissions={escalatedSubmissions} />
+              )}
               {statusFilter === 'NEW' && <CardSet title="New" submissions={newSubmissions} />}
               {statusFilter === 'UNDER_REVIEW' && <CardSet title="In Progress" submissions={startedSubmissions} />}
               {statusFilter === 'REJECTED' && <CardSet title="Rejected" submissions={rejectedSubmissions} />}
