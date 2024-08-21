@@ -79,6 +79,7 @@ export type ReviewQuestion = {
     id: string
     text: string
     selected: boolean
+    valid: boolean
   }[]
 }
 

@@ -17,68 +17,83 @@ const generateReviewQuestions = () => {
     }),
   }
 
-  const reviewQuestionTemplate: { question: string; options: { text: string }[] }[] = [
+  const reviewQuestionTemplate: { question: string; options: { text: string; valid: boolean }[] }[] = [
     {
       question: 'Did the user correctly follow the prompts in the video?',
       options: [
-        { text: 'Yes, all prompts followed by user in the correct order' },
-        { text: "Didn't follow the prompts correctly" },
-        { text: 'Too low quality video/photo for matching' },
-        { text: "Couldn't complete for other reason" },
+        { text: 'Yes, all prompts followed by user in the correct order', valid: true },
+        { text: "Didn't follow the prompts correctly", valid: false },
+        { text: 'Too low quality video/photo for matching', valid: false },
+        { text: "Couldn't complete for other reason", valid: false },
       ],
     },
     {
       question: 'What name did they provide?',
       options: [
-        { text: `${fakePerson.lastName}, ${fakePerson.firstName} or an acceptable variation` },
-        { text: "Didn't provide the correct name" },
-        { text: "Couldn't complete for other reason" },
+        { text: `${fakePerson.lastName}, ${fakePerson.firstName} or an acceptable variation`, valid: true },
+        { text: "Didn't provide the correct name", valid: false },
+        { text: "Couldn't complete for other reason", valid: false },
       ],
     },
     {
       question: 'Do all three match: photo on the ID document, video, photo taken in the app?',
       options: [
-        { text: 'Yes, all match' },
-        { text: 'Not all match' },
-        { text: 'Too low quality video or photo for matching' },
-        { text: "Couldn't complete for other reason" },
+        { text: 'Yes, all match', valid: true },
+        { text: 'Not all match', valid: false },
+        { text: 'Too low quality video or photo for matching', valid: false },
+        { text: "Couldn't complete for other reason", valid: false },
       ],
     },
     {
       question: 'What type of ID is provided?',
-      options: [{ text: "Nova Scotia Driver's License" }, { text: 'Other type' }, { text: "I can't confirm" }],
+      options: [
+        { text: "Nova Scotia Driver's License", valid: true },
+        { text: 'Other type', valid: false },
+        { text: "I can't confirm", valid: false },
+      ],
     },
     {
       question: "What number is on Nova Scotia Driver's License?",
-      options: [{ text: fakePerson.driversLicenseNumber }, { text: 'Other type' }, { text: "I can't confirm" }],
+      options: [
+        { text: fakePerson.driversLicenseNumber, valid: true },
+        { text: 'Other type', valid: false },
+        { text: "I can't confirm", valid: false },
+      ],
     },
     {
       question: 'What is the birthdate on the ID?',
-      options: [{ text: fakePerson.birthdate }, { text: 'Does not match' }, { text: "I can't confirm" }],
+      options: [
+        { text: fakePerson.birthdate, valid: true },
+        { text: 'Does not match', valid: false },
+        { text: "I can't confirm", valid: false },
+      ],
     },
     {
       question: 'What name is on the ID?',
       options: [
-        { text: `${fakePerson.lastName}, ${fakePerson.firstName} or an acceptable variation` },
-        { text: 'Does not match' },
-        { text: "I can't confirm" },
+        { text: `${fakePerson.lastName}, ${fakePerson.firstName} or an acceptable variation`, valid: true },
+        { text: 'Does not match', valid: false },
+        { text: "I can't confirm", valid: false },
       ],
     },
     {
       question: 'Is the ID valid?',
       options: [
-        { text: 'Is valid, not expired' },
-        { text: 'Expired' },
-        { text: "Doesn't appear to be genuine (e.g. not an original document, missing security feature)" },
-        { text: 'Not an acceptable document' },
+        { text: 'Is valid, not expired', valid: true },
+        { text: 'Expired', valid: false },
+        {
+          text: "Doesn't appear to be genuine (e.g. not an original document, missing security feature)",
+          valid: false,
+        },
+        { text: 'Not an acceptable document', valid: false },
       ],
     },
     {
       question: 'Are you confident this is who they say they are?',
       options: [
-        { text: 'Yes I am confident' },
-        { text: 'Possible suspicious activity' },
-        { text: 'Not confident enough to verify for other reason' },
+        { text: 'Yes I am confident', valid: true },
+        { text: 'Possible suspicious activity', valid: false },
+        { text: 'Not confident enough to verify for other reason', valid: false },
       ],
     },
   ]
@@ -181,13 +196,20 @@ export const getReview = async (review_id: string) => {
     `,
     [review_id],
   )
-  const questions = await client.query<{ id: string; question: string; option_id: string; option_text: string }>(
+  const questions = await client.query<{
+    id: string
+    question: string
+    option_id: string
+    option_text: string
+    option_valid: boolean
+  }>(
     `
     SELECT
       review_questions.id,
       review_questions.question,
       review_question_options.id as option_id,
-      review_question_options.text as option_text
+      review_question_options.text as option_text,
+      review_question_options.valid as option_valid
     FROM review_questions
     JOIN review_question_options ON review_questions.id = review_question_id
     WHERE review_id = $1

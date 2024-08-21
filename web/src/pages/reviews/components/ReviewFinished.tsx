@@ -23,13 +23,18 @@ const DATE_FORMAT: Intl.DateTimeFormatOptions = {
   day: 'numeric',
 }
 
+const Indicator = ({ option }: { option: TD.ReviewQuestion['options'][number] }) => (
+  <div className="absolute left-[-1.5em]">{option.valid ? '✅' : '❌'}</div>
+)
+
 export const FinishedReviewQuestion = ({ question }: { question: TD.ReviewQuestion }) => (
   <div className="mb-12">
     <div className="flex items-baseline">
       <h3 className="font-bold text-2xl mb-4">{question.question}</h3>
     </div>
     {question.options.map((option) => (
-      <label key={option.id} className="flex items-center text-lg mb-2">
+      <label key={option.id} className="relative flex items-center text-lg mb-2">
+        {option.selected && <Indicator option={option} />}
         <input type="radio" className="size-6 mr-2" disabled checked={option.selected} />
         {option.text}
       </label>

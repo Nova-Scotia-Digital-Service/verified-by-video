@@ -41,6 +41,7 @@ export class ReviewController {
               id: question.option_id,
               text: question.option_text,
               selected: selectedOptions?.includes(question.option_id) || false,
+              valid: question.option_valid,
             },
           ],
         }
@@ -50,6 +51,7 @@ export class ReviewController {
           id: question.option_id,
           text: question.option_text,
           selected: selectedOptions?.includes(question.option_id) || false,
+          valid: question.option_valid,
         })
       }
     }
