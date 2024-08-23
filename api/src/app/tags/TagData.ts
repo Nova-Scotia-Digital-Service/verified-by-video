@@ -1,4 +1,4 @@
-import { pool } from '../../db'
+import { pool, transaction } from '../../db'
 
 export const getTagList = async () => {
   const tags = await pool.query<{ id: string; text: string }>(
@@ -31,26 +31,24 @@ export const createTag = async (text: string) => {
 }
 
 export const deleteTag = async (tagId: string) => {
-  const client = await pool.connect()
-  await client.query('BEGIN')
-  await client.query(
-    `
-    DELETE FROM submission_tags
-    WHERE
-      submission_tags.tag_id = $1
-    `,
-    [tagId],
-  )
-  await client.query(
-    `
-    DELETE FROM tags
-    WHERE
-      tags.id = $1
-    `,
-    [tagId],
-  )
-  await client.query('COMMIT')
-  await client.release()
+  transaction(async (client) => {
+    await client.query(
+      `
+      DELETE FROM submission_tags
+      WHERE
+        submission_tags.tag_id = $1
+      `,
+      [tagId],
+    )
+    await client.query(
+      `
+      DELETE FROM tags
+      WHERE
+        tags.id = $1
+      `,
+      [tagId],
+    )
+  })
 }
 
 export const applyTagToSubmission = async (submissionId: string, tagId: string) => {
