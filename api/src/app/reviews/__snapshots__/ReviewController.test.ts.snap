@@ -2,6 +2,7 @@
 
 exports[`ReviewController getReview returns data 1`] = `
 {
+  "comment": null,
   "id": "532bd3f4-a0c5-4a97-87a9-19d46981747d",
   "identification_cards": [
     {
@@ -304,6 +305,7 @@ exports[`ReviewController getReview returns data 1`] = `
 
 exports[`ReviewController getReview returns data 2`] = `
 {
+  "comment": null,
   "id": "cbb5b46a-ad3b-4a5f-954f-bff18024d1d6",
   "identification_cards": [
     {

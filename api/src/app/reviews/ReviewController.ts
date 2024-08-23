@@ -84,6 +84,7 @@ export class ReviewController {
       identification_cards: signedIdentificationCards,
       prompts: prompts.map((prompt) => ({ ...prompt, type: 'text' })),
       questions: reviewQuestions,
+      comment: review.comment,
     }
   }
 

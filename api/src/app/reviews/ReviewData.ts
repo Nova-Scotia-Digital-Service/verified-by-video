@@ -160,6 +160,7 @@ export const getReview = async (review_id: string) => {
       video_url: string
       upload_date: Date
       tags: { id: string; text: string }[]
+      comment: string | null
     }>(
       `
       WITH
@@ -184,12 +185,14 @@ export const getReview = async (review_id: string) => {
         array_remove(
           array_agg(aggregated_tags.tags),
           NULL
-        ) AS tags
+        ) AS tags,
+        review_comments.text as comment
       FROM reviews
       JOIN submissions ON submissions.id = reviews.submission_id
       LEFT JOIN aggregated_tags ON aggregated_tags.submission_id = submissions.id
+      LEFT JOIN review_comments ON review_comments.review_id = reviews.id
       WHERE reviews.id = $1
-      GROUP BY submissions.id, reviews.id
+      GROUP BY submissions.id, reviews.id, review_comments.text
       `,
       [review_id],
     )

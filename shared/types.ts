@@ -70,6 +70,7 @@ export type Review = {
   prompts: Prompt[]
   identification_cards: IdentificationCard[]
   questions: ReviewQuestion[]
+  comment: string | null
 }
 
 export type ReviewQuestion = {

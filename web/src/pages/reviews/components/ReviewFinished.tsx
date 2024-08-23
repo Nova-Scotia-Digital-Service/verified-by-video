@@ -89,6 +89,13 @@ export const ReviewFinished: React.FC<ReviewFinishedProps> = ({ review }) => {
         ))}
       </div>
 
+      {review.comment && (
+        <div className="mb-8">
+          <h3 className="font-bold text-xl mb-4">Reviewer Comments</h3>
+          <div className="w-full border-l-4 border-slate text-lg p-2 pl-4">{review.comment}</div>
+        </div>
+      )}
+
       <PrivacyWarning />
 
       <PrimaryButton onClick={handleCreateReview}>Reopen Review</PrimaryButton>
