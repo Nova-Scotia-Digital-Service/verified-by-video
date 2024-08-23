@@ -104,7 +104,7 @@ export const createSubmission = async (session_id: string, video_url: string) =>
   return submission.rows[0]
 }
 
-export const createPhotoID = async (session_id: string, description: string, photo_url: string) => {
+export const createPhotoID = async (session_id: string, description: string, photo_url: string | null) => {
   const createdPhotoID = await pool.query<{
     id: string
     session_id: string

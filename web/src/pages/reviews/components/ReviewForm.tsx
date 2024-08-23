@@ -11,7 +11,7 @@ import { finishReview } from '../../../api/ReviewApi'
 
 import { TagCloud } from './TagCloud'
 import { ReviewQuestion } from './ReviewQuestion'
-import { PhotoID } from './PhotoID'
+import { IDGallery } from './IDGallery'
 
 import { paths } from '../../../paths'
 
@@ -88,11 +88,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({ review }) => {
       <HorizontalRule />
 
       <div className="flex flex-col">
-        <div className="flex gap-x-12 mb-12 mx-[-4rem] overflow-x-scroll pb-4" style={{ order: 1 }}>
-          {review.identification_cards.map((card) => (
-            <PhotoID key={card.id} card={card} />
-          ))}
-        </div>
+        <IDGallery identification_cards={review.identification_cards} order={1} />
 
         {review.questions.map((question, index) => (
           <ReviewQuestion
@@ -111,7 +107,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({ review }) => {
 
       <h3 className="font-bold text-xl mb-4">Comments</h3>
 
-      <textarea className="w-full border border-slate rounded-md" {...register('comment')}></textarea>
+      <textarea className="w-full border border-slate rounded-md p-2" {...register('comment')}></textarea>
 
       <div className="flex justify-between">
         <div className="flex gap-4">

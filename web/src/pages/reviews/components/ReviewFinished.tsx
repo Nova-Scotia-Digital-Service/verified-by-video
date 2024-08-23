@@ -11,7 +11,7 @@ import { HorizontalRule } from '../../../components/HorizontalRule'
 import { PrivacyWarning } from '../../../components/PrivacyWarning'
 
 import { TagCloud } from './TagCloud'
-import { PhotoID } from './PhotoID'
+import { IDGallery } from './IDGallery'
 
 type ReviewFinishedProps = {
   review: TD.Review
@@ -82,11 +82,7 @@ export const ReviewFinished: React.FC<ReviewFinishedProps> = ({ review }) => {
       </div>
       <HorizontalRule />
       <div className="flex flex-col">
-        <div className="flex gap-x-12 mb-12 mx-[-4rem] overflow-x-scroll pb-4">
-          {review.identification_cards.map((card) => (
-            <PhotoID key={card.id} card={card} />
-          ))}
-        </div>
+        <IDGallery identification_cards={review.identification_cards} />
 
         {review.questions.map((question) => (
           <FinishedReviewQuestion key={question.id} question={question} />

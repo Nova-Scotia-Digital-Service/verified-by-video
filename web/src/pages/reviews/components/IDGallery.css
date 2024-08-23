@@ -1,0 +1,19 @@
+.IDGallery {
+  /* horizontal scroll shadows */
+  background:
+    linear-gradient(90deg, white 30%, rgba(255, 255, 255, 0)) center left,
+    linear-gradient(90deg, rgba(255, 255, 255, 0), white 70%) center right,
+    radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) center left,
+    radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) center right;
+
+  background-repeat: no-repeat;
+  background-size:
+    40px 100%,
+    40px 100%,
+    14px 100%,
+    14px 100%;
+  background-attachment: local, local, scroll, scroll;
+
+  padding-left: 40px;
+  padding-right: 40px;
+}

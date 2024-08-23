@@ -10,8 +10,10 @@ const generateSubmissions = async (count) => {
     const session = await createSession()
 
     const submission = await createSubmission(session.id, 'media/example-video.mp4')
+    await createPhotoID(session.id, 'Photo from the mobile app', 'media/example-photo-from-app.png')
     await createPhotoID(session.id, "Front of Nova Scotia Driver's License", 'media/example-photo-license-front.png')
     await createPhotoID(session.id, "Back of Nova Scotia Driver's License", 'media/example-photo-license-back.png')
+    await createPhotoID(session.id, 'Library Card', null)
 
     console.log(`Submission created: http://localhost:3000/submissions/${submission.id}`)
   }
