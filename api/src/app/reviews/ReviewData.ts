@@ -275,7 +275,7 @@ export const finishReview = async (
   answers: string[],
   comment?: string,
 ) => {
-  transaction(async (client) => {
+  await transaction(async (client) => {
     await client.query(
       `
       INSERT INTO review_answers

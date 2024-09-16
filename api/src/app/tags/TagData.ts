@@ -31,7 +31,7 @@ export const createTag = async (text: string) => {
 }
 
 export const deleteTag = async (tagId: string) => {
-  transaction(async (client) => {
+  await transaction(async (client) => {
     await client.query(
       `
       DELETE FROM submission_tags

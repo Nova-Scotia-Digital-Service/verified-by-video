@@ -40,7 +40,7 @@ describe('TagController', () => {
 
       const beforeList = await new TagController().getTagList()
       expect(beforeList).toContainEqual(tagToDelete)
-      await new TagController().deleteTag('1529c4ad-c5f7-404c-b880-6ffc9ad4ca1c')
+      await new TagController().deleteTag(tagToDelete.id)
       const afterList = await new TagController().getTagList()
       expect(afterList).not.toContainEqual(tagToDelete)
     })
