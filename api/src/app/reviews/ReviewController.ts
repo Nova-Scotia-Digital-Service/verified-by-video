@@ -15,7 +15,7 @@ export class ReviewController {
   @SwaggerRequireAuth()
   @Post('/')
   public async createReview(
-    @Req() request: { user: TD.DBUser },
+    @Req() request: { user: TD.DBReviewer },
     @Body() body: TD.APICreateReviewRequest,
   ): Promise<TD.APICreateReviewResponse> {
     const { id } = await createReview(request.user, body.submission_id)
@@ -92,7 +92,7 @@ export class ReviewController {
   @SwaggerRequireAuth()
   @Post('/:review_id')
   public async finishReview(
-    @Req() request: { user: TD.DBUser },
+    @Req() request: { user: TD.DBReviewer },
     @Param('review_id') review_id: string,
     @Body() body: TD.APIFinishReviewRequest,
   ): Promise<void> {

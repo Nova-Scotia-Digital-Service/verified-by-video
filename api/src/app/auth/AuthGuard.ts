@@ -5,7 +5,7 @@ import { createRemoteJWKSet, jwtVerify } from 'jose'
 
 import config from '../../config'
 
-import { createOrUpdateUser } from './AuthData'
+import { createOrUpdateReviewer } from './AuthData'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
         throw new Error('User does not have "reviewer" role')
       }
 
-      const user = await createOrUpdateUser(decodedToken)
+      const user = await createOrUpdateReviewer(decodedToken)
 
       request['user'] = user
     } catch (error) {

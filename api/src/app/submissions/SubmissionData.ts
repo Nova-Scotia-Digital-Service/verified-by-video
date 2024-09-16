@@ -48,7 +48,7 @@ export const getSubmissionList = async () => {
             SELECT
               id,
               full_name
-            FROM users
+            FROM reviewers
           )
         SELECT
           reviews.submission_id,

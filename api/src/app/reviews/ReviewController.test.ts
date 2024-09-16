@@ -33,7 +33,7 @@ describe('ReviewController', () => {
   describe('finishReview', () => {
     it('accepts data', async () => {
       const reviewId = '532bd3f4-a0c5-4a97-87a9-19d46981747d'
-      const user: TD.DBUser = {
+      const reviewer: TD.DBReviewer = {
         id: '837954a6-4ff2-449a-ac0b-35b9883fe1ec',
         email: 'test@example.co.uk',
         full_name: 'Admin User',
@@ -52,7 +52,10 @@ describe('ReviewController', () => {
         '62333928-ade6-41c6-b131-d11efff04179': '153bc35d-3ae4-4746-abd4-106b12aeb187',
       }
 
-      await new ReviewController().finishReview({ user }, reviewId, { status: 'APPROVED', answers: reviewAnswers })
+      await new ReviewController().finishReview({ user: reviewer }, reviewId, {
+        status: 'APPROVED',
+        answers: reviewAnswers,
+      })
     })
   })
 })

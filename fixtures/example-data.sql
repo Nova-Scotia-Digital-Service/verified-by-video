@@ -1,5 +1,5 @@
 BEGIN;
-    INSERT INTO public.users VALUES
+    INSERT INTO public.reviewers VALUES
         ('098d6748-4803-48e9-8d87-8a3479562c00', 'test@example.ca', 'User One', false),
         ('5420a722-de9d-4d4a-a586-5614cdb37c99', 'test@example.com', 'User Two', false),
         ('837954a6-4ff2-449a-ac0b-35b9883fe1ec', 'test@example.co.uk', 'Admin User', true);

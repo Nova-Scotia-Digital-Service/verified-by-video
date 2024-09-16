@@ -2,12 +2,12 @@ import * as TD from '../../types'
 
 import { pool } from '../../db'
 
-export const createOrUpdateUser = async (decodedToken: TD.DecodedKeycloakToken) => {
+export const createOrUpdateReviewer = async (decodedToken: TD.DecodedKeycloakToken) => {
   const isAdmin = decodedToken.realm_access.roles.includes('admin')
 
-  const user = await pool.query<TD.DBUser>(
+  const reviewer = await pool.query<TD.DBReviewer>(
     `
-    INSERT INTO users (keycloak_id, email, full_name, is_admin)
+    INSERT INTO reviewers (keycloak_id, email, full_name, is_admin)
     VALUES
       ($1, $2, $3, $4)
     ON CONFLICT (keycloak_id)
@@ -26,5 +26,5 @@ export const createOrUpdateUser = async (decodedToken: TD.DecodedKeycloakToken) 
     [decodedToken.sub, decodedToken.email, decodedToken.name, isAdmin],
   )
 
-  return user.rows[0]
+  return reviewer.rows[0]
 }

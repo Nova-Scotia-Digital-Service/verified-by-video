@@ -100,7 +100,7 @@ const generateReviewQuestions = () => {
   return reviewQuestionTemplate
 }
 
-export const createReview = async (reviewer: TD.DBUser, submission_id: string) => {
+export const createReview = async (reviewer: TD.DBReviewer, submission_id: string) => {
   return transaction(async (client) => {
     const reviewResult = await client.query<{ id: string }>(
       `
@@ -269,7 +269,7 @@ export const getReview = async (review_id: string) => {
 }
 
 export const finishReview = async (
-  user: TD.DBUser,
+  reviewer: TD.DBReviewer,
   review_id: string,
   status: Exclude<TD.ReviewStatus, 'STARTED'>,
   answers: string[],
@@ -293,7 +293,7 @@ export const finishReview = async (
         reviewer_id = $2
       WHERE id = $3
       `,
-      [status, user.id, review_id],
+      [status, reviewer.id, review_id],
     )
     if (comment) {
       await client.query(
@@ -303,7 +303,7 @@ export const finishReview = async (
         VALUES
           ($1, $2, $3)
         `,
-        [review_id, user.id, comment],
+        [review_id, reviewer.id, comment],
       )
     }
 

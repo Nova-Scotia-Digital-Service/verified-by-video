@@ -9,7 +9,7 @@ export type DecodedKeycloakToken = {
   }
 }
 
-export type DBUser = {
+export type DBReviewer = {
   id: string
   email: string
   full_name: string
