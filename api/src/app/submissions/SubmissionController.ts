@@ -19,6 +19,7 @@ import { v4 as uuid } from 'uuid'
 
 import config from '../../config'
 import { minioClient } from '../../minio'
+import { getSubmitterIdentity } from '../../utils/getSubmitterIdentity'
 
 import { AuthGuard } from '../auth/AuthGuard'
 
@@ -60,7 +61,9 @@ export class SubmissionController {
 
     await minioClient.putObject(config.S3_BUCKET_NAME, filePath, video_file.buffer, video_file.size)
 
-    const submission = await createSubmission(session_id, filePath)
+    const submitter = await getSubmitterIdentity()
+
+    const submission = await createSubmission(session_id, submitter, filePath)
     return submission
   }
 

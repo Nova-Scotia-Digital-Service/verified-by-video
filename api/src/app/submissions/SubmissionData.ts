@@ -1,6 +1,6 @@
 import * as TD from '../../types/index'
 
-import { pool } from '../../db'
+import { pool, transaction } from '../../db'
 
 export const getSubmission = async (submission_id: string) => {
   const submission = await pool.query<{ id: string; session_id: string; video_url: string; upload_date: Date }>(
@@ -86,22 +86,46 @@ export const getSubmissionList = async () => {
   return submissionsResult.rows
 }
 
-export const createSubmission = async (session_id: string, video_url: string) => {
-  const submission = await pool.query<{ id: string; session_id: string; video_url: string; upload_date: Date }>(
-    `
-    INSERT INTO submissions (session_id, video_url)
-    VALUES
-      ($1, $2)
-    RETURNING
-      id,
-      session_id,
-      video_url,
-      upload_date
-    `,
-    [session_id, video_url],
-  )
+export const createSubmission = async (session_id: string, submitter: TD.Submitter, video_url: string) => {
+  return transaction(async (client) => {
+    const submitterResult = await client.query<{ id: string }>(
+      `
+        INSERT INTO submitters (
+          license_number,
+          first_name,
+          last_name,
+          birthdate
+        )
+        VALUES
+          ($1, $2, $3, $4)
+        RETURNING
+          id
+      `,
+      [submitter.driversLicenseNumber, submitter.firstName, submitter.lastName, submitter.birthdate],
+    )
+    const submitter_id = submitterResult.rows[0].id
 
-  return submission.rows[0]
+    const submissionResult = await client.query<{
+      id: string
+      session_id: string
+      video_url: string
+      upload_date: Date
+    }>(
+      `
+        INSERT INTO submissions (session_id, submitter_id, video_url)
+        VALUES
+          ($1, $2, $3)
+        RETURNING
+          id,
+          session_id,
+          video_url,
+          upload_date
+        `,
+      [session_id, submitter_id, video_url],
+    )
+
+    return submissionResult.rows[0]
+  })
 }
 
 export const createPhotoID = async (session_id: string, description: string, photo_url: string | null) => {

@@ -35,6 +35,7 @@
     "minio:delete-all-buckets": "docker compose exec -T minio bash < ./fixtures/minio-delete-all-buckets.sh",
     "create-user": "node ./fixtures/create-user.mjs",
     "create-submission": "yarn workspace api create-submission",
+    "nats-responder": "yarn workspace api nats-responder",
     "test": "yarn test:typecheck && yarn test:web && yarn test:api",
     "test:api": "docker compose run --build --rm api yarn test",
     "test:web": "docker compose run --build --rm web yarn test",

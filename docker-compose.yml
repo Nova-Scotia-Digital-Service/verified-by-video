@@ -29,6 +29,7 @@ services:
       MINIO_PORT: 9000
       MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:?}
       MINIO_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:?}
+      NATS_ADDRESS: nats://nats:4222
     ports:
       - 3100:3100
     volumes:
@@ -37,6 +38,26 @@ services:
     depends_on:
       - postgres
       - minio
+      - nats-mock-identity
+
+  nats-mock-identity:
+    build:
+      dockerfile: Dockerfile.api
+      target: install
+    command: yarn nats-responder
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      CI: ${CI-}
+      KEYCLOAK_ADDRESS: http://keycloak:8080
+      PG_PASSWORD: ${PG_PASSWORD:?}
+      PG_HOST: postgres
+      MINIO_HOST: minio
+      MINIO_PORT: 9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:?}
+      MINIO_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:?}
+      NATS_ADDRESS: nats://nats:4222
+    depends_on:
+      - nats
 
   minio:
     image: minio/minio:latest
@@ -89,6 +110,13 @@ services:
       - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:?}
       - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:?}
     command: start-dev --import-realm
+
+  nats:
+    image: nats:2.10
+    ports:
+      - 4222:4222
+      - 6222:6222
+      - 8222:8222
 
 volumes:
   minio-data:

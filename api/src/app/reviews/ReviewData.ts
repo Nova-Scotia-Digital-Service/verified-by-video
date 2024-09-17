@@ -1,22 +1,14 @@
 import * as TD from '../../types'
 
-import { faker } from '@faker-js/faker'
-
 import { transaction } from '../../db'
 import { buildNestedPgParams, buildPgParams } from '../../utils/buildPgParams'
 
-const generateReviewQuestions = () => {
-  const fakePerson = {
-    firstName: faker.person.firstName().toUpperCase(),
-    lastName: faker.person.lastName().toUpperCase(),
-    driversLicenseNumber: faker.string.numeric(8),
-    birthdate: faker.date.birthdate().toLocaleDateString('en-CA', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-    }),
-  }
-
+const generateReviewQuestions = (submitter: {
+  license_number: string
+  first_name: string
+  last_name: string
+  birthdate: Date
+}) => {
   const reviewQuestionTemplate: { question: string; options: { text: string; valid: boolean }[] }[] = [
     {
       question: 'Did the user correctly follow the prompts in the video?',
@@ -30,7 +22,7 @@ const generateReviewQuestions = () => {
     {
       question: 'What name did they provide?',
       options: [
-        { text: `${fakePerson.lastName}, ${fakePerson.firstName} or an acceptable variation`, valid: true },
+        { text: `${submitter.last_name}, ${submitter.first_name} or an acceptable variation`, valid: true },
         { text: "Didn't provide the correct name", valid: false },
         { text: "Couldn't complete for other reason", valid: false },
       ],
@@ -55,7 +47,7 @@ const generateReviewQuestions = () => {
     {
       question: "What number is on Nova Scotia Driver's License?",
       options: [
-        { text: fakePerson.driversLicenseNumber, valid: true },
+        { text: submitter.license_number, valid: true },
         { text: 'Other type', valid: false },
         { text: "I can't confirm", valid: false },
       ],
@@ -63,7 +55,14 @@ const generateReviewQuestions = () => {
     {
       question: 'What is the birthdate on the ID?',
       options: [
-        { text: fakePerson.birthdate, valid: true },
+        {
+          text: submitter.birthdate.toLocaleDateString('en-CA', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+          }),
+          valid: true,
+        },
         { text: 'Does not match', valid: false },
         { text: "I can't confirm", valid: false },
       ],
@@ -71,7 +70,7 @@ const generateReviewQuestions = () => {
     {
       question: 'What name is on the ID?',
       options: [
-        { text: `${fakePerson.lastName}, ${fakePerson.firstName} or an acceptable variation`, valid: true },
+        { text: `${submitter.last_name}, ${submitter.first_name} or an acceptable variation`, valid: true },
         { text: 'Does not match', valid: false },
         { text: "I can't confirm", valid: false },
       ],
@@ -102,6 +101,26 @@ const generateReviewQuestions = () => {
 
 export const createReview = async (reviewer: TD.DBReviewer, submission_id: string) => {
   return transaction(async (client) => {
+    const submitterResult = await client.query<{
+      license_number: string
+      first_name: string
+      last_name: string
+      birthdate: Date
+    }>(
+      `
+      SELECT
+        submitters.license_number,
+        submitters.first_name,
+        submitters.last_name,
+        submitters.birthdate
+      FROM submitters
+      JOIN submissions ON submissions.submitter_id = submitters.id
+      WHERE submissions.id = $1
+      `,
+      [submission_id],
+    )
+    const submitter = submitterResult.rows[0]
+
     const reviewResult = await client.query<{ id: string }>(
       `
       INSERT INTO reviews (submission_id, reviewer_id)
@@ -111,7 +130,7 @@ export const createReview = async (reviewer: TD.DBReviewer, submission_id: strin
       [submission_id, reviewer && reviewer.id],
     )
 
-    const reviewQuestions = generateReviewQuestions()
+    const reviewQuestions = generateReviewQuestions(submitter)
     await Promise.all(
       reviewQuestions.map(async (question) => {
         const questionResult = await client.query<{ id: string }>(

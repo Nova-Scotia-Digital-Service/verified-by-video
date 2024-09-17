@@ -14,6 +14,7 @@ type Config = {
   MINIO_ACCESS_KEY: string
   MINIO_SECRET_ACCESS_KEY: string
   S3_BUCKET_NAME: string
+  NATS_ADDRESS: string
 }
 
 const REQUIRED_ENV_VARS = ['PG_PASSWORD', 'MINIO_ACCESS_KEY', 'MINIO_SECRET_ACCESS_KEY'] as const
@@ -28,6 +29,7 @@ const config: Omit<Config, (typeof REQUIRED_ENV_VARS)[number]> = {
   PG_HOST: 'localhost',
   MINIO_HOST: 'minio',
   MINIO_PORT: '9000',
+  NATS_ADDRESS: 'nats://nats:4222',
   PG_DATABASE: 'verified_by_video',
   S3_BUCKET_NAME: 'verified-by-video',
 }

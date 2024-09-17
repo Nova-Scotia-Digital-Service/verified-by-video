@@ -12,6 +12,7 @@
   "main": "src/index.js",
   "scripts": {
     "create-submission": "ts-node ./scripts/create-submission.ts",
+    "nats-responder": "ts-node ./scripts/nats-responder.ts",
     "start": "nodemon --watch src -e ts,tsx --exec ts-node ./src/index.ts",
     "start:nowatch": "ts-node src/index.ts",
     "build": "rm -rf build && tsc",
@@ -44,6 +45,7 @@
     "@types/uuid": "^10.0.0",
     "dotenv": "^16.4.5",
     "jest": "^29.7.0",
+    "nats": "^2.28.2",
     "node-pg-migrate": "^7.6.1",
     "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",

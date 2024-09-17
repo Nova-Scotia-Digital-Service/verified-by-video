@@ -15,3 +15,10 @@ export type DBReviewer = {
   full_name: string
   is_admin: boolean
 }
+
+export type Submitter = {
+  firstName: string
+  lastName: string
+  driversLicenseNumber: string
+  birthdate: string
+}
