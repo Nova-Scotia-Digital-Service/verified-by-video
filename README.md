@@ -79,8 +79,8 @@ To interact with the database:
 - `yarn db:drop`: Drops the verified_by_video table
 - `yarn db:create`: Creates the verified_by_video table
 - `yarn db:migrate up`: Applies database schema migrations
+- `yarn db:full-reset`: Drops & recreates database schema
 - `yarn db:populate`: Loads example data into the database
-- `yarn db:full-reset`: Drops & recreates database and loads example data
 
 ## Testing
 
