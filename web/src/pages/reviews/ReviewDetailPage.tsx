@@ -34,7 +34,7 @@ export const ReviewDetailPage: React.FC = () => {
   }, [reviewId])
 
   return (
-    <div className="container py-12 px-16 w-[68rem]">
+    <div className="container py-12 px-16">
       <Link to={paths.home({})} className="flex items-center font-bold text-sm hover:opacity-60">
         <BackArrowIcon className="mr-2 mt-[2px]" />
         Back

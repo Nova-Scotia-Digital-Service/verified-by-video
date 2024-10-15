@@ -54,12 +54,14 @@ export const ReviewFinished: React.FC<ReviewFinishedProps> = ({ review }) => {
     <>
       <h3 className="inline-block text-2xl font-bold text-title mb-4 border rounded px-2">{review.status}</h3>
 
-      <div className="flex justify-between mb-12">
-        <div>
-          <div className="mb-12">
-            <div className="font-bold text-md">Video Date</div>
-            <div className="font-bold text-2xl mb-2">
-              {review.submission.upload_date.toLocaleDateString('en-CA', DATE_FORMAT)}
+      <div className="flex mb-12">
+        <div className="grow">
+          <div className="flex justify-between mb-12">
+            <div>
+              <div className="font-bold text-md">Video Date</div>
+              <div className="font-bold text-2xl mb-2">
+                {review.submission.upload_date.toLocaleDateString('en-CA', DATE_FORMAT)}
+              </div>
             </div>
 
             <TagCloud submissionId={review.submission.id} tags={review.submission.tags} />

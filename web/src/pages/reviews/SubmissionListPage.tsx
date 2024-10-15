@@ -9,39 +9,48 @@ import { useUserIsAdmin } from '../../utils/keycloak'
 import { AwaitResponse } from '../../components/AwaitResponse'
 
 import { SubmissionCard } from './components/SubmissionCard'
-import { TagFilter } from './components/TagFilter'
+import { TagFilterIndicator } from './components/TagFilterIndicator'
+import { TagFilterDropdown } from './components/TagFilterDropdown'
 
 export const FilterTab = ({
-  active,
-  onClick,
+  status,
+  statusFilter,
+  setStatusFilter,
+  setFilteredTagIds,
   children,
 }: {
-  active?: boolean
-  onClick: () => void
+  status: TD.SubmissionStatus
+  statusFilter: string
+  setStatusFilter: (statusFilter: TD.SubmissionStatus) => void
+  setFilteredTagIds: (filteredTagIds: string[]) => void
   children: React.ReactNode
 }) => {
+  const onClick = () => {
+    setStatusFilter(status)
+    setFilteredTagIds([])
+  }
+
+  const active = statusFilter === status
+
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`text-lg font-bold ${active ? 'border-b-2' : 'opacity-50'} hover:border-b-2`}
+      className={`text-lg flex-shrink-0 font-bold ${active ? 'border-b-2' : 'opacity-50'} hover:border-b-2`}
     >
       {children}
     </button>
   )
 }
 
-const CardSet = ({ title, submissions }: { title: string; submissions: TD.APISubmissionSummary[] }) => {
+const CardSet = ({ submissions }: { submissions: TD.APISubmissionSummary[] }) => {
   return (
-    <div>
-      <h2 className="text-2xl font-bold mt-8 mb-4">{title}</h2>
-      <div className="flex gap-8 flex-wrap">
-        {submissions.length > 0
-          ? submissions.map((submission) => {
-              return <SubmissionCard key={submission.id} submission={submission} />
-            })
-          : 'No submissions'}
-      </div>
+    <div className="flex gap-8 flex-wrap">
+      {submissions.length > 0
+        ? submissions.map((submission) => {
+            return <SubmissionCard key={submission.id} submission={submission} />
+          })
+        : 'No submissions'}
     </div>
   )
 }
@@ -49,7 +58,7 @@ const CardSet = ({ title, submissions }: { title: string; submissions: TD.APISub
 export const SubmissionListPage: React.FC = () => {
   const userIsAdmin = useUserIsAdmin()
   const [statusFilter, setStatusFilter] = useState<TD.SubmissionStatus>(userIsAdmin ? 'ESCALATED' : 'NEW')
-  const [filteredTags, setFilteredTags] = useState<string[]>([])
+  const [filteredTagIds, setFilteredTagIds] = useState<string[]>([])
   const [submissionListResponse, setSubmissionListResponse] = useResponse<TD.APISubmissionSummary[]>()
 
   useEffect(() => {
@@ -64,52 +73,75 @@ export const SubmissionListPage: React.FC = () => {
 
   return (
     <div className="container">
-      <h1 className="text-3xl font-bold mt-12 mb-6">Videos</h1>
-
-      <TagFilter filteredTags={filteredTags} setFilteredTags={setFilteredTags} />
+      <h1 className="text-3xl text-title font-bold mt-12 mb-6">Videos</h1>
 
       <AwaitResponse response={submissionListResponse}>
         {(submissions) => {
           const taggedSubmissions = submissions.filter(
             (submission) =>
-              filteredTags.length === 0 || submission.tags.some(({ text }) => filteredTags.includes(text)),
+              filteredTagIds.length === 0 || submission.tags.some(({ id }) => filteredTagIds.includes(id)),
           )
 
-          const escalatedSubmissions = taggedSubmissions.filter((submission) => submission.status === 'ESCALATED')
-          const newSubmissions = taggedSubmissions.filter((submission) => submission.status === 'NEW')
-          const startedSubmissions = taggedSubmissions.filter((submission) => submission.status === 'UNDER_REVIEW')
-          const rejectedSubmissions = taggedSubmissions.filter((submission) => submission.status === 'REJECTED')
-          const approvedSubmissions = taggedSubmissions.filter((submission) => submission.status === 'APPROVED')
+          const escalatedSubmissions = submissions.filter((submission) => submission.status === 'ESCALATED')
+          const newSubmissions = submissions.filter((submission) => submission.status === 'NEW')
+          const startedSubmissions = submissions.filter((submission) => submission.status === 'UNDER_REVIEW')
+          const rejectedSubmissions = submissions.filter((submission) => submission.status === 'REJECTED')
+          const approvedSubmissions = submissions.filter((submission) => submission.status === 'APPROVED')
 
           return (
             <>
-              <div className="flex gap-4 mb-6">
-                {userIsAdmin && (
-                  <FilterTab onClick={() => setStatusFilter('ESCALATED')} active={statusFilter === 'ESCALATED'}>
-                    Escalated ({`${escalatedSubmissions.length}`})
+              <div className="flex justify-between">
+                <div className="flex gap-4 mb-4">
+                  {userIsAdmin && (
+                    <FilterTab
+                      status="ESCALATED"
+                      statusFilter={statusFilter}
+                      setStatusFilter={setStatusFilter}
+                      setFilteredTagIds={setFilteredTagIds}
+                    >
+                      Escalated ({`${escalatedSubmissions.length}`})
+                    </FilterTab>
+                  )}
+                  <FilterTab
+                    status="NEW"
+                    statusFilter={statusFilter}
+                    setStatusFilter={setStatusFilter}
+                    setFilteredTagIds={setFilteredTagIds}
+                  >
+                    New ({`${newSubmissions.length}`})
                   </FilterTab>
-                )}
-                <FilterTab onClick={() => setStatusFilter('NEW')} active={statusFilter === 'NEW'}>
-                  New ({`${newSubmissions.length}`})
-                </FilterTab>
-                <FilterTab onClick={() => setStatusFilter('UNDER_REVIEW')} active={statusFilter === 'UNDER_REVIEW'}>
-                  In Progress ({`${startedSubmissions.length}`})
-                </FilterTab>
-                <FilterTab onClick={() => setStatusFilter('REJECTED')} active={statusFilter === 'REJECTED'}>
-                  Rejected ({`${rejectedSubmissions.length}`})
-                </FilterTab>
-                <FilterTab onClick={() => setStatusFilter('APPROVED')} active={statusFilter === 'APPROVED'}>
-                  Approved ({`${approvedSubmissions.length}`})
-                </FilterTab>
+                  <FilterTab
+                    status="UNDER_REVIEW"
+                    statusFilter={statusFilter}
+                    setStatusFilter={setStatusFilter}
+                    setFilteredTagIds={setFilteredTagIds}
+                  >
+                    In Progress ({`${startedSubmissions.length}`})
+                  </FilterTab>
+                  <FilterTab
+                    status="REJECTED"
+                    statusFilter={statusFilter}
+                    setStatusFilter={setStatusFilter}
+                    setFilteredTagIds={setFilteredTagIds}
+                  >
+                    Rejected ({`${rejectedSubmissions.length}`})
+                  </FilterTab>
+                  <FilterTab
+                    status="APPROVED"
+                    statusFilter={statusFilter}
+                    setStatusFilter={setStatusFilter}
+                    setFilteredTagIds={setFilteredTagIds}
+                  >
+                    Approved ({`${approvedSubmissions.length}`})
+                  </FilterTab>
+                </div>
+
+                <TagFilterDropdown filteredTagIds={filteredTagIds} setFilteredTagIds={setFilteredTagIds} />
               </div>
 
-              {userIsAdmin && statusFilter === 'ESCALATED' && (
-                <CardSet title="Escalated" submissions={escalatedSubmissions} />
-              )}
-              {statusFilter === 'NEW' && <CardSet title="New" submissions={newSubmissions} />}
-              {statusFilter === 'UNDER_REVIEW' && <CardSet title="In Progress" submissions={startedSubmissions} />}
-              {statusFilter === 'REJECTED' && <CardSet title="Rejected" submissions={rejectedSubmissions} />}
-              {statusFilter === 'APPROVED' && <CardSet title="Approved" submissions={approvedSubmissions} />}
+              <TagFilterIndicator filteredTagIds={filteredTagIds} setFilteredTagIds={setFilteredTagIds} />
+
+              <CardSet submissions={taggedSubmissions.filter((submission) => submission.status === statusFilter)} />
             </>
           )
         }}
