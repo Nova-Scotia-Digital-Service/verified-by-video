@@ -2,17 +2,6 @@ import { transaction } from '../../db'
 import { buildNestedPgParams } from '../../utils/buildPgParams'
 import { getRandomFromArray } from '../../utils/random'
 
-const prompts: string[] = [
-  'Hold up one finger',
-  'Hold up two fingers',
-  'Hold up three fingers',
-  'Touch your ear',
-  'Touch your shoulder',
-  'Touch your nose',
-  'Turn your head to the left',
-  'Turn your head to the right',
-]
-
 export const createSession = async () => {
   return transaction(async (client) => {
     const createdSession = await client.query<{
@@ -31,8 +20,11 @@ export const createSession = async () => {
     )
 
     const sessionId = createdSession.rows[0].id
+    const prompts = await client.query<{
+      text: string
+    }>(`SELECT * FROM prompts_list`)
 
-    const promptsForSession = getRandomFromArray(prompts, 3)
+    const promptsForSession = getRandomFromArray(prompts.rows, 3)
     const sessionPromptPairs = promptsForSession.map((prompt) => [sessionId, prompt])
     const createdPrompts = await client.query<{ id: string; text: string }>(
       `

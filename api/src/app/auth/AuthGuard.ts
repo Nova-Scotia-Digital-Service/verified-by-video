@@ -20,17 +20,20 @@ export class AuthGuard implements CanActivate {
 
       const certsUrl = new URL(`${config.KEYCLOAK_ADDRESS}/realms/verified_by_video/protocol/openid-connect/certs`)
       const jwkSet = createRemoteJWKSet(certsUrl)
-      const { payload: decodedToken } = await jwtVerify<TD.DecodedKeycloakToken>(token, jwkSet, {})
+      try {
+        const { payload: decodedToken } = await jwtVerify<TD.DecodedKeycloakToken>(token, jwkSet, {})
 
-      if (!decodedToken.realm_access.roles.includes('reviewer')) {
-        throw new Error('User does not have "reviewer" role')
+        if (!decodedToken.realm_access.roles.includes('reviewer')) {
+          throw new Error('User does not have "reviewer" role')
+        }
+
+        const user = await createOrUpdateReviewer(decodedToken)
+
+        request['user'] = user
+      } catch (error) {
+        console.log(' ----- error ----- ', error)
       }
-
-      const user = await createOrUpdateReviewer(decodedToken)
-
-      request['user'] = user
     } catch (error) {
-      console.error(error)
       throw new UnauthorizedException()
     }
 
