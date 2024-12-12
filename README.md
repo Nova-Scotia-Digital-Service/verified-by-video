@@ -4,6 +4,8 @@ Verify users liveliness and presence by choreographed video
 
 ## Setup
 
+### Local setup
+
 1. Make a copy of `env.template` named `.env` in the project root.
 
 ```
@@ -35,7 +37,42 @@ yarn db:populate
 yarn minio:populate
 ```
 
-5. Log in
+### Setup using docker
+
+1. Make a copy of `env.template` named `.env` in the project root.
+
+```
+cp env.template .env
+```
+
+2. Build and start docker containers
+
+```
+docker compose up --build
+```
+
+3. Wait until the containers have started and then run this command on the host machine to initialize the database
+
+```
+yarn db:migrate up
+```
+
+Or
+
+```
+npm run  db:migrate up
+```
+
+Optionally populate the database and object store with example data
+
+```
+yarn db:populate
+yarn minio:populate
+```
+
+## Running the web app
+
+Log in
 
 The default users on dev (defined in `./fixtures/keycloak-dev-realm.json`) are:
 
