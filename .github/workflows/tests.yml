@@ -8,6 +8,10 @@ env:
   PG_PASSWORD: postgres123
   MINIO_ROOT_USER: minio
   MINIO_ROOT_PASSWORD: minio123
+  TRACTION_TENANT_ID: abcdefgh-1234-5678-9012-abcdefghijkl
+  TRACTION_TENANT_API_KEY: abcdefgh-1234-5678-9012-abcdefghijkl
+  TRACTION_TENANT_API_SECRET: abcdefgh-1234-5678-9012-abcdefghijkl
+  TRACTION_BASE_URL: https://api.traction.com
 
 jobs:
   tests:

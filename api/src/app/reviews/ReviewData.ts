@@ -1,7 +1,11 @@
 import * as TD from '../../types'
 
-import { transaction } from '../../db'
+import { transaction, pool } from '../../db'
 import { buildNestedPgParams, buildPgParams } from '../../utils/buildPgParams'
+
+type ConnectionIdRow = {
+  didcomm_connection_id: string
+}
 
 const generateReviewQuestions = (submitter: {
   license_number: string
@@ -340,4 +344,41 @@ export const finishReview = async (
       [review_id, submissionStatus],
     )
   })
+}
+
+export const getConnectionIdForReview = async (reviewId: string): Promise<string | null> => {
+  if (!reviewId || typeof reviewId !== 'string') {
+    throw new Error('Invalid review ID')
+  }
+
+  try {
+    const result = await pool.query<ConnectionIdRow>(
+      `
+      SELECT
+        sessions.didcomm_connection_id
+      FROM
+        sessions
+      JOIN
+        submissions
+      ON
+        sessions.id = submissions.session_id
+      JOIN
+        reviews
+      ON
+        reviews.submission_id = submissions.id
+      WHERE
+        reviews.id = $1;
+      `,
+      [reviewId],
+    )
+
+    if (result.rows.length === 0) {
+      return null
+    }
+
+    return result.rows[0].didcomm_connection_id
+  } catch (error) {
+    console.error('Error fetching connection ID:', error)
+    throw new Error('Could not fetch connection ID')
+  }
 }

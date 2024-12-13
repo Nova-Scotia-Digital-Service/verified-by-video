@@ -71,5 +71,8 @@
     "semi": false,
     "singleQuote": true,
     "endOfLine": "auto"
+  },
+  "dependencies": {
+    "@radix-ui/react-dropdown-menu": "^2.1.2"
   }
 }

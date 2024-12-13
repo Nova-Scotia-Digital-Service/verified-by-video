@@ -1,5 +1,4 @@
 import * as TD from '../../types'
-
 import { Get, Controller, Param, UseGuards, Post, Body, Req } from '@nestjs/common'
 import { ApiBearerAuth as SwaggerRequireAuth } from '@nestjs/swagger'
 
@@ -7,7 +6,10 @@ import { AuthGuard } from '../auth/AuthGuard'
 
 import { signMinioUrl } from '../../minio'
 
-import { createReview, getReview, finishReview } from './ReviewData'
+import { createReview, getReview, finishReview, getConnectionIdForReview } from './ReviewData'
+
+import { offerCredential } from '../../utils/traction'
+import { imageData } from './image' // Testing only
 
 @Controller('/staff/reviews')
 export class ReviewController {
@@ -97,5 +99,71 @@ export class ReviewController {
     @Body() body: TD.APIFinishReviewRequest,
   ): Promise<void> {
     await finishReview(request.user, review_id, body.status, Object.values(body.answers), body.comment)
+
+    if (body.status === 'APPROVED') {
+      const connection_id = await getConnectionIdForReview(review_id)
+
+      if (!connection_id) {
+        console.error(`No connection id found for review ${review_id}, unable to issue credential`)
+
+        return
+      }
+
+      const credential: TD.PersonCredential = {
+        connection_id,
+        auto_issue: true,
+        auto_remove: true,
+        trace: true,
+        cred_def_id: 'DCQff261iuknbdF1Z8dW2b:3:CL:1060609:person_v2',
+        credential_preview: {
+          '@type': 'https://didcomm.org/issue-credential/1.0/credential-preview',
+          attributes: [
+            {
+              name: 'family_name',
+              value: 'Joyce',
+            },
+            {
+              name: 'given_names',
+              value: 'Lee-Martinez',
+            },
+            {
+              name: 'birthdate_dateint',
+              value: '1980-12-21',
+            },
+            {
+              name: 'street_address',
+              value: '123 Main St',
+            },
+            {
+              name: 'locality',
+              value: 'Antigonish',
+            },
+            {
+              name: 'region',
+              value: 'Nova Scotia',
+            },
+            {
+              name: 'postal_code',
+              value: 'V8R 4P3',
+            },
+            {
+              name: 'country',
+              value: 'Canada',
+            },
+            {
+              name: 'expiry_date_dateint',
+              value: '2026-01-01',
+            },
+            {
+              name: 'picture',
+              value: imageData,
+            },
+          ],
+        },
+        comment: 'Issued by the review',
+      }
+
+      await offerCredential(credential)
+    }
   }
 }
