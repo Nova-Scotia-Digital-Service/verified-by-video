@@ -4,9 +4,9 @@ BEGIN;
         ('5420a722-de9d-4d4a-a586-5614cdb37c99', 'test@example.com', 'User Two', false),
         ('837954a6-4ff2-449a-ac0b-35b9883fe1ec', 'test@example.co.uk', 'Admin User', true);
 
-    INSERT INTO public.sessions VALUES
-        ('88acfa3d-bf2f-4cae-8746-60a9106f6d56', '2024-05-08 19:01:48.776913+00', '2024-05-08 19:11:48.776913+00'),
-        ('33aeaab8-0a6f-477f-815a-eb0559b1ba3a', '2024-05-10 13:05:18.691377+00', '2024-05-10 13:15:18.691377+00');
+    INSERT INTO public.sessions (id, didcomm_connection_id, created_at, expires_at) VALUES
+        ('88acfa3d-bf2f-4cae-8746-60a9106f6d56', 'da99924c-a0a9-46bb-b12d-e601577036ff','2024-05-08 19:01:48.776913+00', '2024-05-08 19:11:48.776913+00'),
+        ('33aeaab8-0a6f-477f-815a-eb0559b1ba3a','ba99924c-a0a9-46bb-b12d-e601577036fa', '2024-05-10 13:05:18.691377+00', '2024-05-10 13:15:18.691377+00');
 
     INSERT INTO public.prompts VALUES
         ('10125e01-642d-4be5-bf1c-2e0575091b23', '88acfa3d-bf2f-4cae-8746-60a9106f6d56', 'Hold up two fingers'),
@@ -103,5 +103,7 @@ BEGIN;
         ('fc1bdf3c-6457-4604-aeb6-48ba42a73eb9', 'Tag 3');
     INSERT INTO public.submission_tags VALUES
         ('0f1e96ec-2008-4f3d-9f48-79e3783e237f', '214f747f-778a-4d4b-ab3b-5ed0c9410c69', '1529c4ad-c5f7-404c-b880-6ffc9ad4ca1c'),
-        ('ccf3bece-7df3-453d-9d3b-373461e13839', '214f747f-778a-4d4b-ab3b-5ed0c9410c69', '67302e01-4197-47e1-b78e-466064ac5691');
+        ('ccf3bece-7df3-453d-9d3b-373461e13839', '214f747f-778a-4d4b-ab3b-5ed0c9410c69', '67302e01-4197-47e1-b78e-466064ac5691');     
+
+
 COMMIT;

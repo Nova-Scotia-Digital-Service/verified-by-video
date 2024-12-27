@@ -94,14 +94,33 @@ export const createSubmission = async (session_id: string, submitter: TD.Submitt
           license_number,
           first_name,
           last_name,
-          birthdate
+          birthdate,
+          street_address, 
+          locality,   
+          region,     
+          postal_code, 
+          country,   
+          expiry_date_dateint,
+          picture         
         )
         VALUES
-          ($1, $2, $3, $4)
+          ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
         RETURNING
           id
       `,
-      [submitter.driversLicenseNumber, submitter.firstName, submitter.lastName, submitter.birthdate],
+      [
+        submitter.driversLicenseNumber,
+        submitter.firstName,
+        submitter.lastName,
+        submitter.birthdate,
+        submitter.street_address,
+        submitter.locality,
+        submitter.region,
+        submitter.postal_code,
+        submitter.country,
+        submitter.expiry_date_dateint,
+        submitter.picture,
+      ],
     )
     const submitter_id = submitterResult.rows[0].id
 

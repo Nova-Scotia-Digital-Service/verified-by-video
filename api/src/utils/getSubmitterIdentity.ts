@@ -24,6 +24,13 @@ export const getSubmitterIdentity: () => Promise<TD.Submitter> = async () => {
     firstName: string
     lastName: string
     birthdate: string
+    street_address: string
+    locality: string
+    region: string
+    postal_code: string
+    country: string
+    expiry_date_dateint: string
+    picture: string
   }>()
 
   return identity

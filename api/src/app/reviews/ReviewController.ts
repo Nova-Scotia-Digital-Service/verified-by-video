@@ -9,7 +9,7 @@ import { signMinioUrl } from '../../minio'
 import { createReview, getReview, finishReview, getConnectionIdForReview } from './ReviewData'
 
 import { offerCredential } from '../../utils/traction'
-import { imageData } from './image' // Testing only
+import { getSubmitterIdentity } from '../../utils/getSubmitterIdentity'
 
 @Controller('/staff/reviews')
 export class ReviewController {
@@ -104,10 +104,11 @@ export class ReviewController {
       const connection_id = await getConnectionIdForReview(review_id)
 
       if (!connection_id) {
-        console.error(`No connection id found for review ${review_id}, unable to issue credential`)
-
+        throw new Error(`No connection id found for review ${review_id}, unable to issue credential`)
         return
       }
+      const response = await getSubmitterIdentity()
+      console.log('Submitter response:', response)
 
       const credential: TD.PersonCredential = {
         connection_id,
@@ -120,43 +121,43 @@ export class ReviewController {
           attributes: [
             {
               name: 'family_name',
-              value: 'Joyce',
+              value: response.lastName,
             },
             {
               name: 'given_names',
-              value: 'Lee-Martinez',
+              value: response.firstName,
             },
             {
               name: 'birthdate_dateint',
-              value: '1980-12-21',
+              value: response.birthdate,
             },
             {
               name: 'street_address',
-              value: '123 Main St',
+              value: response.street_address,
             },
             {
               name: 'locality',
-              value: 'Antigonish',
+              value: response.locality,
             },
             {
               name: 'region',
-              value: 'Nova Scotia',
+              value: response.region,
             },
             {
               name: 'postal_code',
-              value: 'V8R 4P3',
+              value: response.postal_code,
             },
             {
               name: 'country',
-              value: 'Canada',
+              value: response.country,
             },
             {
               name: 'expiry_date_dateint',
-              value: '2026-01-01',
+              value: response.expiry_date_dateint,
             },
             {
               name: 'picture',
-              value: imageData,
+              value: response.picture,
             },
           ],
         },

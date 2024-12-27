@@ -27,6 +27,13 @@ export const natsResponder = async () => {
         firstName: faker.person.firstName(),
         lastName: faker.person.lastName(),
         birthdate: faker.date.birthdate().toISOString().split('T')[0],
+        street_address: faker.location.streetAddress(),
+        locality: faker.location.county(),
+        region: faker.location.state(),
+        postal_code: faker.location.zipCode(),
+        country: faker.location.country(),
+        expiry_date_dateint: faker.date.anytime().toISOString().split('T')[0],
+        picture: faker.image.dataUri(),
       }
 
       msg.respond(JSON.stringify(mockSubmitter))

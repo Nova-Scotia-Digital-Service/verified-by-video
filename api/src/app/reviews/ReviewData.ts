@@ -12,6 +12,13 @@ const generateReviewQuestions = (submitter: {
   first_name: string
   last_name: string
   birthdate: Date
+  street_address: string
+  locality: string
+  region: string
+  postal_code: string
+  country: string
+  expiry_date_dateint: Date
+  picture: string
 }) => {
   const reviewQuestionTemplate: { question: string; options: { text: string; valid: boolean }[] }[] = [
     {
@@ -110,6 +117,13 @@ export const createReview = async (reviewer: TD.DBReviewer, submission_id: strin
       first_name: string
       last_name: string
       birthdate: Date
+      street_address: string
+      locality: string
+      region: string
+      postal_code: string
+      country: string
+      expiry_date_dateint: Date
+      picture: string
     }>(
       `
       SELECT
@@ -117,6 +131,13 @@ export const createReview = async (reviewer: TD.DBReviewer, submission_id: strin
         submitters.first_name,
         submitters.last_name,
         submitters.birthdate
+        submitters.street_address
+        submitters.locality
+        submitters.region
+        submitters.postal_code
+        submitters.country
+        submitters.expiry_date_dateint
+        submitters.picture
       FROM submitters
       JOIN submissions ON submissions.submitter_id = submitters.id
       WHERE submissions.id = $1
