@@ -1,7 +1,7 @@
 import * as TD from '../../types'
 import { Controller, Get, Post, HttpCode, HttpStatus, Body } from '@nestjs/common'
 import { sendDrpcResponse } from '../../utils/traction'
-import { updateSessionWithConnectionId } from './AgentData'
+import { createConnectionDetails } from './AgentData'
 import { createSession } from '../sessions/SessionData'
 
 @Controller('/topic')
@@ -25,7 +25,7 @@ export class AgentController {
     const requestId = body.id ?? Math.floor(Math.random() * 1000000)
     const newSession = await createSession()
 
-    await updateSessionWithConnectionId(newSession.id, connection_id)
+    await createConnectionDetails(newSession.id, connection_id)
 
     const result = {
       ...newSession,

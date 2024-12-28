@@ -4,9 +4,13 @@ BEGIN;
         ('5420a722-de9d-4d4a-a586-5614cdb37c99', 'test@example.com', 'User Two', false),
         ('837954a6-4ff2-449a-ac0b-35b9883fe1ec', 'test@example.co.uk', 'Admin User', true);
 
-    INSERT INTO public.sessions (id, didcomm_connection_id, created_at, expires_at) VALUES
-        ('88acfa3d-bf2f-4cae-8746-60a9106f6d56', 'da99924c-a0a9-46bb-b12d-e601577036ff','2024-05-08 19:01:48.776913+00', '2024-05-08 19:11:48.776913+00'),
-        ('33aeaab8-0a6f-477f-815a-eb0559b1ba3a','ba99924c-a0a9-46bb-b12d-e601577036fa', '2024-05-10 13:05:18.691377+00', '2024-05-10 13:15:18.691377+00');
+    INSERT INTO public.sessions (id,  created_at, expires_at) VALUES
+        ('88acfa3d-bf2f-4cae-8746-60a9106f6d56', '2024-05-08 19:01:48.776913+00', '2024-05-08 19:11:48.776913+00'),
+        ('33aeaab8-0a6f-477f-815a-eb0559b1ba3a', '2024-05-10 13:05:18.691377+00', '2024-05-10 13:15:18.691377+00');
+    
+     INSERT INTO public.credentials (id, session_id, didcomm_connection_id, created_at) VALUES
+        ('58acfa3d-bf2f-4caf-8746-60a9106f6d57', '88acfa3d-bf2f-4cae-8746-60a9106f6d56', 'da99924c-a0a9-46bb-b12d-e601577036ff','2024-05-08 19:01:48.776913+00'),
+        ('38acfa3d-bf2f-4cab-8746-60a9106f6d58', '33aeaab8-0a6f-477f-815a-eb0559b1ba3a','ba99924c-a0a9-46bb-b12d-e601577036fa', '2024-05-10 13:05:18.691377+00');
 
     INSERT INTO public.prompts VALUES
         ('10125e01-642d-4be5-bf1c-2e0575091b23', '88acfa3d-bf2f-4cae-8746-60a9106f6d56', 'Hold up two fingers'),

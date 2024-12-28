@@ -376,13 +376,13 @@ export const getConnectionIdForReview = async (reviewId: string): Promise<string
     const result = await pool.query<ConnectionIdRow>(
       `
       SELECT
-        sessions.didcomm_connection_id
+        credentials.didcomm_connection_id
       FROM
-        sessions
+        credentials
       JOIN
         submissions
       ON
-        sessions.id = submissions.session_id
+        credentials.session_id = submissions.session_id
       JOIN
         reviews
       ON
