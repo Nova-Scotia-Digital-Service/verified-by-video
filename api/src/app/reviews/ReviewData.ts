@@ -111,87 +111,104 @@ const generateReviewQuestions = (submitter: {
 }
 
 export const createReview = async (reviewer: TD.DBReviewer, submission_id: string) => {
-  return transaction(async (client) => {
-    const submitterResult = await client.query<{
-      license_number: string
-      first_name: string
-      last_name: string
-      birthdate: Date
-      street_address: string
-      locality: string
-      region: string
-      postal_code: string
-      country: string
-      expiry_date_dateint: Date
-      picture: string
-    }>(
-      `
-      SELECT
-        submitters.license_number,
-        submitters.first_name,
-        submitters.last_name,
-        submitters.birthdate
-        submitters.street_address
-        submitters.locality
-        submitters.region
-        submitters.postal_code
-        submitters.country
-        submitters.expiry_date_dateint
-        submitters.picture
-      FROM submitters
-      JOIN submissions ON submissions.submitter_id = submitters.id
-      WHERE submissions.id = $1
-      `,
-      [submission_id],
-    )
-    const submitter = submitterResult.rows[0]
-
-    const reviewResult = await client.query<{ id: string }>(
-      `
-      INSERT INTO reviews (submission_id, reviewer_id)
-      VALUES ($1, $2)
-      RETURNING id
-      `,
-      [submission_id, reviewer && reviewer.id],
-    )
-
-    const reviewQuestions = generateReviewQuestions(submitter)
-    await Promise.all(
-      reviewQuestions.map(async (question) => {
-        const questionResult = await client.query<{ id: string }>(
+  try {
+    return await transaction(async (client) => {
+      try {
+        const submitterResult = await client.query<{
+          license_number: string
+          first_name: string
+          last_name: string
+          birthdate: Date
+          street_address: string
+          locality: string
+          region: string
+          postal_code: string
+          country: string
+          expiry_date_dateint: Date
+          picture: string
+        }>(
           `
-        INSERT INTO review_questions (review_id, question)
-        VALUES ($1, $2)
-        RETURNING id
-
-        `,
-          [reviewResult.rows[0].id, question.question],
+          SELECT
+            submitters.license_number,
+            submitters.first_name,
+            submitters.last_name,
+            submitters.birthdate,
+            submitters.street_address,
+            submitters.locality,
+            submitters.region,
+            submitters.postal_code,
+            submitters.country,
+            submitters.expiry_date_dateint,
+            submitters.picture
+          FROM submitters
+          JOIN submissions ON submissions.submitter_id = submitters.id
+          WHERE submissions.id = $1
+          `,
+          [submission_id],
         )
 
-        const reviewQuestionId = questionResult.rows[0].id
-        const questionOptionPairs = question.options.map((option) => [reviewQuestionId, option.text])
+        const submitter = submitterResult.rows[0]
+
+        const reviewResult = await client.query<{ id: string }>(
+          `
+          INSERT INTO reviews (submission_id, reviewer_id)
+          VALUES ($1, $2)
+          RETURNING id
+          `,
+          [submission_id, reviewer && reviewer.id],
+        )
+
+        const reviewQuestions = generateReviewQuestions(submitter)
+
+        await Promise.all(
+          reviewQuestions.map(async (question) => {
+            try {
+              const questionResult = await client.query<{ id: string }>(
+                `
+              INSERT INTO review_questions (review_id, question)
+              VALUES ($1, $2)
+              RETURNING id
+              `,
+                [reviewResult.rows[0].id, question.question],
+              )
+
+              const reviewQuestionId = questionResult.rows[0].id
+              const questionOptionPairs = question.options.map((option) => [reviewQuestionId, option.text])
+
+              await client.query(
+                `
+              INSERT INTO review_question_options (review_question_id, text)
+              VALUES ${buildNestedPgParams(questionOptionPairs)}
+              `,
+                questionOptionPairs.flat(),
+              )
+            } catch (error) {
+              console.error('Error inserting review question or options:', error)
+              throw error
+            }
+          }),
+        )
+
         await client.query(
           `
-        INSERT INTO review_question_options (review_question_id, text)
-        VALUES ${buildNestedPgParams(questionOptionPairs)}
-        `,
-          questionOptionPairs.flat(),
+          UPDATE submissions
+          SET
+            status = 'UNDER_REVIEW'
+          WHERE id = $1
+          `,
+          [submission_id],
         )
-      }),
-    )
 
-    await client.query(
-      `
-      UPDATE submissions
-      SET
-        status = 'UNDER_REVIEW'
-      WHERE id = $1
-      `,
-      [submission_id],
-    )
-
-    return reviewResult.rows[0]
-  })
+        return reviewResult.rows[0]
+      } catch (error) {
+        console.error('Error processing transaction:', error)
+        throw error
+      }
+    })
+  } catch (error) {
+    console.error('Error in createReview:', error)
+    throw error
+  }
 }
 
 export const getReview = async (review_id: string) => {
