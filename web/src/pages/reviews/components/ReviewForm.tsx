@@ -73,11 +73,15 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({ review }) => {
           <div className="max-w-96">
             <h3 className="font-bold text-2xl mb-4">Prompts the user was provided in the mobile app:</h3>
             <ol className="ml-6 text-lg">
-              {review.prompts.map((prompt) => (
-                <li key={prompt.id} className="mb-4 pl-2 list-decimal">
-                  {prompt.text}
-                </li>
-              ))}
+              {review.prompts.map((prompt) => {
+                const parsedPrompt = JSON.parse(prompt.text)
+
+                return (
+                  <li key={prompt.id} className="mb-4 pl-2 list-decimal">
+                    {parsedPrompt.text}
+                  </li>
+                )
+              })}
             </ol>
           </div>
         </div>
