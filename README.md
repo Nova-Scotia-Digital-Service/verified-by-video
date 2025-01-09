@@ -133,3 +133,18 @@ To run tests:
 yarn test:web
 yarn test:api
 ```
+
+## Digital Credentials
+
+Point Traction to the VbV Controller for DRPC message
+handling: Test with (no trailing slash):
+
+https://vbc-controller.fullboar.ca/api/v1
+
+Test with:
+
+```bash
+curl -v -sL -X POST https://vbc-controller.fullboar.ca/api/v1/topic/ping
+```
+
+This should return a 202 No Content response.
