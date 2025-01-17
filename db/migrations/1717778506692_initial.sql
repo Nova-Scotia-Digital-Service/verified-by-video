@@ -27,6 +27,14 @@ CREATE TABLE identification_cards (
     upload_date     timestamptz NULL DEFAULT transaction_timestamp()
 );
 
+CREATE TABLE credentials (
+    id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    created_at      timestamptz NOT NULL DEFAULT transaction_timestamp(),
+    didcomm_connection_id   uuid  NOT NULL,
+    session_id      uuid REFERENCES sessions ON DELETE RESTRICT NOT NULL
+  
+);
+
 CREATE TYPE review_status AS ENUM ('PENDING', 'APPROVED', 'DENIED');
 
 CREATE TABLE reviews (
