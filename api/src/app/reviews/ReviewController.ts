@@ -10,6 +10,7 @@ import { createReview, getReview, finishReview, getConnectionIdForReview } from 
 
 import { offerCredential } from '../../utils/traction'
 import { getSubmitterIdentity } from '../../utils/getSubmitterIdentity'
+import { credDefId } from '../constants'
 
 @Controller('/staff/reviews')
 export class ReviewController {
@@ -115,7 +116,7 @@ export class ReviewController {
         auto_issue: true,
         auto_remove: true,
         trace: true,
-        cred_def_id: 'DCQff261iuknbdF1Z8dW2b:3:CL:1060609:person_v2',
+        cred_def_id: credDefId,
         credential_preview: {
           '@type': 'https://didcomm.org/issue-credential/1.0/credential-preview',
           attributes: [

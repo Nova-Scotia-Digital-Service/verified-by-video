@@ -27,9 +27,16 @@ export class AgentController {
 
     await createConnectionDetails(newSession.id, connection_id)
 
+    // Fix the prompts. They are being returned as strings. Probably need to
+    // address this in the database.
+    const prompts = newSession.prompts.map((dbPrompt: any) => {
+      const prompts = JSON.parse(dbPrompt.text)
+      return { id: prompts.id, text: prompts.text, type: 'text' as const }
+    })
+
     const result = {
       ...newSession,
-      prompts: newSession.prompts.map((dbPrompt) => ({ ...dbPrompt, type: 'text' as const })),
+      prompts,
       version: '1' as const,
     }
 
