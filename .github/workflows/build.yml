@@ -1,9 +1,12 @@
 name: Build
 on:
+  push:
+    tags:
+      - v*
   workflow_dispatch:
   workflow_run:
     workflows: [Quality]
-    #branches: build_docker_images
+    branches: [main]
     types:
       - completed
 env:
@@ -26,7 +29,7 @@ jobs:
         uses: ./.github/actions/docker-build
         with:
           registry: ${{ env.REGISTRY }}
-          image_name: '${{ github.repository }}/verified-by-video-${{ matrix.image }}'
+          image_name: '${{ github.repository }}/${{ matrix.image }}'
           context: ./
           dockerfile: 'Dockerfile.${{ matrix.image }}'
           docker_user: ${{ github.actor }}

@@ -1,6 +1,12 @@
 name: Quality
 
-on: [push]
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
 
 env:
   KEYCLOAK_ADMIN: keycloak
@@ -15,7 +21,7 @@ env:
 
 jobs:
   tests:
-    name: Automated Tests
+    name: Test
     runs-on: ubuntu-latest
 
     steps:
