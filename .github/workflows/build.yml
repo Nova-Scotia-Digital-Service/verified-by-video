@@ -1,0 +1,33 @@
+name: Build
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [Quality]
+    #branches: build_docker_images
+    types:
+      - completed
+env:
+  REGISTRY: ghcr.io
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        image: [api, web]
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker images
+        uses: ./.github/actions/docker-build
+        with:
+          registry: ${{ env.REGISTRY }}
+          image_name: '${{ github.repository }}/verified-by-video-${{ matrix.image }}'
+          context: ./
+          dockerfile: 'Dockerfile.${{ matrix.image }}'
+          docker_user: ${{ github.actor }}
+          docker_password: ${{ secrets.GITHUB_TOKEN }}
