@@ -70,11 +70,26 @@ export const ReviewFinished: React.FC<ReviewFinishedProps> = ({ review }) => {
             <h3 className="font-bold text-2xl mb-4">Prompts the user was provided in the mobile app:</h3>
             <ol className="ml-6 text-lg">
               {review.prompts.map((prompt) => {
-                const parsedPrompt = JSON.parse(prompt.text)
+                let promptText = prompt.text
+                let promptId = prompt.id
+                try {
+                  const parsedPrompt = JSON.parse(prompt.text)
+                  promptText = parsedPrompt.text
+                } catch (e) {
+                  // If JSON parsing fails, just use the raw string
+                  console.error('Invalid JSON:', prompt.text)
+                }
+                try {
+                  const parsedPrompt = JSON.parse(prompt.id)
+                  promptId = parsedPrompt.id
+                } catch (e) {
+                  // If JSON parsing fails, just use the raw string
+                  console.error('Invalid JSON:', prompt.id)
+                }
 
                 return (
-                  <li key={parsedPrompt.id} className="mb-4 pl-2 list-decimal">
-                    {parsedPrompt.text}
+                  <li key={promptText} className="mb-4 pl-2 list-decimal">
+                    {promptId}
                   </li>
                 )
               })}
