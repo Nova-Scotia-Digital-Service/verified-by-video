@@ -4,7 +4,7 @@ Verify users liveliness and presence by choreographed video
 
 ## Setup
 
-### Local setup
+### Local
 
 1. Make a copy of `env.template` named `.env` in the project root.
 
@@ -37,7 +37,7 @@ yarn db:populate
 yarn minio:populate
 ```
 
-### Setup using docker
+### Docker Stack
 
 1. Make a copy of `env.template` named `.env` in the project root.
 
@@ -57,12 +57,6 @@ docker compose up --build
 yarn db:migrate up
 ```
 
-Or
-
-```
-npm run  db:migrate up
-```
-
 Optionally populate the database and object store with example data
 
 ```
@@ -70,7 +64,27 @@ yarn db:populate
 yarn minio:populate
 ```
 
-## Running the web app
+### Remote Docker Stack
+
+To run the stack on a remote server, update the .env file with the following environment variables. Ensure the URLs are publicly accessible from the internet. In this example, a single URL is used for all resources, with routing handled based on the path.
+
+| Public Host    | Path                        | Service  | Port |
+| -------------- | --------------------------- | -------- | ---- |
+| vbv.example.ca | /realms/\*                  | Keycloak | 8080 |
+| vbv.example.ca | /resources/\*               | Keycloak | 8080 |
+| vbv.example.ca | /api/v1/\*                  | API      | 3100 |
+| vbv.example.ca | /verified-by-video/media/\* | Minio    | 9002 |
+| vbv.example.ca | /                           | Web      | 3000 |
+
+In the `.env` file, set the following environment variables:
+
+```
+MINIO_HOST_URL=https://vbv.example.ca
+REACT_APP_KEYCLOAK_ADDRESS=https://vbv.example.ca
+REACT_APP_BACKEND_ADDRESS=https://vbv.example.ca
+```
+
+## Accessing the Web Interface
 
 Log in
 

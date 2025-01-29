@@ -12,8 +12,13 @@ export const minioClient = new Client({
 
 export const signMinioUrl = async (unsignedUrl: string) => {
   let signedUrl = await minioClient.presignedGetObject(config.S3_BUCKET_NAME, unsignedUrl, 60 * 60)
+  // if (config.MINIO_HOST && config.MINIO_HOST.trim() !== '') {
   if (config.NODE_ENV === 'development') {
-    signedUrl = signedUrl.replace('http://minio:9000', 'http://localhost:9002')
+    if (config.MINIO_HOST_URL && config.MINIO_HOST_URL.trim() !== '') {
+      signedUrl = signedUrl.replace('http://minio:9000', `${config.MINIO_HOST_URL}`)
+    } else {
+      signedUrl = signedUrl.replace('http://minio:9000', 'http://localhost:9002')
+    }
   }
 
   return signedUrl

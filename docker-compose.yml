@@ -7,7 +7,8 @@ services:
     environment:
       CI: ${CI-}
       NODE_ENV: ${NODE_ENV:-development}
-      REACT_APP_KEYCLOAK_ADDRESS: http://localhost:8080
+      REACT_APP_KEYCLOAK_ADDRESS: ${REACT_APP_KEYCLOAK_ADDRESS:-http://localhost:8080}
+      REACT_APP_BACKEND_ADDRESS: ${REACT_APP_BACKEND_ADDRESS:-http://localhost:3100}
     ports:
       - 3000:3000
     volumes:
@@ -25,7 +26,8 @@ services:
       KEYCLOAK_ADDRESS: http://keycloak:8080
       PG_PASSWORD: ${PG_PASSWORD:?}
       PG_HOST: postgres
-      MINIO_HOST: minio
+      MINIO_HOST: ${MINIO_HOST:-minio}
+      MINIO_HOST_URL: ${MINIO_HOST_URL:-}
       MINIO_PORT: 9000
       MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:?}
       MINIO_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:?}
@@ -110,6 +112,7 @@ services:
       - ./keycloak/keycloak-dev-realm.json:/opt/keycloak/data/import/keycloak-dev-realm.json
       - ./keycloak/themes:/opt/keycloak/themes
     environment:
+      - KC_SPI_TRUSTSTORE_SSL_SSL_REQUIRED=none
       - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:?}
       - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:?}
     command: start-dev --import-realm
