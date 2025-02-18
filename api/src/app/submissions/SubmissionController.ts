@@ -32,6 +32,9 @@ class SubmissionBodySchema {
 
   @ApiProperty({ type: 'string', format: 'binary' })
   video_file!: Express.Multer.File
+
+  @ApiProperty({ type: 'string' })
+  licenseNumber!: string
 }
 
 class PhotoDto {
@@ -51,7 +54,7 @@ export class SubmissionController {
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('video_file'))
   public async createSubmission(
-    @Body() { sessionId: session_id }: SubmissionBodySchema,
+    @Body() { sessionId: session_id, licenseNumber }: SubmissionBodySchema,
     @UploadedFile() video_file: Express.Multer.File,
   ): Promise<TD.Submission> {
     const fileNameComponents = video_file.originalname.split('.')
@@ -60,10 +63,9 @@ export class SubmissionController {
     const filePath = `media/${randomizedFileName}`
 
     await minioClient.putObject(config.S3_BUCKET_NAME, filePath, video_file.buffer, video_file.size)
-
-    const submitter = await getSubmitterIdentity()
-
+    const submitter = await getSubmitterIdentity(licenseNumber)
     const submission = await createSubmission(session_id, submitter, filePath)
+
     return submission
   }
 

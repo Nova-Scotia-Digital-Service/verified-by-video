@@ -93,6 +93,7 @@ describe('SubmissionController', () => {
   describe('createSubmission', () => {
     it('returns data', async () => {
       const sessionId = '88acfa3d-bf2f-4cae-8746-60a9106f6d56'
+      const licenseNumber = '1234567890'
       const video_file: Express.Multer.File = {
         fieldname: 'file',
         originalname: 'file.mp4',
@@ -106,7 +107,7 @@ describe('SubmissionController', () => {
         buffer: Buffer.from(''),
       }
       const newSubmission = await new SubmissionController().createSubmission(
-        { sessionId, video_file: undefined as any },
+        { sessionId, video_file: undefined as any, licenseNumber },
         video_file,
       )
       expect(newSubmission.id).toMatch(UUID_REGEX)

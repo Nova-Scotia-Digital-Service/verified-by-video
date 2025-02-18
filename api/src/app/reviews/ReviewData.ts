@@ -217,6 +217,7 @@ export const getReview = async (review_id: string) => {
       id: string
       status: TD.ReviewStatus
       submission_id: string
+      license_number: string
       session_id: string
       video_url: string
       upload_date: Date
@@ -243,6 +244,7 @@ export const getReview = async (review_id: string) => {
         submissions.session_id,
         submissions.video_url,
         submissions.upload_date,
+        submitters.license_number,
         array_remove(
           array_agg(aggregated_tags.tags),
           NULL
@@ -250,10 +252,11 @@ export const getReview = async (review_id: string) => {
         review_comments.text as comment
       FROM reviews
       JOIN submissions ON submissions.id = reviews.submission_id
+      LEFT JOIN submitters ON submissions.submitter_id = submitters.id
       LEFT JOIN aggregated_tags ON aggregated_tags.submission_id = submissions.id
       LEFT JOIN review_comments ON review_comments.review_id = reviews.id
       WHERE reviews.id = $1
-      GROUP BY submissions.id, reviews.id, review_comments.text
+      GROUP BY submissions.id, submitters.id, reviews.id, review_comments.text
       `,
       [review_id],
     )

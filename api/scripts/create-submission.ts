@@ -4,6 +4,7 @@ import { getSubmitterIdentity } from '../src/utils/getSubmitterIdentity'
 
 import { createSession } from '../src/app/sessions/SessionData'
 import { createPhotoID, createSubmission } from '../src/app/submissions/SubmissionData'
+import { faker } from '@faker-js/faker'
 
 configDotenv()
 
@@ -11,7 +12,7 @@ const generateSubmissions = async (count) => {
   for (let index = 0; index < count; index++) {
     const session = await createSession()
 
-    const response = await getSubmitterIdentity()
+    const response = await getSubmitterIdentity(faker.string.numeric(14))
 
     const submission = await createSubmission(session.id, response, 'media/example-video.mp4')
     await createPhotoID(session.id, 'Photo from the mobile app', 'media/example-photo-from-app.png')

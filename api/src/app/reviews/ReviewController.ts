@@ -108,7 +108,8 @@ export class ReviewController {
         throw new Error(`No connection id found for review ${review_id}, unable to issue credential`)
         return
       }
-      const response = await getSubmitterIdentity()
+      const reviewResponse = await getReview(review_id)
+      const response = await getSubmitterIdentity(reviewResponse.review.license_number)
       console.log('Submitter response:', response)
 
       const credential: TD.PersonCredential = {
